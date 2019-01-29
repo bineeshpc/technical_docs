@@ -1,0 +1,78 @@
+<http://harryrschwartz.com/2014/04/08/an-introduction-to-emacs-lisp.html>
+
+``` {.elisp}
+(message "hello minibuffer")
+
+;;(insert "\ninsert text")
+
+;; quote bypasses the evaluation of function 1 on 2 and 3.
+;; it returnes (1 2 3) instead
+(quote (1 2 3))
+
+;; clojure calls it first and rest
+;; 40 years before it meant contents of address register
+;; contents of decrement register
+(car '(1 2 3))
+(cdr '(1 2 3))
+(cons 1 '(2 3))
+(append '(1 5) '(2 3))
+(set 'some-list '(1 2 3))
+(setq some-list '(1 2))
+(let ((a 1)
+     (b 2))
+     (+ a b))
+(let* ((a 1)
+       (b (+ a 3)))
+      (+ a b))
+
+(defun square(x)
+ (* x x))
+(square 2)
+
+(and t " " 0 7)
+(not nil)
+(defun even-or-odd (n)
+(if (= 0 (% n 2))
+"even"
+"odd"))
+(even-or-odd 6)
+
+(defun pick-a-word (n) 
+  (cond ((= n 1) "a")
+        ((= n 2) "b")
+        ((= n 3) "c")
+        (t "z")))  
+(pick-a-word 5)
+(defun fact (n)
+  (cond ((= n 0) 1)
+         (t (* n (fact (- n 1))))))
+(fact 5)
+```
+
+Create a search using emacs
+===========================
+
+(setq mainsearch "mathematics programming") (setq searchstrings
+'("books" "slides" ""))
+
+(defun bconcat (str1 str2) (concat str1 " " str2))
+
+(bconcat "clarivate" "analytics")
+
+(mapc '1+' (1 2 3 4)) (mapl '1+' (1 2 3 4))
+
+(defun all~string~ (str1 lst~strings~) (when lst~strings~ (append lst
+(bconcat str1 (car lst~strings~))) (all~string~ str1 (cdr
+lst~strings~))))
+
+(all~string~ mainsearch searchstrings)
+
+(insert searchstrings) (buffer-substring (mark) (point))
+
+mathematics programming
+
+(defun multiply-by-seven (number) ; Interactive version. "Multiply
+NUMBER by seven." (interactive "p") (message "The result is %d" (\* 7
+number)))
+
+(concat "a" "b" "c")

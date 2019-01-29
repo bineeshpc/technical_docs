@@ -1,0 +1,161 @@
+How to become a web developer Quora answer?
+===========================================
+
+<https://www.quora.com/What-are-the-10-most-important-things-to-learn-in-web-development-as-of-2015>
+Front-end developer needs to know:
+
+HTML5, CSS3, JavaScript, jQuery at least one of the front-end JS
+frameworks/libraries - Angular, Ember, React,... at least one of the UI
+libraries - Semantic UI, Bootstrap, Foundation, Polymer,... front-end
+tools - Gulp, Grunt, Bower One of the CSS preprocessors - LESS, SASS,
+Stylus One of the JS preprocessors - CoffeeScript, TypeScript,
+LiveScript
+
+Back-end developer needs to know:
+
+Basic HTML, CSS, JavaScript One of the back-end languages - PHP, Python,
+Ruby,... One of the back-end frameworks - PHP (Symfony, Laravel, Nette,
+Zend, CodeIgniter,...), Ruby (Ruby on Rails), Python (django),
+JavaScript (Node.js, Express.js, Total.js, Sails.js, Meteor.js) One of
+the databases - MySQL, MongoDB, PostgreSQL, MariaDB,...
+
+Full-stack developer needs to know:
+
+All of the above (front-end + back-end) Meteor.js or MEAN stack.
+
+[DONE]{.done .DONE} Project Understand about google maps api {#project-understand-about-google-maps-api}
+============================================================
+
+SCHEDULED: &lt;2017-12-16 Sat 13:07&gt;
+
+-   State "DONE" from "TODO" \[2017-12-15 Fri 11:32\]
+-   State "DONE" from "TODO" \[2017-09-14 Thu 10:29\]
+-   State "DONE" from "TODO" \[2017-08-17 Thu 10:37\]
+-   State "DONE" from "TODO" \[2017-08-16 Wed 15:09\]
+-   State "DONE" from "TODO" \[2017-07-19 Wed 15:05\]
+-   State "DONE" from "TODO" \[2017-06-08 Thu 15:26\] CLOCK:
+    \[2017-06-08 Thu 15:17\]--\[2017-06-08 Thu 15:26\] =&gt; 0:09
+    -   State "DONE" from "TODO" \[2017-06-06 Tue 13:42\]
+
+    CLOCK: \[2017-06-06 Tue 13:25\]--\[2017-06-06 Tue 13:42\] =&gt; 0:17
+    -   State "DONE" from "TODO" \[2017-06-02 Fri 13:19\]
+
+    CLOCK: \[2017-06-02 Fri 13:07\]--\[2017-06-02 Fri 13:13\] =&gt; 0:06
+
+    :PROPERTIES:
+
+:LAST~REPEAT~: \[2017-12-15 Fri 11:32\]
+
+:END:
+<https://developers.google.com/maps/documentation/javascript/adding-a-google-map>
+
+[DONE]{.done .DONE} Get google maps api key
+
+AIzaSyDw~guRd4U88vCSY6ENjVcCaw7kXsOlhgM~
+
+[DONE]{.done .DONE} Created a Simple html file
+
+[DONE]{.done .DONE} used it with default values
+
+``` {.python}
+import os
+htmlfile="""
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw_guRd4U88vCSY6ENjVcCaw7kXsOlhgM&callback=initMap">
+    </script>
+  </body>
+</html>
+
+"""
+with open('/tmp/one.html', 'w') as f:
+    f.write(htmlfile)
+
+os.system("firefox /tmp/one.html")
+```
+
+Joined free code camp
+=====================
+
+<https://gitter.im/FreeCodeCamp/FreeCodeCamp>
+<https://github.com/FreeCodeCamp/FreeCodeCamp/wiki/FreeCodeCamp-Curriculum-Sequence>
+<https://www.freecodecamp.com/challenges/create-a-github-account-and-join-our-chat-rooms>
+<https://www.freecodecamp.com/challenges/add-different-padding-to-each-side-of-an-element>
+<https://www.freecodecamp.com/map>
+
+[DONE]{.done .DONE} Learn java script {#learn-java-script}
+=====================================
+
+SCHEDULED: &lt;2017-12-16 Sat 13:45&gt;
+
+-   State "DONE" from "TODO" \[2017-12-15 Fri 11:32\]
+-   State "DONE" from "TODO" \[2017-10-23 Mon 11:31\]
+-   State "DONE" from "TODO" \[2017-10-10 Tue 13:54\]
+-   State "DONE" from "TODO" \[2017-09-14 Thu 10:31\]
+-   State "DONE" from "TODO" \[2017-08-17 Thu 10:37\]
+-   State "DONE" from "TODO" \[2017-08-16 Wed 15:09\]
+-   State "DONE" from "TODO" \[2017-07-19 Wed 15:01\]
+-   State "DONE" from "TODO" \[2017-07-18 Tue 14:51\]
+
+CLOCK: \[2017-07-18 Tue 14:10\]--\[2017-07-18 Tue 14:51\] =&gt; 0:41
+
+-   State "DONE" from "TODO" \[2017-07-12 Wed 12:00\]
+
+CLOCK: \[2017-07-12 Wed 11:42\]--\[2017-07-12 Wed 12:00\] =&gt; 0:18
+
+-   State "DONE" from "TODO" \[2017-07-10 Mon 15:37\]
+
+CLOCK: \[2017-07-10 Mon 14:26\]--\[2017-07-10 Mon 15:37\] =&gt; 1:11
+
+-   State "DONE" from "TODO" \[2017-07-06 Thu 11:12\]
+-   State "DONE" from "TODO" \[2017-06-20 Tue 09:10\]
+
+CLOCK: \[2017-06-08 Thu 17:41\]--\[2017-06-08 Thu 18:03\] =&gt; 0:22
+
+[DONE]{.done .DONE} Learn HTML 5 {#learn-html-5}
+================================
+
+SCHEDULED: &lt;2017-12-16 Sat 14:00&gt;
+
+-   State "DONE" from "TODO" \[2017-12-15 Fri 11:32\]
+-   State "DONE" from "TODO" \[2017-10-23 Mon 11:31\]
+-   State "DONE" from "TODO" \[2017-09-14 Thu 10:31\]
+-   State "DONE" from "TODO" \[2017-08-17 Thu 10:37\]
+-   State "DONE" from "TODO" \[2017-08-16 Wed 15:10\]
+-   State "DONE" from "TODO" \[2017-07-19 Wed 15:05\]
+-   State "DONE" from "TODO" \[2017-07-12 Wed 15:48\]
+
+CLOCK: \[2017-07-12 Wed 15:15\]--\[2017-07-12 Wed 15:48\] =&gt; 0:33
+
+-   State "DONE" from "TODO" \[2017-07-06 Thu 14:16\]
+-   State "DONE" from "TODO" \[2017-06-20 Tue 14:37\]
+
+CLOCK: \[2017-06-20 Tue 13:49\]--\[2017-06-20 Tue 14:37\] =&gt; 0:48
+
+How to build a restful api
+==========================
