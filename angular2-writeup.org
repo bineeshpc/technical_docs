@@ -1,0 +1,19 @@
+* Angular 2
+
+** Tutorial shared by ngur
+http://www.laminsanneh.com/blog/post/63/learn-angularjs-2-tutorials-concepts-beginners-typescript
+** How to install angular 2?
+
+#+BEGIN_SRC sh :dir /sudo:: :results output
+
+apt install npm
+npm install -g angular-cli
+#+END_SRC
+
+#+RESULTS:
+: Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+: Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+: Reading state information... 0%Reading state information... 0%Reading state information... Done
+: npm is already the newest version (3.5.2-0ubuntu4).
+: 0 upgraded, 0 newly installed, 0 to remove and 41 not upgraded.
+

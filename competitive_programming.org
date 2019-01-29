@@ -1,0 +1,1504 @@
+* Competitive programming philosophy from CP3
+** Difference between competitive programmer and other programmers
+The core directive in ‘Competitive Programming’ is this: “Given well-known Computer
+Science (CS) problems, solve them as quickly as possible!”
+
+Now ask yourself: Which of the following best describes you? Note that if you are
+unclear with the material or the terminology shown in this chapter, you can re-read it
+again after going through this book once.
+• Uncompetitive programmer A (a.k.a. the blurry one):
+Step 1: Reads the problem and becomes confused. (This problem is new for him).
+Step 2: Tries to code something: Reading the non-trivial input and output.
+Step 3: Realizes that all his attempts are not Accepted (AC):
+Greedy (Section 3.4): Repeatedly pairing the two remaining students with the
+shortest separating distances gives the Wrong Answer (WA).
+Naı̈ve Complete Search: Using recursive backtracking (Section 3.2) and trying
+all possible pairings yields Time Limit Exceeded (TLE).
+• Uncompetitive programmer B (Give up):
+Step 1: Reads the problem and realizes that he has seen this problem before.
+But also remembers that he has not learned how to solve this kind of problem...
+He is not aware of the Dynamic Programming (DP) solution (Section 3.5)...
+Step 2: Skips the problem and reads another problem in the problem set.
+
+• (Still) Uncompetitive programmer C (Slow):
+Step 1: Reads the problem and realizes that it is a hard problem: ‘minimum
+weight perfect matching on a small general weighted graph’. However,
+since the input size is small, this problem is solvable using DP. The DP state is
+a bitmask that describes a matching status, and matching unmatched students
+i and j will turn on two bits i and j in the bitmask (Section 8.3.1).
+Step 2: Codes I/O routine, writes recursive top-down DP, tests, debugs >.<...
+Step 3: After 3 hours, his solution obtains AC (passed all the secret test data).
+• Competitive programmer D:
+Completes all the steps taken by uncompetitive programmer C in ≤ 30 minutes.
+• Very competitive programmer E:
+A very competitive programmer (e.g. the red ‘target’ coders in TopCoder [32])
+would solve this ‘well known’ problem ≤ 15 minutes...
+
+Please note that being well-versed in competitive programming is not the end goal, but
+only a means to an end. The true end goal is to produce all-rounder computer scien-
+tists/programmers who are much readier to produce better software and to face harder CS
+research problems in the future.
+** Tips to become competitive programmer
+*** Type code faster
+*** Quickly identify problem types
+Adhoc
+Complete search
+Divide and conquer
+Greedy
+Dynamic programming
+Graph
+Mathematics
+String processing
+Computational geometry
+Solve Harder Rare problems
+
+A. I have solved this type before
+B. I have seen this type before
+C. I have not seen this type before
+
+
+
+Confidence and Expected Solving Speed
+A. I am sure that I can re-solve it again (and fast)
+B. But that time I know I cannot solve it yet
+C. See discussion below
+
+To be competitive, that is, do well in a programming contest, you must be able to confidently
+and frequently classify problems as type A and minimize the number of problems that you
+classify into type B. That is, you need to acquire sufficient algorithm knowledge and develop
+your programming skills so that you consider many classical problems to be easy. However,
+to win a programming contest, you will also need to develop sharp problem solving skills
+(e.g. reducing the given problem to a known problem, identifying subtle hints or special properties in the problem, attacking the problem from a non obvious angle, etc) so that you
+(or your team) will be able to derive the required solution to a hard/original type C problem
+in IOI or ICPC Regionals/World Finals and do so within the duration of the contest.
+
+*** Do algorithms analysis
+*** Master programming languages
+*** Master the art of testing code
+*** Practice and more practice
+*** Team work
+
+** Data structures
+
+*** Linear DS
+Deque
+Vector
+BitSet
+List
+Stack
+Static Array
+*** Non linear DS
+Balanced Binary search tree
+Set
+Heap
+Hashtable
+Direct addressing table
+Binary index tree
+Segment tree
+Union find disjoint sets
+
+** Problem solving paradigms
+Complete search(Iterative , recursive)
+Divide and conquer
+Backtracking
+Greedy
+Dynamic programming
+* My own tips
+Bruteforce small cases to detect a pattern
+Always look for conditions in a look which always hold(invariant)
+
+* General problem solving skills
+Guess and test
+Draw a picture
+Use a variable
+Look for a pattern
+Make a list
+Solve a simpler problem
+Draw a diagram
+Direct reasoning
+Indirect reasoning
+Properties of numbers
+Solve an equivalent problem
+Work backward
+Use cases
+Solve equation
+Make a table
+
+* Cracking the coding interview in hacker rank
+
+** Left rotation problem
+
+A left rotation operation on an array of size shifts each of the array's elements unit to the left. For example, if left rotations are performed on array , then the array would become .
+
+Given an array of integers and a number, , perform left rotations on the array. Then print the updated array as a single line of space-separated integers.
+
+Input Format
+
+The first line contains two space-separated integers denoting the respective values of (the number of integers) and (the number of left rotations you must perform).
+The second line contains space-separated integers describing the respective elements of the array's initial state.
+
+Constraints
+
+Output Format
+
+Print a single line of space-separated integers denoting the final state of the array after performing left rotations.
+
+Sample Input
+
+5 4
+1 2 3 4 5
+
+Sample Output
+
+5 1 2 3 4
+
+Explanation
+
+When we perform left rotations, the array undergoes the following sequence of changes:
+
+Thus, we print the array's final state as a single line of space-separated values, which is 5 1 2 3 4.
+
+#+BEGIN_SRC cpp :results output :tangle yes :tangle /tmp/cpphello.cpp
+#include <iostream>
+using namespace std;
+
+int print_array(int a[], int size)
+{
+    for(int i=0; i < size - 1; i++)
+    {
+        cout << a[i]<<' ';
+    }
+    cout << a[size-1] << endl;
+    return 0;
+}
+
+int rotate_array(int a[], int size)
+{
+    int a0 = a[0];
+    for(int i=1; i<size; i++)
+    {
+        a[i-1] = a[i];
+    }
+    a[size-1] = a0;
+    return 0;    
+}
+
+int rotate_n(int a[], int size, int num_rotate)
+{
+    for(int i=0;i<num_rotate;i++)
+    {
+        rotate_array(a, size);
+    }
+    return 0;
+}
+
+int main() 
+{
+    int size, num_rotate;
+    cin >> size >> num_rotate;
+    int a[size], tmp;
+    for(int count=0; count<size; count++)
+    {
+        cin >> tmp;
+        a[count] = tmp;
+    }
+    rotate_n(a, size, num_rotate);
+    print_array(a, size);
+    return 0;
+}
+#+END_SRC
+
+
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+g++ /tmp/cpphello.cpp
+./a.out <<'EOF'
+5 4
+1 2 3 4 5
+EOF
+
+./a.out <<'EOF'
+5 1
+1 2 3 4 5
+EOF
+#+END_SRC
+
+#+RESULTS:
+: 5 1 2 3 4
+: 2 3 4 5 1
+
+#+BEGIN_SRC cpp :results output :tangle yes :tangle /tmp/cpp_rotate.cpp
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+
+vector<int> array_left_rotation(vector<int> a, int size, int num_rotate) {
+    int a0;
+    for(int i=0;i<(num_rotate%size);i++)
+    {
+        a0 = a[0];
+        for(int i=1; i<size; i++)
+        {
+            a[i-1] = a[i];
+        }
+        a[size-1] = a0;     
+    }
+    return a;    
+}
+
+int print_vector(vector<int> a, int size)
+{
+    for(int i = 0; i < size;i++)
+        cout << a[i] << " ";
+    cout << endl;
+    return 0;
+}
+
+int main(){
+    int n;
+    int k;
+    cin >> n >> k;
+    vector<int> a(n);
+    for(int a_i = 0;a_i < n;a_i++){
+        cin >> a[a_i];
+    }
+    vector<int> output = array_left_rotation(a, n, k);
+    print_vector(output, n);
+    return 0;
+}
+
+
+
+#+END_SRC
+
+#+RESULTS:
+
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+rm a.out
+g++ -std=c++11 cpp_rotate.cpp
+./a.out <<'EOF'
+5 4
+1 2 3 4 5
+EOF
+./a.out <<'EOF'
+5 1
+1 2 3 4 5
+EOF
+./a.out <<'EOF'
+5 16
+1 2 3 4 5
+EOF
+./a.out <<'EOF'
+5 25
+1 2 3 4 5
+EOF
+#+END_SRC
+
+#+RESULTS:
+: 5 1 2 3 4 
+: 2 3 4 5 1 
+: 2 3 4 5 1 
+: 1 2 3 4 5 
+
+k = 5
+n = 4
+a = 0 1 2 3 4
+
+Taking pos = 2 and n = 4
+n % k = 4 % 5 = 4 
+Number of positions in he left of pos = 2 = 2
+I need to move 2 positions to left 
+move 1 position to extreme right
+and 1 position again to left
+
+How much should a position move?
+actual_number_of_shifts = n % k
+number_of_positions_in_left = pos - 0
+if there are positions in the left 
+    left_moves = (actual_number_of_shifts - number_of_positions_in_left)
+    move left_moves to left
+right_jump = (actual_number_of_shifts - left_moves) >= 1? 1 : 0
+then do a right jump
+
+remaining_left_moves = actual_number_of_shifts - (left_moves+right_jump)
+
+#+BEGIN_SRC python :results output :tangle yes :tangle /tmp/left_rotate.py
+def array_left_rotation(a, n, k):
+    actual_number_of_shifts = n % k
+    
+    def get_moves(pos):
+        number_of_positions_in_left = pos - 0
+        if number_of_positions_in_left == 0:
+            number_of_left_moves = 0
+        else:
+            if actual_number_of_shifts >= number_of_positions_in_left:
+                number_of_left_moves = number_of_positions_in_left
+            else:
+                number_of_left_moves = actual_number_of_shifts
+        if (actual_number_of_shifts - number_of_left_moves) > 0:
+            right_jump = 1
+        else:
+            right_jump = 0
+        remaining_left_moves = actual_number_of_shifts - (number_of_left_moves+right_jump)
+        return number_of_left_moves, right_jump, remaining_left_moves
+    b = range(k)
+    for i in range(k):
+        num_left, right_jump, rem_left = get_moves(i)
+        if num_left == 0:
+            if right_jump == 0:
+                b[i] = a[i]
+            else:
+                j = k - 1 - rem_left 
+                b[j] = a[i]
+        else:
+            if right_jump == 0:
+                j = i - num_left
+                b[j] = a[i]
+            else:
+                j = k - 1 - rem_left
+                b[j] = a[i]
+    return b
+  
+
+k, n = map(int, raw_input().strip().split(' '))
+a = map(int, raw_input().strip().split(' '))
+answer = array_left_rotation(a, n, k);
+print ' '.join(map(str,answer))
+
+#+END_SRC
+
+#+RESULTS:
+: 4
+: 0 0 1 3
+: 1 1 1 2
+: 2 2 1 1
+: 3 3 1 0
+: 4 4 0 0
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+python left_rotate.py << 'eof'
+5 4
+1 2 3 4 5
+eof
+#+END_SRC
+
+#+RESULTS:
+: 5 1 2 3 4
+
+** Number of characters to delete to get anagram
+
+Alice is taking a cryptography class and finding anagrams to be very useful. We consider two strings to be anagrams of each other if the first string's letters can be rearranged to form the second string. In other words, both strings must contain the same exact letters in the same exact frequency For example, bacdc and dcbac are anagrams, but bacdc and dcbad are not.
+
+Alice decides on an encryption scheme involving two large strings where encryption is dependent on the minimum number of character deletions required to make the two strings anagrams. Can you help her find this number?
+
+Given two strings, and , that may or may not be of the same length, determine the minimum number of character deletions required to make and anagrams. Any characters can be deleted from either of the strings.
+
+
+Input Format
+
+The first line contains a single string, a.
+The second line contains a single string, b.
+
+Constraints
+    1 <= |a|, |b| <= 10^4
+    It is guaranteed that and consist of lowercase English alphabetic letters (i.e., a through z).
+
+Output Format
+
+Print a single integer denoting the number of characters you must delete to make the two strings anagrams of each other.
+
+Sample Input
+
+cde
+abc
+
+Sample Output
+
+4
+
+Explanation
+
+We delete the following characters from our two strings to turn them into anagrams of each other:
+
+    Remove d and e from cde to get c.
+    Remove a and b from abc to get c.
+
+We must delete characters to make both strings anagrams, so we print on a new line.
+
+
+sort both a and b
+
+iterate over a and b
+select only common elements and delete the rest.
+
+#+BEGIN_SRC cpp :results output :tangle yes :tangle /tmp/num_delete_to_anagram.cpp
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+int number_needed(string a, string b) {
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    cout << a << endl;
+    cout << b << endl;
+    a_l = a.length();
+    return 0;   
+}
+
+int main(){
+    string a;
+    cin >> a;
+    string b;
+    cin >> b;
+    cout << number_needed(a, b) << endl;
+    return 0;
+}
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+rm ./a.out
+g++ -std=c++11 num_delete_to_anagram.cpp
+./a.out << 'EOF'
+cde
+abc
+EOF
+
+#+END_SRC
+
+#+RESULTS:
+: cde
+: akr
+: 0
+
+** Ransom note
+https://www.hackerrank.com/challenges/ctci-ransom-note/problem
+
+Check out the resources on the page's right side to learn more about hashing. The video tutorial is by Gayle Laakmann McDowell, author of the best-selling interview book Cracking the Coding Interview.
+
+A kidnapper wrote a ransom note but is worried it will be traced back to him. He found a magazine and wants to know if he can cut out whole words from it and use them to create an untraceable replica of his ransom note. The words in his note are case-sensitive and he must use whole words available in the magazine, meaning he cannot use substrings or concatenation to create the words he needs.
+
+Given the words in the magazine and the words in the ransom note, print Yes if he can replicate his ransom note exactly using whole words from the magazine; otherwise, print No.
+
+Input Format
+
+The first line contains two space-separated integers describing the respective values of (the number of words in the magazine) and (the number of words in the ransom note).
+The second line contains space-separated strings denoting the words present in the magazine.
+The third line contains space-separated strings denoting the words present in the ransom note.
+
+Constraints
+
+    1 <= m,n <= 30000
+    1 <= length of any word <= 5
+
+    Each word consists of English alphabetic letters (i.e., to and to ).
+    The words in the note and magazine are case-sensitive.
+
+Output Format
+
+Print Yes if he can use the magazine to create an untraceable replica of his ransom note; otherwise, print No.
+
+Sample Input 0
+
+6 4
+give me one grand today night
+give one grand today
+
+Sample Output 0
+
+Yes
+
+Sample Input 1
+
+6 5
+two times three is not four
+two times two is four
+
+Sample Output 1
+
+No
+
+Explanation 1
+
+two should occur 2 times in magazine
+
+
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+python ransom_note.py > test1.output << 'newdelim'
+6 4
+give me one grand today night
+give one grand today
+newdelim
+
+cat > test1.expected.output << 'newdelim'
+Yes
+newdelim
+
+2>&1 diff test1.output test1.expected.output
+true
+
+python ransom_note.py > test2.output << 'newdelim'
+6 5
+two times three is not four
+two times two is four
+newdelim
+
+cat > test2.expected.output << 'newdelim'
+No
+newdelim
+
+2>&1 diff test2.output test2.expected.output
+true
+#+END_SRC
+
+#+RESULTS:
+
+
+** Check whether a given tree is binary search tree
+
+
+#+BEGIN_SRC python :results output
+# Node is defined as
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+    def insert(self, num):
+        node = Node(num)
+        if num < self.data:
+            if not self.left:
+                self.left = node
+            else:
+                self.left.insert(num)
+        else:
+            if not self.right:
+                self.right = node
+            else:
+                self.right.insert(num)
+
+    def in_order(self):
+        if self.left:
+            self.left.in_order()
+        print self.data
+        if self.right:
+            self.right.in_order()
+
+
+def make_tree(lst):
+    node = None
+    for x in lst:
+        if not node:
+            node = Node(x)
+        else:
+            node.insert(x)
+    return node
+
+pos_inf = 10**8
+neg_inf = -pos_inf
+
+def check_BST(node):
+    def check_bst(node):
+        if not node:
+            return True, neg_inf, pos_inf
+        else:
+            a1, high1, low1 = check_bst(node.left)
+            a2, high2, low2 = check_bst(node.right)
+            is_bst = a1 and a2 and node.data > high1 and node.data < low2
+            a, b, c = is_bst, max(node.data, high1, high2), min(node.data, low1, low2)
+            return a, b, c
+
+    a, _, _ = check_bst(root)
+    return a
+
+    
+tree = make_tree([4, 2, 6, 1, 3, 5, 7])
+#tree.in_order()
+print check_BST(tree)
+
+nodes = [Node(i) for i in range(8)]
+nodes[4].left = nodes[2]
+nodes[4].right = nodes[6]
+nodes[2].left = nodes[1]
+nodes[2].right = nodes[3]
+nodes[6].left = nodes[5]
+nodes[6].right = nodes[7]
+nodes[7].left = nodes[0]
+
+#print check_BST(nodes[4])
+
+
+
+#+END_SRC
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+python check_bst.py > test1.output << 'newdelim'
+4 2 6 1 3 5 7
+newdelim
+
+cat > test1.output << 'newdelim'
+Yes
+newdelim
+
+2>&1 diff test1.output test1.expected.output
+true
+
+#+END_SRC
+
+#+RESULTS:
+: 0a1
+: > Yes
+
+
+** Detect a cycle in a linked list
+
+https://www.hackerrank.com/challenges/ctci-linked-list-cycle/problem
+
+#+BEGIN_SRC python :results output
+# Detect a cycle in a linked list. Note that the head pointer may be 'None' if the list is empty.
+#A Node is defined as: 
+ 
+class Node(object):
+    def __init__(self, data = None, next_node = None):
+        self.data = data
+        self.next = next_node
+
+
+def has_cycle(head):
+    hare = head
+    tortoise = head
+
+    while hare:
+        if hare.next:
+            hare = hare.next.next
+        else:
+            break
+        tortoise = tortoise.next
+        if hare == tortoise:
+            return True
+    return False
+
+        
+nodes = [Node(i) for i in range(10)]
+
+
+node_header = None
+for node in nodes:
+    if not node_header:
+        node_header = node
+        node_1 = node_header
+    else:
+        node_1.next = node
+        node_1 = node_1.next
+
+def print_list(node_header):
+    node_1 = node_header
+    while node_1:
+        print node_1.data,
+        node_1 = node_1.next
+    print
+
+#print_list(node_header)
+
+node_1.next = nodes[3]
+print has_cycle(node_header)
+
+#+END_SRC
+
+** Check whether paranthesis is balanced
+
+*** python
+#+BEGIN_SRC 
+from collections import deque
+
+def is_matched1(expression):
+    stack = []
+    opening_brackets = {'(': True, '[': True, '{': True}
+    closing_brackets = {')': True, ']': True, '}': True}
+    matching_brackets = {'(': ')',
+             '{': '}',
+             '[': ']'
+             }
+    
+    def is_opening_bracket(s):
+        return s in opening_brackets
+
+    def is_closing_bracket(s):
+        return s in closing_brackets
+
+    def is_matching_bracket(cl, s):
+        return matching_brackets[cl] == s
+    
+    for s in expression:
+        if is_opening_bracket(s):
+            stack.append(s)
+        if is_closing_bracket(s):
+            opening_match = stack.pop()
+            if not is_matching_bracket(opening_match, s):
+                return False
+    if len(stack) == 0:
+        return True
+
+
+def is_matched(expression):
+    def is_matching_bracket(open1, close1):
+        if open1 == '(' and close1 == ')':
+            return True
+        elif open1 == '[' and close1 == ']':
+            return True
+        elif open1 == '{' and close1 == '}':
+            return True
+        else:
+            return False
+
+    stack = deque()
+    for s in expression:
+        if s == '(' or s == '[' or s == '{':
+            stack.append(s)
+        if s == ')' or s == ']' or s == '}':
+            if len(stack) > 0:
+                open1 = stack.pop()
+            else:
+                return False
+            if not is_matching_bracket(open1, s):
+                return False
+    if len(stack) == 0:
+        return True
+    else:
+        return False
+    
+    
+tests = [
+    "{[()]}",
+    "{[(])}",
+    "{{[[(())]]}}",
+    "{]]",
+    "{{{[]}}"
+    ]
+for test in tests:
+    print is_matched(test)
+
+#+END_SRC
+
+*** Cpp
+#+BEGIN_SRC cpp
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+bool is_balanced(string expression) {
+  stack <char> stk;
+  int length;
+  char s, out_of_stack;
+  length = expression.length();
+  for(int i=0; i <= length; i++) {
+    s = expression[i];
+    if(s == '(' or s == '[' or s == '{') {
+      stk.push(s);
+    }
+    else if(s == ')' or s == ']' or s == '}') {
+      if(!stk.empty()){
+	out_of_stack = stk.top();
+	stk.pop();
+      }else
+      return false;
+      if((out_of_stack == '(' && s == ')') || (out_of_stack == '[' && s == ']') || (out_of_stack == '{' && s == '}')){
+	continue;
+      }else
+	return false;
+	
+    }
+  }
+  if(stk.empty()){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+int main(){
+    int t;
+    cin >> t;
+    for(int a0 = 0; a0 < t; a0++){
+        string expression;
+        cin >> expression;
+        bool answer = is_balanced(expression);
+        if(answer)
+	  cout << "YES\n";
+        else
+	  cout << "NO\n";
+    }
+    return 0;
+}
+
+#+END_SRC
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+rm a.out
+2>&1 g++ -std=c++11 matching_brackets.cpp
+./a.out > test1.output <<'EOF'
+5
+{[()]}
+{[(])}
+{{[[(())]]}}
+{]]
+{{{[]}}
+EOF
+cat > test1.expected.output << 'eof'
+YES
+NO
+YES
+NO
+NO
+eof
+diff test1.output test1.expected.output
+true
+cat test1.output
+#+END_SRC
+
+#+RESULTS:
+: YES
+: NO
+: YES
+: NO
+: NO
+
+** Tale of 2 stacks
+
+#+BEGIN_SRC python :results output :tangle yes :tangle /tmp/tale_of_two_stacks.py
+
+  empty_value = -5
+  class Stack:
+      def __init__(self, max_size=100):
+          """ Initializes stack content to empty list """
+          self.max_size = max_size
+          self.data = [empty_value for i in range(self.max_size)]
+          self.size = 0
+
+      def push(self, value):
+          """ Add an element to stack """
+          self.data[self.size] = value
+          self.size += 1
+
+      def pop(self):
+          """ Remove and return the element from the top of the stack """
+          if self.size > 0:
+              self.size -= 1
+              data = self.data[self.size]
+              return data
+          else:
+              return None
+
+      def peek(self):
+          """ Returns the top element of the stack but does not delete it """
+          if self.size > 0:
+              return self.data[self.size - 1]
+          else:
+              return None
+
+      def is_empty(self):
+          return self.size == 0
+
+      def __str__(self):
+          return ','.join([str(self.data[i]) for i in range(self.size)])
+
+
+  class MyQueue(object):
+      def __init__(self):
+          self.stack1 = Stack(10**5 + 1)
+          self.stack2 = Stack(10**5 + 1)
+        
+      def peek(self):
+          if self.stack2.is_empty():
+              while not self.stack1.is_empty():
+                  value = self.stack1.pop()
+                  self.stack2.push(value)
+          value = self.stack2.peek()
+          return value
+
+            
+      def pop(self):
+          if self.stack2.is_empty():
+              while not self.stack1.is_empty():
+                  value = self.stack1.pop()
+                  self.stack2.push(value)
+          value = self.stack2.pop()
+          return value
+          
+            
+      def put(self, value):
+          self.stack1.push(value)
+
+  queue = MyQueue()
+  t = int(raw_input())
+  for line in range(t):
+      values = map(int, raw_input().split())
+      values = list(values)
+      if values[0] == 1:
+          queue.put(values[1])        
+      elif values[0] == 2:
+          queue.pop()
+      else:
+          print(queue.peek())
+
+#+END_SRC
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+cat >input.txt << 'delim'
+10
+1 42
+2
+1 14
+3
+1 28
+3
+1 60
+1 78
+2
+2
+delim
+
+cat > expected_output.txt << 'delim'
+14
+14
+delim
+python tale_of_two_stacks.py < input.txt > output.txt
+diff -q expected_output.txt output.txt
+echo $?
+#+END_SRC
+
+#+RESULTS:
+: 0
+
+
+** Find the running median
+
+*** Test min heap
+
+#+BEGIN_SRC python :results output
+  from heapq import heappush, heappop
+  heap = []
+  data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
+  for item in data:
+      heappush(heap, item)
+  sort = []
+  while heap:
+      sort.append(heappop(heap))
+  print sort
+
+
+#+END_SRC
+
+#+RESULTS:
+: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+*** Code for this using heap
+
+#+BEGIN_SRC python :results output :tangle yes :tangle /tmp/running_median.py
+  #!/bin/python
+  class Heap(object):
+      """ Heap datastructure represented as an array """
+      def __init__(self, maxsize):
+          self.heapsize = 0
+          self.maxsize = maxsize
+          self.data = [0] * self.maxsize
+
+      def insert(self, element):
+          """ Inserts an element in the heap
+          Ensure that heap property is still maintained"""
+          if self.maxsize > self.heapsize:
+              self.heapsize += 1
+          else:
+              raise Exception("heap full")
+          self.data[self.heapsize - 1] = element
+          self.percolate_up(self.heapsize - 1)
+          
+
+      def delete(self):
+          """ Deletes the max element from the heap """
+          temp = self.data[0]
+          self.data[0] = self.data[self.heapsize - 1]
+          self.data[self.heapsize - 1] = temp
+          self.heapsize -= 1
+          self.percolate_down(0)
+          return temp
+
+              
+      def buildheap(self, a):
+          self.data = a
+          length = len(a)
+          self.heapsize = length
+          for i in range((length-2)/2, -1, -1):
+              self.percolate_up(i)
+      
+      def parent(self, index):
+          """ math.floor((n-1)/2)"""
+          return (index-1)/2
+
+      def children(self, index):
+          """ children of the node with index n"""
+          return ((index * 2) + 1, (index * 2) + 2)
+
+      def percolate_down(self, index):
+          """ Find the right node for the present data and put the
+          data in that position """
+          if index < self.heapsize - 1:
+              left, right = self.children(index)
+              max_index = left
+              if right <= self.heapsize - 1:
+                  if self.data[max_index] < self.data[right]:
+                      max_index = right
+              if left <= self.heapsize - 1:
+                  if self.data[index] < self.data[max_index]:
+                      temp = self.data[index]
+                      self.data[index] = self.data[max_index]
+                      self.data[max_index] = temp
+                      self.percolate_down(max_index)
+
+
+      def percolate_up(self, index):
+          """ Find the right node for the present data and 
+          put data in that position """
+          if index > 0:
+              parent = self.parent(index)
+              if self.data[index] > self.data[parent]:
+                  temp = self.data[index]
+                  self.data[index] = self.data[parent]
+                  self.data[parent] = temp
+                  self.percolate_up(parent)
+
+      def heapsort(self):
+          initial_size = self.heapsize
+          while self.heapsize > 0:
+              self.delete()
+          sorted_data = []
+          for i in range(initial_size):
+              sorted_data.append(self.data[i])
+          return sorted_data
+
+      def print_heap(self):
+          for i in range(self.heapsize-1):
+              print self.data[i], ',',
+          print self.data[self.heapsize-1]
+
+
+  smaller_max_heap = Heap(10**5/2+2)
+  larger_min_heap = Heap(10**5/2+2)
+
+  n = int(raw_input().strip())
+  a = []
+  a_i = 0
+  present_median = None
+
+  def rebalance(max_heap, min_heap):
+      if max_heap.heapsize - min_heap.heapsize > 1:
+          value = max_heap.delete()
+          min_heap.insert((-value, value))
+      if min_heap.heapsize - max_heap.heapsize > 1:
+          _, value = min_heap.delete()
+          max_heap.insert(value)
+
+  def findmedian(smaller_max_heap, larger_min_heap):
+      if smaller_max_heap.heapsize > larger_min_heap.heapsize:
+          median = float(smaller_max_heap.data[0])
+      elif smaller_max_heap.heapsize < larger_min_heap.heapsize:
+          _, median = larger_min_heap.data[0]
+          median = float(median)
+      else:
+          smallest_from_max_heap = smaller_max_heap.data[0]
+          _, largest_from_min_heap = larger_min_heap.data[0]
+          median = (float(smallest_from_max_heap) + largest_from_min_heap) / 2
+      return median
+
+      
+
+  for a_i in xrange(n):
+      a_t = int(raw_input().strip())
+      a.append(a_t)
+      if present_median is None or a_t < present_median:
+          smaller_max_heap.insert(a_t)
+      else:
+          larger_min_heap.insert((-a_t, a_t))
+      rebalance(smaller_max_heap, larger_min_heap)
+      present_median = findmedian(smaller_max_heap, larger_min_heap)
+      print present_median
+#+END_SRC
+
+*** Code for testing this
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+cat > running_median.input << 'delim'
+6
+12
+4
+5
+3
+8
+7
+delim
+
+cat > running_median.expected << 'delim'
+12.0
+8.0
+5.0
+4.5
+5.0
+6.0
+delim
+
+python running_median.py < running_median.input > running_median.output
+diff -q running_median.expected running_median.output
+echo $?
+#+END_SRC
+
+#+RESULTS:
+: 0
+
+** Trie contacts
+
+back
+baby
+bail
+bear
+bent
+cave
+car
+cap
+cat
+cow
+
+
+
+
+#+BEGIN_SRC sh :results output
+cd /tmp
+
+cat > test1.input << 'newdelim'
+4
+add hack
+add hackerrank
+find hac
+find hak
+newdelim
+
+python contacts.py < test1.input > test1.output
+
+cat > test1.expected.output << 'newdelim'
+
+0
+newdelim
+
+2>&1 diff test1.output test1.expected.output
+true
+
+#+END_SRC
+
+#+RESULTS:
+: 0a1,2
+: > 2
+: > 0
+
+** Count inversions
+https://www.hackerrank.com/challenges/ctci-merge-sort/problem
+
+*** Solution in python
+#+BEGIN_SRC python :results output :tangle yes :tangle /tmp/count_inversions.py
+  #!/bin/python
+
+  import sys
+
+  def countInversions_bruteforce(arr):
+      # Complete this function
+      start = 0
+      pointer = 1
+      length = len(arr)
+      count = 0
+      while start < length:
+          while pointer < length:
+              if arr[pointer] < arr[start]:
+                  count += 1
+              pointer += 1
+          start += 1
+          pointer = start + 1
+      return count
+
+  def countInversions_mergesort(arr):
+      temp_array = arr[:]
+      def merge(arr, left_end, right_end):
+          mid = ( left_end + right_end ) / 2
+          left = left_end
+          right = mid + 1
+          start = left_end
+          num_inversions = 0
+          while left <= mid and right <= right_end:
+              if arr[left] <= arr[right]:
+                  temp_array[start] = arr[left]
+                  start += 1
+                  left += 1
+              elif arr[right] < arr[left]:
+                  num_inversions += (mid + 1 - left)
+                  temp_array[start] = arr[right]
+                  start += 1
+                  right += 1
+
+          while left <= mid:
+              temp_array[start] = arr[left]
+              start += 1
+              left += 1
+
+          while right <= right_end:
+              temp_array[start] = arr[right]
+              start += 1
+              right += 1
+
+          # copy from temp array to base array
+          start = left_end
+          while start <= right_end:
+              arr[start] = temp_array[start]
+              start += 1
+          return num_inversions
+
+          
+      def count_inversions_helper(arr, left_end, right_end):
+          if left_end < right_end:
+              mid = (left_end + right_end) / 2
+              a = count_inversions_helper(arr, left_end, mid)
+              b = count_inversions_helper(arr, mid + 1, right_end)
+              c = merge(arr, left_end, right_end)
+              return a + b + c
+          else:
+              return 0
+
+      return count_inversions_helper(arr, 0, len(arr) - 1)
+
+  if __name__ == "__main__":
+      t = int(raw_input().strip())
+      for a0 in xrange(t):
+          n = int(raw_input().strip())
+          arr = map(int, raw_input().strip().split(' '))
+          result = countInversions_mergesort(arr)
+          print result
+#+END_SRC
+
+*** Solution in cpp
+
+#+BEGIN_SRC cpp :results output :tangle yes :tangle /tmp/count_inversions.cpp
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+//#include <unordered_map>
+
+using namespace std;
+
+
+long long merge(vector<int> &a, vector<int> &temp, int left_end, int right_end) {
+    int left = left_end;
+    int mid = (left_end + right_end) / 2;
+    int right = mid + 1;
+    int merged_index = left_end;
+    long long inversions_count = 0;
+
+    while (left <= mid && right <= right_end) {
+        if (a[left] <= a[right]) {
+            temp[merged_index++] = a[left++];
+        } else {
+            // a[right] > a[left]
+            inversions_count += mid + 1 - left;
+            temp[merged_index++] = a[right++];
+        }
+    }
+
+    while (left <= mid) {
+        temp[merged_index++] = a[left++];
+    }
+    while (right <= right_end) {
+        temp[merged_index++] = a[right++];
+    }
+    merged_index = left_end;
+    while (merged_index <= right_end) {
+        a[merged_index] = temp[merged_index];
+        merged_index++;
+    }
+
+    return inversions_count;
+}
+
+long long count_inversions_helper(vector<int> &a, vector<int> &temp, int left_end, int right_end) {
+    long long left_inversion_count, right_inversion_count, merge_inversion_count;
+    long long total_inversion_count = 0;
+    int mid;
+    if (left_end < right_end) {
+        mid = (left_end + right_end) / 2;
+        left_inversion_count = count_inversions_helper(a, temp, left_end, mid);
+        right_inversion_count = count_inversions_helper(a, temp, mid+1, right_end);
+        merge_inversion_count = merge(a, temp, left_end, right_end);
+        total_inversion_count = left_inversion_count + right_inversion_count + merge_inversion_count;
+        return total_inversion_count;
+    } else {
+        return 0;
+    }
+}
+
+
+
+long long count_inversions(vector<int> &a) {
+    int length = a.size();
+    vector<int> temp(length);
+    return count_inversions_helper(a, temp, 0, length - 1);
+}
+
+
+int main(){
+    int t;
+    cin >> t;
+    for(int a0 = 0; a0 < t; a0++){
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+        for(int arr_i = 0;arr_i < n;arr_i++){
+           cin >> arr[arr_i];
+        }
+        cout << count_inversions(arr) << endl;
+    }
+    return 0;
+}
+
+#+END_SRC
+
+
+
+*** Testing
+#+BEGIN_SRC sh :results output
+
+cd /tmp
+cat > count_inversions.input << 'delim'
+2  
+5  
+1 1 1 2 2  
+5  
+2 1 3 1 2
+delim
+
+cat > count_inversions.expected << 'delim'
+0
+4
+delim
+
+python count_inversions.py < count_inversions.input > count_inversions.output
+diff -q count_inversions.expected count_inversions.output
+echo $?
+
+g++ count_inversions.cpp
+./a.out count_inversions.py < count_inversions.input > count_inversions.output
+diff -q count_inversions.expected count_inversions.output
+echo $?
+
+#+END_SRC
+
+#+RESULTS:
+: 0
+: 0
+
+
+* Junior practice sheet
+https://docs.google.com/spreadsheets/d/1iJZWP2nS_OB3kCTjq8L6TrJJ4o-5lhxDOyTaocSYc-k/edit#gid=608058773
+* A2 ladder
+https://a2oj.com/ladders
+* Practice sheet
+https://docs.google.com/document/d/1_dc3Ifg7Gg1LxhiqMMmE9UbTsXpdRiYh4pKILYG2eA4/edit

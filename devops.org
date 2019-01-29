@@ -1,0 +1,3562 @@
+* Installing robotframework using anaconda
+
+** Search for a package
+#+BEGIN_SRC sh :results output
+anaconda search -t conda robotframework
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Run 'anaconda show <USER/PACKAGE>' to get more details:
+Packages:
+     Name                      |  Version | Package Types   | Platforms      
+     ------------------------- |   ------ | --------------- | ---------------
+     asmeurer/robotframework   |    2.8.5 | conda           | osx-64         
+                                          : A generic test automation framework
+     asmeurer/robotframework-python3 |    2.8.4 | conda           | osx-64         
+                                          : Python 3 compatible generic test automation framework
+     auto/quintagroup.robotframework.utils |      1.0 | conda           | linux-64       
+                                          : http://svn.plone.org/svn/collective/
+     auto/robotframework       |    2.8.4 | conda           | linux-64, linux-32
+                                          : http://robotframework.org
+     chen/robotframework       |      3.0 | conda           | linux-64       
+                                          : A generic test automation framework
+     chen/robotframework-databaselibrary |      0.7 | conda           | linux-64       
+     chen/robotframework-seleniumlibrary |    2.9.1 | conda           | linux-64       
+     hargup/robotframework     |          | conda           | None-None, linux-64
+                                          : A generic test automation framework
+     hargup/robotframework-selenium2library |          | conda           | linux-64       
+                                          : Web testing library for Robot Framework
+     hargup/robotframework-sshlibrary |          | conda           | linux-64       
+                                          : Robot Framework test library for SSH and SFTP
+     jlou/robotframework       |    3.0b1 | conda           | osx-64         
+     jlou/robotframework-selenium2library |    1.7.4 | conda           | osx-64         
+     userzimmermann/robotframework |    2.8.5 | conda           | linux-64       
+                                          : A generic test automation framework
+     userzimmermann/robotframework-python3 |    2.8.4 | conda           | linux-64       
+                                          : Python 3 compatible generic test automation framework
+     userzimmermann/robotframework-tools |  0.1a115 | conda           | linux-64       
+                                          : Python Tools for Robot Framework and Test Libraries.
+Found 15 packages
+#+end_example
+
+** Show a package
+#+BEGIN_SRC sh :results output
+anaconda show chen/robotframework
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Name:    robotframework
+Summary: A generic test automation framework
+Access:  public
+Package Types:  conda
+Versions:
+   + 2.9
+   + 3.0
+
+To install this package with conda run:
+     conda install --channel https://conda.anaconda.org/chen robotframework
+#+end_example
+
+** Installing a package
+Installed robot framwork 2.8.* because our code was validating for robotframework 
+version bigger than 2.7 but not 3
+#+BEGIN_SRC sh
+conda install --channel https://conda.anaconda.org/userzimmermann robotframework
+#+END_SRC
+
+* Git
+file:git.org
+* Mercurial
+
+hg commit -m "$(date +'%c')"
+
+abort: no username supplied
+(use "hg config --edit" to set your username)
+** Status
+#+BEGIN_SRC sh :results output
+
+
+status1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+echo I am in directory $dir1
+hg status
+cd -
+
+}
+
+
+
+status1 projects
+status1 projects/tr_clarivate_work
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+I am in directory /home/bineesh/temp/projects
+M captured_notes/journal_2017.org
+M captured_notes/journal_2018.org
+M devops.org
+M home.org
+M projects.org
+M self_development.org
+/home/bineesh/temp/projects
+I am in directory /home/bineesh/temp/projects/tr_clarivate_work
+/home/bineesh/temp/projects
+#+end_example
+
+** Diff
+#+BEGIN_SRC sh :results output
+
+
+diff1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+echo I am in directory $dir1
+hg diff
+cd -
+
+}
+
+
+diff1 projects > /tmp/projects_diff
+diff1 projects/tr_clarivate_work > /tmp/stability_diff
+emacs /tmp/projects_diff /tmp/stability_diff &
+#+END_SRC
+
+#+RESULTS:
+
+
+
+** Commit
+
+#+BEGIN_SRC sh :results output
+
+
+commit1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+2>&1 hg commit -m "$(date)"
+cd -
+
+}
+
+
+
+commit1 projects
+commit1 projects/tr_clarivate_work
+#+END_SRC
+
+#+RESULTS:
+: /home/bineesh/temp/projects
+: nothing changed
+: /home/bineesh/temp/projects
+
+** check log
+
+#+BEGIN_SRC sh :results output
+
+
+log1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+pwd
+hg log -l 2
+
+}
+
+
+
+log1 projects
+log1 stability_daisid_dn57
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+/home/bineesh/temp/projects
+changeset:   123:535f137db886
+tag:         tip
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Thu Jun 21 12:10:17 2018 +0530
+summary:     Thu Jun 21 12:10:17 IST 2018
+
+changeset:   122:aa1d03b58f16
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Fri May 11 11:59:59 2018 +0530
+summary:     Fri May 11 11:59:58 IST 2018
+
+/home/bineesh/temp/projects
+changeset:   123:535f137db886
+tag:         tip
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Thu Jun 21 12:10:17 2018 +0530
+summary:     Thu Jun 21 12:10:17 IST 2018
+
+changeset:   122:aa1d03b58f16
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Fri May 11 11:59:59 2018 +0530
+summary:     Fri May 11 11:59:58 IST 2018
+
+#+end_example
+
+** Status Diff Commit and check log all done together
+
+*** StatusDiff
+#+BEGIN_SRC sh :results output
+
+
+status1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+hg status
+cd -
+
+}
+
+
+
+status1 projects
+status1 stability_daisid_dn57
+
+diff1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+hg diff
+cd -
+
+}
+
+
+diff1 projects > /tmp/projects_diff
+diff1 stability_daisid_dn57 > /tmp/stability_diff
+
+commit1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+2>&1 hg commit -m "$(date)"
+cd -
+
+}
+
+
+
+commit1 projects
+commit1 stability_daisid_dn57
+
+
+log1()
+{
+dir1=$HOME/temp/$1
+cd $dir1
+pwd
+hg log -l 2
+
+}
+
+
+
+log1 projects
+log1 stability_daisid_dn57
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+M devops.org
+M projects.org
+/home/bineesh/temp/projects
+/home/bineesh/temp/projects
+/home/bineesh/temp/projects
+nothing changed
+/home/bineesh/temp/projects
+/home/bineesh/temp/projects
+changeset:   121:d392d1b49339
+tag:         tip
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Tue Mar 06 10:30:17 2018 +0530
+summary:     Tue Mar  6 10:30:17 IST 2018
+
+changeset:   120:f61189c75a12
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Mon Mar 05 10:14:37 2018 +0530
+summary:     Mon Mar  5 10:14:37 IST 2018
+
+/home/bineesh/temp/stability_daisid_dn57
+changeset:   209:5febcb34d486
+tag:         tip
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Thu Mar 01 11:12:17 2018 +0530
+summary:     Thu Mar  1 11:12:17 IST 2018
+
+changeset:   208:f28b888945e4
+user:        Bineesh Panangat <bineesh.panangat@thomsonreuters.com>
+date:        Wed Feb 28 10:57:28 2018 +0530
+summary:     Wed Feb 28 10:57:28 IST 2018
+
+#+end_example
+
+** Mercurial server in daisng01
+Clone the mercurial repo here.
+Add a new mercurial repo remotely.
+Make this repo pushable remotely.
+
+This can be done easily manually.
+Only thing to be added in .hgrc is
+
+bineesh@ubuntu14:~/dn185/AuthorCluster/AuthorClusterComponents$ cat .hg/hgrc 
+[paths]
+default = /home/bineesh/AuthorCluster/AuthorClusterComponents
+daisng01 = ssh://sesadmin@daisng01.int.thomsonreuters.com//work/u/bpananga-sesadmin/dn185/AuthorCluster/AuthorClusterComponents
+
+* Emacs
+file:emacs.org
+* Amazon web services
+file:aws.org 
+* Things to install on a new machine
+ubuntu_16.04_1
+
+When dns is not working on Guest Do this
+where ubuntu_16.04_1 is the vm name
+VBoxManage modifyvm "ubuntu_16.04_1" --natdnshostresolver1 on
+VBoxManage setextradata global natdnshostresolver1 on
+
+
+ssh keys
+id_rsa
+id_rsa.pub
+
+
+firefox settings
+
+
+emacs settings
+elpa in emacs
+.emacs link to dropbox emacs folder
+
+
+Install all packages
+
+Enable workspaces
+Change number of workspaces using compiz config manager or unity tweak tool
+For me compiz worked on ubuntu 16.04
+
+
+configure bashrc
+paths
+copy bash_history
+
+
+Link screenrc to Dropbox
+
+** List the installed things in ubuntu
+#+BEGIN_SRC sh :results output
+my_packages=/tmp/installed-packages
+just_packages=/tmp/just-packages
+apt list --installed > $my_packages
+awk -F '/' '{print $1}' $my_packages | tail -n +2 | tee $just_packages 
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+a11y-profile-manager-indicator
+account-plugin-facebook
+account-plugin-flickr
+account-plugin-google
+accountsservice
+ack-grep
+acl
+acpi-support
+acpid
+activity-log-manager
+adb
+adduser
+adium-theme-ubuntu
+adobe-flash-properties-gtk
+adobe-flashplugin
+adwaita-icon-theme
+alien
+alsa-base
+alsa-utils
+amd64-microcode
+anacron
+android-libadb
+android-libbase
+android-libcutils
+android-liblog
+ant
+ant-optional
+antlr3.2
+apache2
+apache2-bin
+apache2-data
+apache2-utils
+apg
+app-install-data
+app-install-data-partner
+apparmor
+appmenu-qt
+appmenu-qt5
+apport
+apport-gtk
+apport-symptoms
+appstream
+apt
+apt-offline
+apt-transport-https
+apt-utils
+aptdaemon
+aptdaemon-data
+aptitude
+aptitude-common
+apturl
+apturl-common
+aria2
+aspectj
+aspell
+aspell-en
+at-spi2-core
+atom
+aufs-tools
+autoconf
+automake
+autotools-dev
+avahi-autoipd
+avahi-daemon
+avahi-utils
+awscli
+bamfdaemon
+baobab
+base-files
+base-passwd
+bash
+bash-completion
+bc
+bind9-host
+binfmt-support
+binutils
+bleachbit
+blt
+bluez
+bluez-cups
+bluez-obexd
+branding-ubuntu
+breeze-icon-theme
+brltty
+brltty-x11
+bsdmainutils
+bsdutils
+build-essential
+busybox-initramfs
+busybox-static
+byzanz
+bzip2
+ca-certificates
+ca-certificates-java
+ca-certificates-mono
+cgmanager
+cgroupfs-mount
+checkbox-converged
+checkbox-gui
+cheese-common
+chromium-browser
+chromium-browser-l10n
+chromium-codecs-ffmpeg-extra
+cli-common
+clisp
+clojure1.6
+code
+colord
+colord-data
+command-not-found
+command-not-found-data
+compiz
+compiz-core
+compiz-gnome
+compiz-plugins-default
+compizconfig-settings-manager
+console-setup
+console-setup-linux
+coreutils
+cpio
+cpp
+cpp-5
+cracklib-runtime
+crafty
+crafty-books-medtosmall
+crda
+cron
+cups
+cups-browsed
+cups-bsd
+cups-client
+cups-common
+cups-core-drivers
+cups-daemon
+cups-filters
+cups-filters-core-drivers
+cups-pk-helper
+cups-ppdc
+cups-server-common
+curl
+dash
+dbus
+dbus-x11
+dc
+dconf-cli
+dconf-gsettings-backend
+dconf-service
+debconf
+debconf-i18n
+debhelper
+debian-archive-keyring
+debianutils
+deborphan
+debugedit
+default-jdk
+default-jdk-headless
+default-jre
+default-jre-headless
+deja-dup
+deluge
+deluge-common
+deluge-gtk
+desktop-base
+desktop-file-utils
+detox
+dh-python
+dh-strip-nondeterminism
+dia
+dia-common
+dia-libs
+dia-shapes
+dialog
+dict
+dictionaries-common
+diffstat
+diffutils
+digikam
+digikam-data
+dirmngr
+distro-info-data
+dmidecode
+dmsetup
+dmz-cursor-theme
+dns-root-data
+dnsmasq-base
+dnsutils
+doc-base
+docbook-xml
+docbook-xsl
+docker-ce
+docutils-common
+dosfstools
+dpkg
+dpkg-dev
+e2fslibs
+e2fsprogs
+eboard
+eclipse-platform-data
+eclipse-rcp
+ed
+efibootmgr
+eject
+elpa-geiser
+emacs
+emacs-goodies-el
+emacs24
+emacs24-bin-common
+emacs24-common
+emacs24-common-non-dfsg
+emacs24-el
+emacsen-common
+enblend
+enchant
+enfuse
+eog
+espeak
+espeak-data
+ethtool
+evince
+evince-common
+evolution-data-server
+evolution-data-server-common
+evolution-data-server-online-accounts
+example-content
+exo-utils
+expect
+fairymax
+fakeroot
+fastjar
+ffmpeg
+ffmpegthumbs
+file
+file-roller
+filezilla
+filezilla-common
+findutils
+firefox
+firefox-locale-en
+firefox-locale-ml
+fontconfig
+fontconfig-config
+fonts-dejavu
+fonts-dejavu-core
+fonts-dejavu-extra
+fonts-freefont-ttf
+fonts-guru
+fonts-guru-extra
+fonts-kacst
+fonts-kacst-one
+fonts-khmeros-core
+fonts-lao
+fonts-lato
+fonts-liberation
+fonts-lklug-sinhala
+fonts-lmodern
+fonts-lohit-guru
+fonts-lyx
+fonts-nanum
+fonts-noto-cjk
+fonts-noto-hinted
+fonts-opensymbol
+fonts-sil-abyssinica
+fonts-sil-padauk
+fonts-stix
+fonts-symbola
+fonts-takao-pgothic
+fonts-texgyre
+fonts-thai-tlwg
+fonts-tibetan-machine
+fonts-tlwg-garuda
+fonts-tlwg-garuda-ttf
+fonts-tlwg-kinnari
+fonts-tlwg-kinnari-ttf
+fonts-tlwg-laksaman
+fonts-tlwg-laksaman-ttf
+fonts-tlwg-loma
+fonts-tlwg-loma-ttf
+fonts-tlwg-mono
+fonts-tlwg-mono-ttf
+fonts-tlwg-norasi
+fonts-tlwg-norasi-ttf
+fonts-tlwg-purisa
+fonts-tlwg-purisa-ttf
+fonts-tlwg-sawasdee
+fonts-tlwg-sawasdee-ttf
+fonts-tlwg-typewriter
+fonts-tlwg-typewriter-ttf
+fonts-tlwg-typist
+fonts-tlwg-typist-ttf
+fonts-tlwg-typo
+fonts-tlwg-typo-ttf
+fonts-tlwg-umpush
+fonts-tlwg-umpush-ttf
+fonts-tlwg-waree
+fonts-tlwg-waree-ttf
+foomatic-db-compressed-ppds
+freeglut3
+freeglut3-dev
+freepats
+friendly-recovery
+fruit
+ftp
+fuse
+fwupd
+fwupdate
+fwupdate-signed
+g++
+g++-5
+gawk
+gcc
+gcc-5
+gcc-5-base
+gcc-6-base
+gconf-service
+gconf-service-backend
+gconf2
+gconf2-common
+gcr
+gdb
+gdbserver
+gdisk
+gedit
+gedit-common
+geiser
+genisoimage
+geoclue
+geoclue-ubuntu-geoip
+geoip-database
+gettext
+gettext-base
+ghostscript
+ghostscript-x
+giblib1
+gigolo
+gir1.2-accounts-1.0
+gir1.2-appindicator3-0.1
+gir1.2-atk-1.0
+gir1.2-atspi-2.0
+gir1.2-cheese-3.0
+gir1.2-clutter-1.0
+gir1.2-cogl-1.0
+gir1.2-coglpango-1.0
+gir1.2-dbusmenu-glib-0.4
+gir1.2-dee-1.0
+gir1.2-freedesktop
+gir1.2-gdata-0.0
+gir1.2-gdkpixbuf-2.0
+gir1.2-glib-2.0
+gir1.2-gmenu-3.0
+gir1.2-gnomekeyring-1.0
+gir1.2-goa-1.0
+gir1.2-gst-plugins-base-0.10
+gir1.2-gst-plugins-base-1.0
+gir1.2-gstreamer-0.10
+gir1.2-gstreamer-1.0
+gir1.2-gtk-3.0
+gir1.2-gtkclutter-1.0
+gir1.2-gtksource-3.0
+gir1.2-gudev-1.0
+gir1.2-ibus-1.0
+gir1.2-javascriptcoregtk-4.0
+gir1.2-json-1.0
+gir1.2-notify-0.7
+gir1.2-packagekitglib-1.0
+gir1.2-pango-1.0
+gir1.2-peas-1.0
+gir1.2-rb-3.0
+gir1.2-secret-1
+gir1.2-signon-1.0
+gir1.2-soup-2.4
+gir1.2-totem-1.0
+gir1.2-totem-plparser-1.0
+gir1.2-udisks-2.0
+gir1.2-unity-5.0
+gir1.2-vte-2.91
+gir1.2-webkit2-4.0
+gir1.2-wnck-3.0
+git
+git-lfs
+git-man
+gkbd-capplet
+glib-networking
+glib-networking-common
+glib-networking-services
+gnome-accessibility-themes
+gnome-bluetooth
+gnome-calculator
+gnome-calendar
+gnome-desktop3-data
+gnome-disk-utility
+gnome-font-viewer
+gnome-icon-theme
+gnome-icon-theme-symbolic
+gnome-keyring
+gnome-menus
+gnome-orca
+gnome-power-manager
+gnome-screensaver
+gnome-screenshot
+gnome-session-bin
+gnome-session-canberra
+gnome-session-common
+gnome-settings-daemon-schemas
+gnome-software
+gnome-software-common
+gnome-sudoku
+gnome-system-log
+gnome-system-monitor
+gnome-system-tools
+gnome-terminal
+gnome-terminal-data
+gnome-themes-standard
+gnome-themes-standard-data
+gnome-user-guide
+gnome-user-share
+gnome-video-effects
+gnupg
+gnupg-agent
+gnupg2
+gpgv
+graphviz
+grep
+greybird-gtk-theme
+grilo-plugins-0.2-base
+groff-base
+grub-common
+grub-gfxpayload-lists
+grub-pc
+grub-pc-bin
+grub2-common
+gsettings-desktop-schemas
+gsettings-ubuntu-schemas
+gsfonts
+gsfonts-x11
+gstreamer-tools
+gstreamer0.10-tools
+gstreamer1.0-alsa
+gstreamer1.0-clutter-3.0
+gstreamer1.0-doc
+gstreamer1.0-fluendo-mp3
+gstreamer1.0-libav
+gstreamer1.0-nice
+gstreamer1.0-plugins-bad
+gstreamer1.0-plugins-bad-faad
+gstreamer1.0-plugins-bad-videoparsers
+gstreamer1.0-plugins-base
+gstreamer1.0-plugins-base-apps
+gstreamer1.0-plugins-good
+gstreamer1.0-plugins-ugly
+gstreamer1.0-plugins-ugly-amr
+gstreamer1.0-pulseaudio
+gstreamer1.0-tools
+gstreamer1.0-x
+gtk-recordmydesktop
+gtk-theme-config
+gtk2-engines-murrine
+gtk2-engines-pixbuf
+gtkorphan
+gucharmap
+guile-2.0
+guile-2.0-libs
+gvfs
+gvfs-backends
+gvfs-bin
+gvfs-common
+gvfs-daemons
+gvfs-fuse
+gvfs-libs
+gyp
+gzip
+hardening-includes
+hddtemp
+hdparm
+hicolor-icon-theme
+hostname
+hplip
+hplip-data
+hud
+hugin-data
+hugin-tools
+humanity-icon-theme
+hunspell-en-us
+hwdata
+hyphen-en-us
+i965-va-driver
+ibus
+ibus-gtk
+ibus-gtk3
+ibus-table
+icoutils
+icu-devtools
+ifupdown
+im-config
+imagemagick
+imagemagick-6.q16
+imagemagick-common
+indicator-application
+indicator-appmenu
+indicator-bluetooth
+indicator-datetime
+indicator-keyboard
+indicator-messages
+indicator-power
+indicator-printers
+indicator-session
+indicator-sound
+info
+init
+init-system-helpers
+initramfs-tools
+initramfs-tools-bin
+initramfs-tools-core
+initscripts
+inputattach
+insserv
+install-info
+intel-gpu-tools
+intel-microcode
+intltool-debian
+inxi
+ippusbxd
+iproute2
+iptables
+iputils-arping
+iputils-ping
+iputils-tracepath
+irqbalance
+isc-dhcp-client
+isc-dhcp-common
+iso-codes
+iucode-tool
+iw
+jarwrapper
+java-common
+javascript-common
+jayatana
+junit
+junit4
+jython
+kactivities
+kate-data
+katepart
+kbd
+kde-runtime
+kde-runtime-data
+kde-style-breeze
+kde-style-breeze-qt4
+kdelibs-bin
+kdelibs5-data
+kdelibs5-plugins
+kdoctools
+kerneloops-daemon
+keyboard-configuration
+kipi-plugins
+kipi-plugins-common
+klibc-utils
+kmod
+kpackagelauncherqml
+kpackagetool5
+krb5-locales
+kwayland-data
+kwayland-integration
+language-pack-en
+language-pack-en-base
+language-pack-gnome-en
+language-pack-gnome-en-base
+language-selector-common
+language-selector-gnome
+laptop-detect
+less
+liba11y-profile-manager-0.1-0
+liba11y-profile-manager-data
+liba52-0.7.4
+libaa1
+libaacs0
+libabw-0.1-1v5
+libaccount-plugin-1.0-0
+libaccount-plugin-generic-oauth
+libaccount-plugin-google
+libaccounts-glib0
+libaccounts-qt5-1
+libaccountsservice0
+libacl1
+libalgorithm-diff-perl
+libalgorithm-diff-xs-perl
+libalgorithm-merge-perl
+libandroid-properties1
+libantlr-java
+libao-common
+libao4
+libapache-pom-java
+libapache2-mod-python
+libapache2-mod-wsgi
+libapparmor-perl
+libapparmor1
+libappindicator1
+libappindicator3-1
+libappstream-glib8
+libappstream3
+libapr1
+libaprutil1
+libaprutil1-dbd-sqlite3
+libaprutil1-ldap
+libapt-inst2.0
+libapt-pkg-perl
+libapt-pkg5.0
+libarchive-zip-perl
+libarchive13
+libart-2.0-2
+libasan2
+libasm3-java
+libasm4-java
+libasn1-8-heimdal
+libasound2
+libasound2-data
+libasound2-plugins
+libaspectj-java
+libaspell15
+libasprintf-dev
+libasprintf0v5
+libass5
+libassuan0
+libasyncns0
+libatasmart4
+libatinject-jsr330-api-java
+libatk-adaptor
+libatk-bridge2.0-0
+libatk-bridge2.0-dev
+libatk-wrapper-java
+libatk-wrapper-java-jni
+libatk1.0-0
+libatk1.0-data
+libatk1.0-dev
+libatkmm-1.6-1v5
+libatm1
+libatomic1
+libatspi2.0-0
+libatspi2.0-dev
+libattica0.4
+libattr1
+libaudio2
+libaudit-common
+libaudit1
+libauthen-sasl-perl
+libavahi-client3
+libavahi-common-data
+libavahi-common3
+libavahi-core7
+libavahi-glib1
+libavahi-ui-gtk3-0
+libavc1394-0
+libavcodec-ffmpeg56
+libavdevice-ffmpeg56
+libavfilter-ffmpeg5
+libavformat-ffmpeg56
+libavresample-ffmpeg2
+libavutil-ffmpeg54
+libbabeltrace-ctf1
+libbabeltrace1
+libbaloocore4
+libbaloofiles4
+libbalooxapian4
+libbamf3-2
+libbasicusageenvironment1
+libbdplus0
+libbind9-140
+libblas-common
+libblas3
+libblkid1
+libbluetooth3
+libbluray1
+libbonobo2-0
+libbonobo2-common
+libbonoboui2-0
+libbonoboui2-common
+libboost-date-time1.58.0
+libboost-filesystem1.58.0
+libboost-iostreams1.58.0
+libboost-program-options1.58.0
+libboost-python1.58.0
+libboost-system1.58.0
+libboost-thread1.58.0
+libbrlapi0.6
+libbs2b0
+libbsd0
+libburn4
+libbz2-1.0
+libc-ares2
+libc-bin
+libc-dev-bin
+libc6
+libc6-dbg
+libc6-dev
+libcaca0
+libcairo-gobject2
+libcairo-perl
+libcairo-script-interpreter2
+libcairo2
+libcairo2-dev
+libcairomm-1.0-1v5
+libcamel-1.2-54
+libcanberra-gtk-module
+libcanberra-gtk0
+libcanberra-gtk3-0
+libcanberra-gtk3-module
+libcanberra-pulse
+libcanberra0
+libcap-ng0
+libcap2
+libcap2-bin
+libcapnp-0.5.3
+libcc1-0
+libcddb2
+libcdio-cdda1
+libcdio-paranoia1
+libcdio13
+libcdparanoia0
+libcdr-0.1-1
+libcdt5
+libcgi-fast-perl
+libcgi-pm-perl
+libcglib3-java
+libcgmanager0
+libcgraph6
+libcheese-gtk25
+libcheese8
+libchm1
+libchromaprint0
+libcilkrts5
+libclass-accessor-perl
+libclone-perl
+libclucene-contribs1v5
+libclucene-core1v5
+libclutter-1.0-0
+libclutter-1.0-common
+libclutter-gst-3.0-0
+libclutter-gtk-1.0-0
+libcmis-0.5-5v5
+libcogl-common
+libcogl-pango20
+libcogl-path20
+libcogl20
+libcolamd2.9.1
+libcolord2
+libcolorhug2
+libcolumbus1-common
+libcolumbus1v5
+libcomerr2
+libcommons-beanutils-java
+libcommons-cli-java
+libcommons-codec-java
+libcommons-collections3-java
+libcommons-compress-java
+libcommons-dbcp-java
+libcommons-digester-java
+libcommons-httpclient-java
+libcommons-logging-java
+libcommons-parent-java
+libcommons-pool-java
+libcompizconfig0
+libcrack2
+libcroco3
+libcryptsetup4
+libcrystalhd3
+libcups2
+libcupscgi1
+libcupsfilters1
+libcupsimage2
+libcupsmime1
+libcupsppdc1
+libcurl3
+libcurl3-gnutls
+libcwidget3v5
+libdaemon0
+libdata-alias-perl
+libdatrie1
+libdb-java
+libdb-je-java
+libdb5.3
+libdb5.3-java
+libdb5.3-java-jni
+libdbus-1-3
+libdbus-1-dev
+libdbus-glib-1-2
+libdbusmenu-glib4
+libdbusmenu-gtk3-4
+libdbusmenu-gtk4
+libdbusmenu-qt2
+libdbusmenu-qt5
+libdc1394-22
+libdca0
+libdconf1
+libde265-0
+libdebconfclient0
+libdecoration0
+libdee-1.0-4
+libdevmapper1.02.1
+libdfu1
+libdigest-hmac-perl
+libdirectfb-1.2-9
+libdjvulibre-text
+libdjvulibre21
+libdlrestrictions1
+libdmapsharing-3.0-2
+libdns-export162
+libdns162
+libdotconf0
+libdouble-conversion1v5
+libdpkg-perl
+libdrm-amdgpu1
+libdrm-common
+libdrm-dev
+libdrm-intel1
+libdrm-nouveau2
+libdrm-radeon1
+libdrm2
+libdv4
+libdvbpsi10
+libdvdnav4
+libdvdread4
+libe-book-0.1-1
+libeasymock-java
+libebackend-1.2-10
+libebml4v5
+libebook-1.2-16
+libebook-contacts-1.2-2
+libecal-1.2-19
+libecj-java
+libedata-book-1.2-25
+libedata-cal-1.2-28
+libedataserver-1.2-21
+libedataserverui-1.2-1
+libedit2
+libefivar0
+libegl1-mesa
+libegl1-mesa-dev
+libelf1
+libemail-valid-perl
+libenca0
+libenchant1c2a
+libencode-locale-perl
+libeot0
+libepoxy-dev
+libepoxy0
+libept1.5.0
+libequinox-osgi-java
+liberror-perl
+libespeak1
+libestr0
+libetonyek-0.1-1
+libevdev2
+libevdocument3-4
+libevent-2.0-5
+libevview3-3
+libexempi3
+libexif12
+libexiv2-14
+libexo-1-0
+libexo-common
+libexo-helpers
+libexpat1
+libexpat1-dev
+libexporter-tiny-perl
+libexttextcat-2.0-0
+libexttextcat-data
+libfaad2
+libfakeroot
+libfam0
+libfarstream-0.2-5
+libfcgi-perl
+libfcitx-config4
+libfcitx-gclient0
+libfcitx-utils0
+libfdisk1
+libfelix-bundlerepository-java
+libfelix-gogo-command-java
+libfelix-gogo-runtime-java
+libfelix-gogo-shell-java
+libfelix-osgi-obr-java
+libfelix-shell-java
+libfelix-utils-java
+libffcall1
+libffi6
+libfftw3-double3
+libfftw3-single3
+libfile-basedir-perl
+libfile-copy-recursive-perl
+libfile-desktopentry-perl
+libfile-fcntllock-perl
+libfile-homedir-perl
+libfile-listing-perl
+libfile-mimeinfo-perl
+libfile-next-perl
+libfile-stripnondeterminism-perl
+libfile-which-perl
+libfilezilla0
+libflac8
+libflite1
+libfluidsynth1
+libfont-afm-perl
+libfontconfig1
+libfontconfig1-dev
+libfontembed1
+libfontenc1
+libframe6
+libfreehand-0.1-1
+libfreerdp-cache1.1
+libfreerdp-client1.1
+libfreerdp-codec1.1
+libfreerdp-common1.1.0
+libfreerdp-core1.1
+libfreerdp-crypto1.1
+libfreerdp-gdi1.1
+libfreerdp-locale1.1
+libfreerdp-plugins-standard
+libfreerdp-primitives1.1
+libfreerdp-utils1.1
+libfreetype6
+libfreetype6-dev
+libfribidi0
+libfuse2
+libfwup0
+libfwupd1
+libgail-3-0
+libgail-common
+libgail18
+libgarcon-1-0
+libgarcon-common
+libgbm1
+libgc1c2
+libgcab-1.0-0
+libgcc-5-dev
+libgcc1
+libgck-1-0
+libgconf-2-4
+libgcr-3-common
+libgcr-base-3-1
+libgcr-ui-3-1
+libgcrypt20
+libgd3
+libgdata-common
+libgdata22
+libgdbm3
+libgdiplus
+libgdk-pixbuf2.0-0
+libgdk-pixbuf2.0-common
+libgdk-pixbuf2.0-dev
+libgee-0.8-2
+libgeis1
+libgeoclue0
+libgeocode-glib0
+libgeoip1
+libgeonames0
+libgeronimo-jpa-2.0-spec-java
+libgeronimo-osgi-support-java
+libgettextpo-dev
+libgettextpo0
+libgexiv2-2
+libgfortran3
+libgif-dev
+libgif7
+libgirepository-1.0-1
+libgl1-mesa-dev
+libgl1-mesa-dri
+libgl1-mesa-glx
+libglade2-0
+libglapi-mesa
+libgles2-mesa
+libglew1.13
+libglewmx1.13
+libglib-perl
+libglib2.0-0
+libglib2.0-bin
+libglib2.0-data
+libglib2.0-dev
+libglib2.0-doc
+libglibmm-2.4-1v5
+libglu1-mesa
+libglu1-mesa-dev
+libgme0
+libgmime-2.6-0
+libgmp-dev
+libgmp10
+libgmpxx4ldbl
+libgnome-2-0
+libgnome-bluetooth13
+libgnome-desktop-3-12
+libgnome-keyring-common
+libgnome-keyring0
+libgnome-menu-3-0
+libgnome2-0
+libgnome2-bin
+libgnome2-common
+libgnomecanvas2-0
+libgnomecanvas2-common
+libgnomekbd-common
+libgnomekbd8
+libgnomeui-0
+libgnomeui-common
+libgnomevfs2-0
+libgnomevfs2-common
+libgnutls-openssl27
+libgnutls30
+libgoa-1.0-0b
+libgoa-1.0-common
+libgom-1.0-0
+libgom-1.0-common
+libgomp1
+libgoogle-perftools4
+libgpg-error0
+libgpgme11
+libgphoto2-6
+libgphoto2-l10n
+libgphoto2-port12
+libgpm2
+libgpod-common
+libgpod4
+libgrail6
+libgraphite2-3
+libgrilo-0.2-1
+libgroupsock8
+libgs9
+libgs9-common
+libgsettings-qt1
+libgsl2
+libgsm1
+libgssapi-krb5-2
+libgssapi3-heimdal
+libgssdp-1.0-3
+libgstreamer-plugins-bad1.0-0
+libgstreamer-plugins-base0.10-0
+libgstreamer-plugins-base0.10-dev
+libgstreamer-plugins-base1.0-0
+libgstreamer-plugins-good1.0-0
+libgstreamer0.10-0
+libgstreamer0.10-0-dbg
+libgstreamer0.10-dev
+libgstreamer1.0-0
+libgstreamer1.0-dev
+libgtk-3-0
+libgtk-3-bin
+libgtk-3-common
+libgtk-3-dev
+libgtk2-gladexml-perl
+libgtk2-perl
+libgtk2.0-0
+libgtk2.0-bin
+libgtk2.0-common
+libgtkglext1
+libgtkmm-3.0-1v5
+libgtksourceview-3.0-1
+libgtksourceview-3.0-common
+libgtkspell0
+libgtkspell3-3-0
+libgtop-2.0-10
+libgtop2-common
+libguava-java
+libgucharmap-2-90-7
+libgudev-1.0-0
+libguess1
+libgupnp-1.0-4
+libgupnp-igd-1.0-4
+libgusb2
+libgutenprint2
+libgvc6
+libgvpr2
+libgweather-3-6
+libgweather-common
+libgxps2
+libhamcrest-java
+libhardware2
+libharfbuzz-dev
+libharfbuzz-gobject0
+libharfbuzz-icu0
+libharfbuzz0b
+libhawtjni-runtime-java
+libhcrypto4-heimdal
+libheimbase1-heimdal
+libheimntlm0-heimdal
+libhogweed4
+libhpmud0
+libhtml-form-perl
+libhtml-format-perl
+libhtml-parser-perl
+libhtml-tagset-perl
+libhtml-tree-perl
+libhttp-cookies-perl
+libhttp-daemon-perl
+libhttp-date-perl
+libhttp-message-perl
+libhttp-negotiate-perl
+libhud2
+libhunspell-1.3-0
+libhx509-5-heimdal
+libhybris
+libhybris-common1
+libhyphen0
+libibus-1.0-5
+libical1a
+libice-dev
+libice6
+libicu-dev
+libicu4j-49-java
+libicu4j-java
+libicu55
+libid3tag0
+libidn11
+libido3-0.1-0
+libiec61883-0
+libieee1284-3
+libijs-0.35
+libilmbase12
+libimage-exiftool-perl
+libimlib2
+libimobiledevice6
+libindicator3-7
+libindicator7
+libinput-bin
+libinput10
+libio-html-perl
+libio-pty-perl
+libio-socket-inet6-perl
+libio-socket-ssl-perl
+libio-string-perl
+libipc-run-perl
+libipc-system-simple-perl
+libisc-export160
+libisc160
+libisccc140
+libisccfg140
+libisl15
+libiso9660-8
+libisofs6
+libitm1
+libiw30
+libjack-jackd2-0
+libjansi-java
+libjansi-native-java
+libjasper1
+libjavascriptcoregtk-4.0-18
+libjbig-dev
+libjbig0
+libjbig2dec0
+libjetty8-java
+libjffi-java
+libjffi-jni
+libjline-java
+libjline2-java
+libjnr-constants-java
+libjnr-ffi-java
+libjnr-netdb-java
+libjnr-posix-java
+libjnr-x86asm-java
+libjpeg-dev
+libjpeg-progs
+libjpeg-turbo8
+libjpeg-turbo8-dev
+libjpeg8
+libjpeg8-dev
+libjpeg9
+libjs-excanvas
+libjs-inherits
+libjs-jquery
+libjs-jquery-ui
+libjs-node-uuid
+libjs-underscore
+libjsch-java
+libjson-c2
+libjson-glib-1.0-0
+libjson-glib-1.0-common
+libjsr166y-java
+libjsr305-java
+libjte1
+libjtidy-java
+libk5crypto3
+libkactivities6
+libkate1
+libkatepartinterfaces4
+libkcalcore4
+libkcmutils4
+libkdcraw-data
+libkdcraw23
+libkde3support4
+libkdeclarative5
+libkdecore5
+libkdesu5
+libkdeui5
+libkdewebkit5
+libkdnssd4
+libkemoticons4
+libkexiv2-11v5
+libkexiv2-data
+libkeybinder0
+libkeyutils1
+libkf5activities5
+libkf5archive5
+libkf5attica5
+libkf5auth-data
+libkf5auth5
+libkf5calendarevents5
+libkf5codecs-data
+libkf5codecs5
+libkf5completion-data
+libkf5completion5
+libkf5config-bin
+libkf5config-data
+libkf5configcore5
+libkf5configgui5
+libkf5configwidgets-data
+libkf5configwidgets5
+libkf5coreaddons-data
+libkf5coreaddons5
+libkf5crash5
+libkf5dbusaddons-bin
+libkf5dbusaddons-data
+libkf5dbusaddons5
+libkf5declarative-data
+libkf5declarative5
+libkf5globalaccel-bin
+libkf5globalaccel-data
+libkf5globalaccel5
+libkf5globalaccelprivate5
+libkf5guiaddons5
+libkf5i18n-data
+libkf5i18n5
+libkf5iconthemes-bin
+libkf5iconthemes-data
+libkf5iconthemes5
+libkf5idletime5
+libkf5itemviews-data
+libkf5itemviews5
+libkf5jobwidgets-data
+libkf5jobwidgets5
+libkf5kiocore5
+libkf5kiowidgets5
+libkf5kipi-data
+libkf5notifications-data
+libkf5notifications5
+libkf5package-data
+libkf5package5
+libkf5plasma5
+libkf5plasmaquick5
+libkf5quickaddons5
+libkf5service-bin
+libkf5service-data
+libkf5service5
+libkf5sonnet5-data
+libkf5sonnetcore5
+libkf5sonnetui5
+libkf5style5
+libkf5textwidgets-data
+libkf5textwidgets5
+libkf5waylandclient5
+libkf5widgetsaddons-data
+libkf5widgetsaddons5
+libkf5windowsystem-data
+libkf5windowsystem5
+libkf5xmlgui-bin
+libkf5xmlgui-data
+libkf5xmlgui5
+libkface-data
+libkface3
+libkfile4
+libkhtml5
+libkio5
+libkipi-data
+libkipi11
+libkjsapi4
+libkjsembed4
+libklibc
+libkmediaplayer4
+libkmod2
+libknewstuff3-4
+libknotifyconfig4
+libkntlm4
+libkparts4
+libkpathsea6
+libkpty4
+libkqoauth0
+libkrb5-26-heimdal
+libkrb5-3
+libkrb5support0
+libkrosscore4
+libksane-data
+libksane0
+libksba8
+libktexteditor4
+libkvkontakte1
+libkxml2-java
+libkxmlrpcclient4
+liblangtag-common
+liblangtag1
+liblapack3
+liblcms2-2
+liblcms2-utils
+libldap-2.4-2
+libldb1
+liblensfun-data
+liblensfun0
+liblightdm-gobject-1-0
+liblircclient0
+liblist-moreutils-perl
+liblivemedia50
+liblivetribe-jsr223-java
+libllvm5.0
+liblocale-gettext-perl
+liblockfile-bin
+liblockfile1
+liblouis-data
+liblouis9
+liblouisutdml-bin
+liblouisutdml-data
+liblouisutdml6
+liblqr-1-0
+liblsan0
+libltdl7
+liblua5.1-0
+liblua5.2-0
+libluajit-5.1-2
+libluajit-5.1-common
+liblucene2-java
+liblwp-mediatypes-perl
+liblwp-protocol-https-perl
+liblwres141
+liblz4-1
+liblzma-dev
+liblzma5
+liblzo2-2
+libm17n-0
+libmaa3
+libmad0
+libmagic1
+libmagickcore-6.q16-2
+libmagickcore-6.q16-2-extra
+libmagickwand-6.q16-2
+libmail-sendmail-perl
+libmailtools-perl
+libmatroska6v5
+libmbim-glib4
+libmbim-proxy
+libmcrypt4
+libmeanwhile1
+libmedia1
+libmediaart-2.0-0
+libmediawiki1
+libmessaging-menu0
+libmetacity-private3a
+libmhash2
+libmikmod3
+libmimic0
+libminiupnpc10
+libmirclient-dev
+libmirclient9
+libmircommon-dev
+libmircommon7
+libmircookie-dev
+libmircookie2
+libmircore-dev
+libmircore1
+libmirprotobuf3
+libmjpegutils-2.1-0
+libmm-glib0
+libmms0
+libmng2
+libmnl0
+libmodplug1
+libmono-accessibility4.0-cil
+libmono-corlib4.5-cil
+libmono-data-tds4.0-cil
+libmono-i18n-west4.0-cil
+libmono-i18n4.0-cil
+libmono-posix4.0-cil
+libmono-security4.0-cil
+libmono-system-configuration4.0-cil
+libmono-system-core4.0-cil
+libmono-system-data4.0-cil
+libmono-system-drawing4.0-cil
+libmono-system-enterpriseservices4.0-cil
+libmono-system-numerics4.0-cil
+libmono-system-runtime-serialization-formatters-soap4.0-cil
+libmono-system-security4.0-cil
+libmono-system-transactions4.0-cil
+libmono-system-windows-forms4.0-cil
+libmono-system-xaml4.0-cil
+libmono-system-xml4.0-cil
+libmono-system4.0-cil
+libmono-webbrowser4.0-cil
+libmono-windowsbase4.0-cil
+libmount1
+libmp3lame0
+libmpc3
+libmpcdec6
+libmpdec2
+libmpeg2-4
+libmpeg2encpp-2.1-0
+libmpfr4
+libmpg123-0
+libmplex2-2.1-0
+libmpx0
+libmspub-0.1-1
+libmtdev1
+libmtp-common
+libmtp-runtime
+libmtp9
+libmwaw-0.3-3
+libmythes-1.2-0
+libnatpmp1
+libnautilus-extension1a
+libncurses5
+libncurses5-dev
+libncursesw5
+libndp0
+libneon27-gnutls
+libnet-dbus-perl
+libnet-dns-perl
+libnet-domain-tld-perl
+libnet-http-perl
+libnet-ip-perl
+libnet-libidn-perl
+libnet-smtp-ssl-perl
+libnet-ssleay-perl
+libnetfilter-conntrack3
+libnetpbm10
+libnettle6
+libnewt0.52
+libnfnetlink0
+libnice10
+libnih-dbus1
+libnih1
+libnl-3-200
+libnl-genl-3-200
+libnl-route-3-200
+libnm-glib-vpn1
+libnm-glib4
+libnm-gtk-common
+libnm-gtk0
+libnm-util2
+libnm0
+libnma-common
+libnma0
+libnotify-bin
+libnotify4
+libnpth0
+libnspr4
+libnss-mdns
+libnss3
+libnss3-nssdb
+libntrack-qt4-1
+libntrack0
+libnuma1
+libnux-4.0-0
+libnux-4.0-common
+liboauth0
+libobjenesis-java
+libodfgen-0.1-1
+libofa0
+libogg0
+liboobs-1-5
+libopenal-data
+libopenal1
+libopencore-amrnb0
+libopencore-amrwb0
+libopencv-calib3d2.4v5
+libopencv-contrib2.4v5
+libopencv-core2.4v5
+libopencv-features2d2.4v5
+libopencv-flann2.4v5
+libopencv-highgui2.4v5
+libopencv-imgproc2.4v5
+libopencv-legacy2.4v5
+libopencv-ml2.4v5
+libopencv-objdetect2.4v5
+libopencv-video2.4v5
+libopenexr22
+libopenjfx-java
+libopenjfx-jni
+libopenjpeg5
+libopus0
+liborbit-2-0
+liborc-0.4-0
+liborcus-0.10-0v5
+libosgi-annotation-java
+libosgi-compendium-java
+libosgi-core-java
+libosgi-foundation-ee-java
+libotf0
+libotr5
+liboxideqt-qmlplugin
+liboxideqtcore0
+liboxideqtquick0
+libp11-kit-gnome-keyring
+libp11-kit0
+libpackagekit-glib2-16
+libpagemaker-0.0-0
+libpam-gnome-keyring
+libpam-modules
+libpam-modules-bin
+libpam-runtime
+libpam-systemd
+libpam0g
+libpango-1.0-0
+libpango-perl
+libpango1.0-dev
+libpangocairo-1.0-0
+libpangoft2-1.0-0
+libpangomm-1.4-1v5
+libpangox-1.0-0
+libpangoxft-1.0-0
+libpano13-3
+libpano13-bin
+libpaper-utils
+libpaper1
+libparse-debianchangelog-perl
+libparted2
+libpathplan4
+libpcap0.8
+libpci3
+libpciaccess0
+libpcre16-3
+libpcre3
+libpcre3-dev
+libpcre32-3
+libpcrecpp0v5
+libpcsclite1
+libpeas-1.0-0
+libpeas-1.0-0-python3loader
+libpeas-common
+libperl5.22
+libperlio-gzip-perl
+libpgf6
+libphonon4
+libphonon4qt5-4
+libpipeline1
+libpixman-1-0
+libpixman-1-dev
+libplasma3
+libplist3
+libplymouth4
+libpng12-0
+libpng12-dev
+libpolkit-agent-1-0
+libpolkit-backend-1-0
+libpolkit-gobject-1-0
+libpolkit-qt-1-1
+libpolkit-qt5-1-1
+libpoppler-glib8
+libpoppler58
+libpopt0
+libportaudio2
+libportmidi0
+libpostproc-ffmpeg53
+libpotrace0
+libpq5
+libprocps4
+libprotobuf-dev
+libprotobuf-lite9v5
+libprotobuf9v5
+libproxy-tools
+libproxy1-plugin-gsettings
+libproxy1-plugin-networkmanager
+libproxy1v5
+libptexenc1
+libpthread-stubs0-dev
+libpugixml1v5
+libpulse-mainloop-glib0
+libpulse0
+libpulsedsp
+libpurple-bin
+libpurple0
+libpwquality-common
+libpwquality1
+libpython-all-dev
+libpython-dev
+libpython-stdlib
+libpython2.7
+libpython2.7-dev
+libpython2.7-minimal
+libpython2.7-stdlib
+libpython3-dev
+libpython3-stdlib
+libpython3.5
+libpython3.5-dev
+libpython3.5-minimal
+libpython3.5-stdlib
+libqca2
+libqca2-plugins
+libqjson0
+libqmi-glib5
+libqmi-proxy
+libqpdf17
+libqpdf21
+libqqwing2v5
+libqt4-dbus
+libqt4-declarative
+libqt4-designer
+libqt4-network
+libqt4-opengl
+libqt4-qt3support
+libqt4-script
+libqt4-sql
+libqt4-sql-sqlite
+libqt4-svg
+libqt4-xml
+libqt4-xmlpatterns
+libqt5core5a
+libqt5dbus5
+libqt5feedback5
+libqt5gui5
+libqt5multimedia5
+libqt5network5
+libqt5opengl5
+libqt5organizer5
+libqt5positioning5
+libqt5printsupport5
+libqt5qml5
+libqt5quick5
+libqt5quicktest5
+libqt5quickwidgets5
+libqt5script5
+libqt5sql5
+libqt5sql5-sqlite
+libqt5svg5
+libqt5test5
+libqt5waylandclient5
+libqt5webkit5
+libqt5widgets5
+libqt5x11extras5
+libqt5xml5
+libqtcore4
+libqtdbus4
+libqtglib-2.0-0
+libqtgstreamer-1.0-0
+libqtgstreamerutils-1.0-0
+libqtgui4
+libqtwebkit4
+libquadmath0
+libquvi-scripts
+libquvi7
+libraptor2-0
+librarian0
+librasqal3
+libraw1394-11
+libraw15
+librdf0
+libreadline-java
+libreadline5
+libreadline6
+librecode0
+libregexp-java
+libreoffice-avmedia-backend-gstreamer
+libreoffice-base-core
+libreoffice-calc
+libreoffice-common
+libreoffice-core
+libreoffice-draw
+libreoffice-gnome
+libreoffice-gtk
+libreoffice-help-en-us
+libreoffice-impress
+libreoffice-math
+libreoffice-ogltrans
+libreoffice-pdfimport
+libreoffice-style-breeze
+libreoffice-style-elementary
+libreoffice-style-galaxy
+libreoffice-writer
+libresid-builder0c2a
+librest-0.7-0
+librevenge-0.0-0
+librhythmbox-core9
+libroken18-heimdal
+librpm3
+librpmbuild3
+librpmio3
+librpmsign3
+librsvg2-2
+librsvg2-common
+librtmp1
+librubberband2v5
+libruby2.3
+libsamplerate0
+libsane
+libsane-common
+libsane-hpaio
+libsasl2-2
+libsasl2-modules
+libsasl2-modules-db
+libsbc1
+libschroedinger-1.0-0
+libsdl-image1.2
+libsdl-mixer1.2
+libsdl-ttf2.0-0
+libsdl1.2debian
+libsdl2-2.0-0
+libseccomp2
+libsecret-1-0
+libsecret-common
+libselinux1
+libsemanage-common
+libsemanage1
+libsensors4
+libsepol1
+libservlet3.0-java
+libservlet3.1-java
+libsgutils2-2
+libshine3
+libshout3
+libsidplay1v5
+libsidplay2v5
+libsigc++-2.0-0v5
+libsignon-extension1
+libsignon-glib1
+libsignon-plugins-common1
+libsignon-qt5-1
+libsigsegv2
+libslang2
+libsm-dev
+libsm6
+libsmartcols1
+libsmbclient
+libsmpeg0
+libsnapd-glib1
+libsnappy1v5
+libsndfile1
+libsndio6.1
+libsnmp-base
+libsnmp30
+libsocket6-perl
+libsodium18
+libsolid4
+libsonic0
+libsoundtouch1
+libsoup-gnome2.4-1
+libsoup2.4-1
+libsox-fmt-alsa
+libsox-fmt-base
+libsox2
+libsoxr0
+libspandsp2
+libspectre1
+libspeechd2
+libspeex1
+libspeexdsp1
+libsqlite0
+libsqlite3-0
+libsrtp0
+libss2
+libssh-4
+libssh-gcrypt-4
+libssh2-1
+libssl-dev
+libssl-doc
+libssl1.0.0
+libstartup-notification0
+libstdc++-5-dev
+libstdc++6
+libstreamanalyzer0v5
+libstreams0v5
+libstringtemplate-java
+libsub-name-perl
+libsuitesparseconfig4.4.6
+libswresample-ffmpeg1
+libswscale-ffmpeg3
+libswt-cairo-gtk-3-jni
+libswt-glx-gtk-3-jni
+libswt-gnome-gtk-3-jni
+libswt-gtk-3-java
+libswt-gtk-3-jni
+libswt-webkit-gtk-3-jni
+libsynctex1
+libsys-hostname-long-perl
+libsystemd0
+libtag1v5
+libtag1v5-vanilla
+libtagc0
+libtalloc2
+libtasn1-6
+libtbb2
+libtcl8.6
+libtcmalloc-minimal4
+libtdb1
+libtelepathy-glib0
+libtevent0
+libtexlua52
+libtexluajit2
+libtext-charwidth-perl
+libtext-iconv-perl
+libtext-levenshtein-perl
+libtext-wrapi18n-perl
+libthai-data
+libthai0
+libtheora0
+libthreadweaver4
+libthunarx-2-0
+libtidy-0.99-0
+libtidy-dev
+libtie-ixhash-perl
+libtiff5
+libtiff5-dev
+libtiffxx5
+libtimedate-perl
+libtimezonemap-data
+libtimezonemap1
+libtinfo-dev
+libtinfo5
+libtk8.6
+libtomcat7-java
+libtorrent-rasterbar8
+libtotem-plparser-common
+libtotem-plparser18
+libtotem0
+libtracker-sparql-1.0-0
+libtsan0
+libtumbler-1-0
+libtwolame0
+libtxc-dxtn-s2tc0
+libubsan0
+libubuntugestures5
+libubuntutoolkit5
+libudev1
+libudisks2-0
+libunique-1.0-0
+libunistring0
+libunity-action-qt1
+libunity-control-center1
+libunity-core-6.0-9
+libunity-gtk2-parser0
+libunity-gtk3-parser0
+libunity-misc4
+libunity-protocol-private0
+libunity-scopes-json-def-desktop
+libunity-settings-daemon1
+libunity-webapps0
+libunity9
+libunwind8
+libupnp6
+libupower-glib3
+liburi-perl
+liburl-dispatcher1
+libusageenvironment3
+libusb-0.1-4
+libusb-1.0-0
+libusbmuxd4
+libustr-1.0-1
+libutempter0
+libuuid-perl
+libuuid1
+libuv1
+libuv1-dev
+libv4l-0
+libv4lconvert0
+libv8-3.14.5
+libva-drm1
+libva-wayland1
+libva-x11-1
+libva1
+libvcdinfo0
+libvdpau1
+libvigraimpex5v5
+libvisio-0.1-1
+libvisual-0.4-0
+libvlc5
+libvlccore8
+libvncclient1
+libvo-aacenc0
+libvo-amrwbenc0
+libvoikko1
+libvorbis0a
+libvorbisenc2
+libvorbisfile3
+libvpx3
+libvte-2.91-0
+libvte-2.91-common
+libvte-common
+libvte9
+libwacom-bin
+libwacom-common
+libwacom2
+libwavpack1
+libwayland-bin
+libwayland-client0
+libwayland-cursor0
+libwayland-dev
+libwayland-egl1-mesa
+libwayland-server0
+libwbclient0
+libwebkit2gtk-4.0-37
+libwebkit2gtk-4.0-37-gtk2
+libwebp5
+libwebpdemux1
+libwebpmux1
+libwebrtc-audio-processing-0
+libwhoopsie-preferences0
+libwhoopsie0
+libwildmidi-config
+libwildmidi1
+libwind0-heimdal
+libwinpr-crt0.1
+libwinpr-dsparse0.1
+libwinpr-environment0.1
+libwinpr-file0.1
+libwinpr-handle0.1
+libwinpr-heap0.1
+libwinpr-input0.1
+libwinpr-interlocked0.1
+libwinpr-library0.1
+libwinpr-path0.1
+libwinpr-pool0.1
+libwinpr-registry0.1
+libwinpr-rpc0.1
+libwinpr-sspi0.1
+libwinpr-synch0.1
+libwinpr-sysinfo0.1
+libwinpr-thread0.1
+libwinpr-utils0.1
+libwmf0.2-7
+libwmf0.2-7-gtk
+libwnck-3-0
+libwnck-3-common
+libwnck-common
+libwnck22
+libwpd-0.10-10
+libwpg-0.3-3
+libwps-0.4-4
+libwrap0
+libwww-perl
+libwww-robotrules-perl
+libwxbase3.0-0v5
+libwxgtk3.0-0v5
+libx11-6
+libx11-data
+libx11-dev
+libx11-doc
+libx11-protocol-perl
+libx11-xcb-dev
+libx11-xcb1
+libx264-148
+libx265-79
+libx86-1
+libxapian22v5
+libxatracker2
+libxau-dev
+libxau6
+libxaw7
+libxcb-composite0
+libxcb-damage0
+libxcb-dri2-0
+libxcb-dri2-0-dev
+libxcb-dri3-0
+libxcb-dri3-dev
+libxcb-glx0
+libxcb-glx0-dev
+libxcb-icccm4
+libxcb-image0
+libxcb-keysyms1
+libxcb-present-dev
+libxcb-present0
+libxcb-randr0
+libxcb-randr0-dev
+libxcb-render-util0
+libxcb-render0
+libxcb-render0-dev
+libxcb-shape0
+libxcb-shape0-dev
+libxcb-shm0
+libxcb-shm0-dev
+libxcb-sync-dev
+libxcb-sync1
+libxcb-util1
+libxcb-xfixes0
+libxcb-xfixes0-dev
+libxcb-xkb1
+libxcb-xv0
+libxcb1
+libxcb1-dev
+libxcomposite-dev
+libxcomposite1
+libxcursor-dev
+libxcursor1
+libxdamage-dev
+libxdamage1
+libxdmcp-dev
+libxdmcp6
+libxext-dev
+libxext6
+libxfce4panel-2.0-4
+libxfce4ui-1-0
+libxfce4ui-2-0
+libxfce4ui-common
+libxfce4ui-utils
+libxfce4util-bin
+libxfce4util-common
+libxfce4util7
+libxfcegui4-4
+libxfconf-0-2
+libxfixes-dev
+libxfixes3
+libxfont1
+libxft-dev
+libxft2
+libxi-dev
+libxi6
+libxinerama-dev
+libxinerama1
+libxkbcommon-dev
+libxkbcommon-x11-0
+libxkbcommon0
+libxkbfile1
+libxklavier16
+libxml-parser-perl
+libxml-twig-perl
+libxml-xpathengine-perl
+libxml2
+libxml2-dev
+libxml2-utils
+libxmu6
+libxmuu1
+libxpm-dev
+libxpm4
+libxrandr-dev
+libxrandr2
+libxrender-dev
+libxrender1
+libxres1
+libxshmfence-dev
+libxshmfence1
+libxslt1.1
+libxss1
+libxt-dev
+libxt6
+libxtables11
+libxtst-dev
+libxtst6
+libxv1
+libxvidcore4
+libxvmc1
+libxxf86dga1
+libxxf86vm-dev
+libxxf86vm1
+libyajl2
+libyaml-0-2
+libyaml-cpp0.5v5
+libyaml-libyaml-perl
+libyaml-tiny-perl
+libyelp0
+libzbar0
+libzeitgeist-1.0-1
+libzeitgeist-2.0-0
+libzephyr4
+libzmq5
+libzvbi-common
+libzvbi0
+libzzip-0-13
+light-locker
+light-locker-settings
+light-themes
+lightdm
+lightdm-gtk-greeter
+lightdm-gtk-greeter-settings
+links
+lintian
+linux-base
+linux-firmware
+linux-generic
+linux-headers-4.4.0-127
+linux-headers-4.4.0-127-generic
+linux-headers-4.4.0-128
+linux-headers-4.4.0-128-generic
+linux-headers-4.4.0-53
+linux-headers-4.4.0-53-generic
+linux-headers-4.4.0-57
+linux-headers-4.4.0-57-generic
+linux-headers-4.4.0-59
+linux-headers-4.4.0-59-generic
+linux-headers-generic
+linux-image-4.4.0-127-generic
+linux-image-4.4.0-128-generic
+linux-image-extra-4.4.0-127-generic
+linux-image-extra-4.4.0-128-generic
+linux-image-generic
+linux-libc-dev
+linux-sound-base
+lm-sensors
+lmodern
+locales
+login
+logrotate
+lp-solve
+lsb-base
+lsb-release
+lshw
+lsof
+ltrace
+lynx
+lynx-common
+m17n-db
+m4
+make
+makedev
+man-db
+manpages
+manpages-dev
+mawk
+media-player-info
+meld
+memtest86+
+menu
+menulibre
+mercurial
+mercurial-common
+mesa-common-dev
+mesa-utils
+mesa-vdpau-drivers
+metacity-common
+mime-support
+minidlna
+mit-scheme
+mlocate
+mobile-broadband-provider-info
+modemmanager
+mongodb
+mongodb-clients
+mongodb-server
+mono-4.0-gac
+mono-gac
+mono-runtime
+mono-runtime-common
+mono-runtime-sgen
+mount
+mountall
+mousepad
+mousetweaks
+mpv
+mscompress
+mtools
+mtr-tiny
+mugshot
+multiarch-support
+mythes-en-us
+nano
+nautilus
+nautilus-data
+nautilus-dropbox
+nautilus-sendto
+nautilus-share
+ncurses-base
+ncurses-bin
+ncurses-term
+net-tools
+net.downloadhelper.coapp
+netbase
+netcat-openbsd
+netpbm
+nettle-dev
+network-manager
+network-manager-gnome
+network-manager-pptp
+network-manager-pptp-gnome
+node-abbrev
+node-ansi
+node-ansi-color-table
+node-archy
+node-async
+node-block-stream
+node-combined-stream
+node-cookie-jar
+node-delayed-stream
+node-forever-agent
+node-form-data
+node-fstream
+node-fstream-ignore
+node-github-url-from-git
+node-glob
+node-graceful-fs
+node-gyp
+node-inherits
+node-ini
+node-json-stringify-safe
+node-lockfile
+node-lru-cache
+node-mime
+node-minimatch
+node-mkdirp
+node-mute-stream
+node-node-uuid
+node-nopt
+node-normalize-package-data
+node-npmlog
+node-once
+node-osenv
+node-qs
+node-read
+node-read-package-json
+node-request
+node-retry
+node-rimraf
+node-semver
+node-sha
+node-sigmund
+node-slide
+node-tar
+node-tunnel-agent
+node-underscore
+node-which
+nodejs
+nodejs-dev
+notify-osd
+notify-osd-icons
+npm
+ntfs-3g
+ntpdate
+ntrack-module-libnl-0
+numix-gtk-theme
+nux-tools
+onboard
+onboard-data
+opencv-data
+openjdk-8-jdk
+openjdk-8-jdk-headless
+openjdk-8-jre
+openjdk-8-jre-headless
+openjdk-9-jdk
+openjdk-9-jdk-headless
+openjdk-9-jre
+openjdk-9-jre-headless
+openjfx
+openoffice.org-hyphenation
+openprinting-ppds
+openssh-client
+openssh-server
+openssh-sftp-server
+openssl
+orage
+os-prober
+overlay-scrollbar
+overlay-scrollbar-gtk2
+oxideqt-codecs-extra
+oxygen-icon-theme
+oxygen5-icon-theme
+p11-kit
+p11-kit-modules
+p7zip
+pandoc
+pandoc-data
+parole
+parted
+passwd
+pastebinit
+patch
+patchutils
+pavucontrol
+pciutils
+pcmciautils
+perl
+perl-base
+perl-doc
+perl-modules-5.22
+phonon
+phonon-backend-gstreamer
+phonon-backend-gstreamer-common
+php-common
+php7.0-cli
+php7.0-common
+php7.0-json
+php7.0-opcache
+php7.0-readline
+pidgin-data
+pidgin-otr
+pigz
+pinentry-gnome3
+pinentry-gtk2
+pkg-config
+plainbox-provider-checkbox
+plainbox-provider-resource-generic
+plainbox-secure-policy
+plantuml
+plasma-framework
+plasma-scriptengine-javascript
+plymouth
+plymouth-label
+plymouth-theme-ubuntu-logo
+plymouth-theme-ubuntu-text
+plymouth-theme-xubuntu-logo
+plymouth-theme-xubuntu-text
+pm-utils
+po-debconf
+policykit-1
+policykit-1-gnome
+policykit-desktop-privileges
+polyglot
+poppler-data
+poppler-utils
+popularity-contest
+powermgmt-base
+ppp
+pppconfig
+pppoeconf
+pptp-linux
+preview-latex-style
+printer-driver-brlaser
+printer-driver-c2esp
+printer-driver-foo2zjs
+printer-driver-foo2zjs-common
+printer-driver-gutenprint
+printer-driver-hpcups
+printer-driver-min12xxw
+printer-driver-pnm2ppa
+printer-driver-postscript-hp
+printer-driver-ptouch
+printer-driver-pxljr
+printer-driver-sag-gdi
+printer-driver-splix
+procps
+prosper
+ps2eps
+psmisc
+pulseaudio
+pulseaudio-module-bluetooth
+pulseaudio-module-x11
+pulseaudio-utils
+pyotherside
+python
+python-all
+python-all-dev
+python-appindicator
+python-apt-common
+python-attr
+python-cairo
+python-cffi-backend
+python-chardet
+python-compizconfig
+python-cryptography
+python-cycler
+python-dateutil
+python-decorator
+python-defusedxml
+python-dev
+python-enum34
+python-gi
+python-gi-cairo
+python-glade2
+python-gobject
+python-gobject-2
+python-gpgme
+python-gtk2
+python-idna
+python-imaging
+python-ipaddress
+python-libtorrent
+python-lzma
+python-magic
+python-matplotlib
+python-matplotlib-data
+python-minimal
+python-notify
+python-numpy
+python-openssl
+python-pam
+python-pil
+python-pip
+python-pip-whl
+python-pkg-resources
+python-psutil
+python-pyasn1
+python-pyasn1-modules
+python-pygame
+python-pyparsing
+python-scipy
+python-serial
+python-service-identity
+python-setuptools
+python-six
+python-soappy
+python-talloc
+python-tk
+python-twisted-bin
+python-twisted-core
+python-twisted-web
+python-tz
+python-wheel
+python-wstools
+python-wxgtk3.0
+python-wxversion
+python-xdg
+python-zope.interface
+python2.7
+python2.7-dev
+python2.7-minimal
+python3
+python3-apport
+python3-apt
+python3-aptdaemon
+python3-aptdaemon.gtk3widgets
+python3-aptdaemon.pkcompat
+python3-blinker
+python3-botocore
+python3-brlapi
+python3-bs4
+python3-cairo
+python3-cffi-backend
+python3-chardet
+python3-checkbox-support
+python3-colorama
+python3-commandnotfound
+python3-cryptography
+python3-cups
+python3-cupshelpers
+python3-dateutil
+python3-dbus
+python3-debian
+python3-defer
+python3-dev
+python3-distupgrade
+python3-docutils
+python3-feedparser
+python3-gdbm
+python3-gi
+python3-gi-cairo
+python3-guacamole
+python3-html5lib
+python3-httplib2
+python3-idna
+python3-jinja2
+python3-jmespath
+python3-jwt
+python3-louis
+python3-lxml
+python3-mako
+python3-markupsafe
+python3-minimal
+python3-oauthlib
+python3-padme
+python3-pexpect
+python3-pil
+python3-pip
+python3-pkg-resources
+python3-plainbox
+python3-problem-report
+python3-psutil
+python3-ptyprocess
+python3-pyasn1
+python3-pyatspi
+python3-pycurl
+python3-pygments
+python3-pyparsing
+python3-renderpm
+python3-reportlab
+python3-reportlab-accel
+python3-requests
+python3-roman
+python3-rsa
+python3-s3transfer
+python3-setuptools
+python3-six
+python3-software-properties
+python3-speechd
+python3-systemd
+python3-uno
+python3-update-manager
+python3-urllib3
+python3-virtualenv
+python3-wheel
+python3-xdg
+python3-xkit
+python3-xlsxwriter
+python3.5
+python3.5-dev
+python3.5-minimal
+qdbus
+qml-module-io-thp-pyotherside
+qml-module-org-kde-activities
+qml-module-org-kde-kquickcontrols
+qml-module-org-kde-kquickcontrolsaddons
+qml-module-qt-labs-folderlistmodel
+qml-module-qt-labs-settings
+qml-module-qtfeedback
+qml-module-qtgraphicaleffects
+qml-module-qtquick-controls
+qml-module-qtquick-dialogs
+qml-module-qtquick-layouts
+qml-module-qtquick-privatewidgets
+qml-module-qtquick-window2
+qml-module-qtquick2
+qml-module-qttest
+qml-module-ubuntu-components
+qml-module-ubuntu-layouts
+qml-module-ubuntu-onlineaccounts
+qml-module-ubuntu-performancemetrics
+qml-module-ubuntu-test
+qml-module-ubuntu-web
+qmlscene
+qpdf
+qt-at-spi
+qtchooser
+qtcore4-l10n
+qtdeclarative5-accounts-plugin
+qtdeclarative5-dev-tools
+qtdeclarative5-qtquick2-plugin
+qtdeclarative5-test-plugin
+qtdeclarative5-ubuntu-ui-toolkit-plugin
+qtdeclarative5-unity-action-plugin
+qttranslations5-l10n
+qtwayland5
+rake
+rarian-compat
+readline-common
+recode
+recordmydesktop
+remmina
+remmina-common
+remmina-plugin-rdp
+remmina-plugin-vnc
+rename
+resolvconf
+rfkill
+rhythmbox
+rhythmbox-data
+rhythmbox-plugin-zeitgeist
+rhythmbox-plugins
+ristretto
+rlwrap
+rpm
+rpm-common
+rpm2cpio
+rsync
+rsyslog
+rtkit
+rtmpdump
+ruby
+ruby-did-you-mean
+ruby-minitest
+ruby-net-telnet
+ruby-power-assert
+ruby-test-unit
+ruby2.3
+rubygems-integration
+s3cmd
+samba-libs
+sane-utils
+sat4j
+sbsigntool
+scala
+scala-library
+scala-parser-combinators
+scala-xml
+screen
+scrot
+seahorse
+secureboot-db
+sed
+sensible-utils
+session-migration
+session-shortcuts
+sessioninstaller
+sgml-base
+sgml-data
+shared-mime-info
+shimmer-themes
+shotwell
+shotwell-common
+signon-keyring-extension
+signon-plugin-oauth2
+signon-plugin-password
+signon-ui
+signon-ui-service
+signon-ui-x11
+signond
+simple-scan
+smplayer
+smplayer-l10n
+smplayer-themes
+snapd
+snapd-login-service
+sni-qt
+software-properties-common
+software-properties-gtk
+sonnet-plugins
+sound-theme-freedesktop
+sox
+speech-dispatcher
+speech-dispatcher-audio-plugins
+squashfs-tools
+ssh
+ssh-import-id
+sshfs
+ssl-cert
+stockfish
+strace
+sudo
+suru-icon-theme
+synaptic
+syslinux
+syslinux-common
+syslinux-legacy
+sysstat
+system-config-printer-common
+system-config-printer-gnome
+system-config-printer-udev
+system-tools-backends
+systemd
+systemd-shim
+systemd-sysv
+sysv-rc
+sysvinit-utils
+t1utils
+tar
+tcl
+tcl-expect
+tcl8.6
+tcpd
+tcpdump
+telnet
+tex-common
+tex-gyre
+texlive-base
+texlive-binaries
+texlive-extra-utils
+texlive-font-utils
+texlive-fonts-recommended
+texlive-fonts-recommended-doc
+texlive-generic-recommended
+texlive-latex-base
+texlive-latex-base-doc
+texlive-latex-extra
+texlive-latex-extra-doc
+texlive-latex-recommended
+texlive-latex-recommended-doc
+texlive-pictures
+texlive-pictures-doc
+texlive-pstricks
+texlive-pstricks-doc
+texlive-science
+texlive-science-doc
+thermald
+thunar
+thunar-archive-plugin
+thunar-data
+thunar-media-tags-plugin
+thunar-volman
+time
+tipa
+tk
+tk8.6
+tk8.6-blt2.5
+toshset
+totem
+totem-common
+totem-plugins
+traceroute
+transmission-common
+transmission-gtk
+tree
+ttf-ancient-fonts-symbola
+ttf-bitstream-vera
+ttf-ubuntu-font-family
+tumbler
+tumbler-common
+tzdata
+ubuntu-artwork
+ubuntu-desktop
+ubuntu-docs
+ubuntu-drivers-common
+ubuntu-keyring
+ubuntu-minimal
+ubuntu-mobile-icons
+ubuntu-mono
+ubuntu-release-upgrader-core
+ubuntu-release-upgrader-gtk
+ubuntu-restricted-addons
+ubuntu-session
+ubuntu-settings
+ubuntu-software
+ubuntu-sounds
+ubuntu-standard
+ubuntu-system-service
+ubuntu-touch-sounds
+ubuntu-ui-toolkit-theme
+ubuntu-wallpapers
+ubuntu-wallpapers-xenial
+ucf
+udev
+udisks2
+ufw
+unattended-upgrades
+unity
+unity-accessibility-profiles
+unity-asset-pool
+unity-control-center
+unity-control-center-faces
+unity-control-center-signon
+unity-greeter
+unity-gtk-module-common
+unity-gtk2-module
+unity-gtk3-module
+unity-lens-applications
+unity-lens-files
+unity-lens-music
+unity-lens-photos
+unity-lens-video
+unity-schemas
+unity-scope-calculator
+unity-scope-chromiumbookmarks
+unity-scope-colourlovers
+unity-scope-devhelp
+unity-scope-firefoxbookmarks
+unity-scope-gdrive
+unity-scope-home
+unity-scope-manpages
+unity-scope-openclipart
+unity-scope-texdoc
+unity-scope-tomboy
+unity-scope-video-remote
+unity-scope-virtualbox
+unity-scope-yelp
+unity-scope-zotero
+unity-scopes-master-default
+unity-scopes-runner
+unity-services
+unity-settings-daemon
+unity-tweak-tool
+unity-webapps-common
+unity-webapps-qml
+unity-webapps-service
+uno-libs3
+unzip
+update-inetd
+update-manager
+update-manager-core
+update-notifier
+update-notifier-common
+upower
+upstart
+ure
+ureadahead
+usb-creator-common
+usb-creator-gtk
+usb-modeswitch
+usb-modeswitch-data
+usbmuxd
+usbutils
+util-linux
+uuid-runtime
+va-driver-all
+vbetool
+vdpau-driver-all
+vdpau-va-driver
+vim-common
+vim-gnome
+vim-gui-common
+vim-runtime
+vim-tiny
+vino
+vlc
+vlc-data
+vlc-nox
+vlc-plugin-notify
+vlc-plugin-samba
+vsftpd
+wajig
+wamerican
+wbritish
+webapp-container
+webbrowser-app
+wget
+whiptail
+whoopsie
+whoopsie-preferences
+wireless-regdb
+wireless-tools
+wpasupplicant
+x11-apps
+x11-common
+x11-session-utils
+x11-utils
+x11-xkb-utils
+x11-xserver-utils
+x11proto-composite-dev
+x11proto-core-dev
+x11proto-damage-dev
+x11proto-dri2-dev
+x11proto-fixes-dev
+x11proto-gl-dev
+x11proto-input-dev
+x11proto-kb-dev
+x11proto-randr-dev
+x11proto-record-dev
+x11proto-render-dev
+x11proto-xext-dev
+x11proto-xf86vidmode-dev
+x11proto-xinerama-dev
+xauth
+xbitmaps
+xboard
+xbrlapi
+xchm
+xcursor-themes
+xdg-user-dirs
+xdg-user-dirs-gtk
+xdg-utils
+xdiagnose
+xfburn
+xfce4-appfinder
+xfce4-cpugraph-plugin
+xfce4-dict
+xfce4-indicator-plugin
+xfce4-mailwatch-plugin
+xfce4-netload-plugin
+xfce4-notes
+xfce4-notes-plugin
+xfce4-notifyd
+xfce4-panel
+xfce4-places-plugin
+xfce4-power-manager
+xfce4-power-manager-data
+xfce4-power-manager-plugins
+xfce4-quicklauncher-plugin
+xfce4-screenshooter
+xfce4-session
+xfce4-settings
+xfce4-systemload-plugin
+xfce4-taskmanager
+xfce4-terminal
+xfce4-verve-plugin
+xfce4-volumed
+xfce4-weather-plugin
+xfce4-whiskermenu-plugin
+xfce4-xkb-plugin
+xfconf
+xfdesktop4
+xfdesktop4-data
+xfonts-75dpi
+xfonts-base
+xfonts-encodings
+xfonts-scalable
+xfonts-utils
+xfpanel-switch
+xfwm4
+xinit
+xinput
+xkb-data
+xml-core
+xorg
+xorg-docs-core
+xorg-sgml-doctools
+xscreensaver
+xscreensaver-data
+xserver-common
+xserver-xorg
+xserver-xorg-core
+xserver-xorg-input-all
+xserver-xorg-input-evdev
+xserver-xorg-input-synaptics
+xserver-xorg-input-vmmouse
+xserver-xorg-input-wacom
+xserver-xorg-video-all
+xserver-xorg-video-amdgpu
+xserver-xorg-video-ati
+xserver-xorg-video-fbdev
+xserver-xorg-video-intel
+xserver-xorg-video-nouveau
+xserver-xorg-video-qxl
+xserver-xorg-video-radeon
+xserver-xorg-video-vesa
+xserver-xorg-video-vmware
+xterm
+xtrans-dev
+xubuntu-artwork
+xubuntu-community-wallpapers
+xubuntu-community-wallpapers-xenial
+xubuntu-core
+xubuntu-default-settings
+xubuntu-desktop
+xubuntu-docs
+xubuntu-icon-theme
+xubuntu-wallpapers
+xul-ext-ubufox
+xz-utils
+yelp
+yelp-xsl
+youtube-dl
+zeitgeist-core
+zeitgeist-datahub
+zenity
+zenity-common
+zip
+zlib1g
+zlib1g-dev
+zsh
+zsh-common
+#+end_example
+
+** Install things 
+#+BEGIN_SRC sh :dir /sudo:: :results output
+apt install detox emacs vim
+
+#+END_SRC
+
+#+RESULTS:
+
+
+
+** some common config files
+#+BEGIN_SRC sh :results output
+cd ~/
+files=".emacs .bash_history .screenrc"
+
+for file1 in $files
+do
+ls -l $file1
+done
+#+END_SRC
+
+#+RESULTS:
+: lrwxrwxrwx 1 bineesh bineesh 25 Feb 14 14:04 .emacs -> Dropbox/my_conf/emacs.txt
+: lrwxrwxrwx 1 bineesh bineesh 32 Feb 14 14:04 .bash_history -> Dropbox/my_conf/bash_history.txt
+: lrwxrwxrwx 1 bineesh bineesh 28 Feb 14 14:04 .screenrc -> Dropbox/my_conf/screenrc.txt
+
+** Tried to install davmail
+http://davmail.sourceforge.net/gettingstarted.html
+http://davmail.sourceforge.net/thunderbirdmailsetup.html
+* How to send vacation requests
+Outlook vacation request
+https://support.office.com/en-us/article/Add-time-away-from-the-office-to-coworkers-Outlook-calendars-69FE38AA-7B5F-4225-8B69-47F47092E65E#ID0EAACAAA=2016,_2013,_2010
+* How to share files between host and guest in virtual box?
+** Shared folders
+Create a shared folder name
+in my example I am trying to share a folder named  C:\shared_with_vm
+
+In the shared folder settings add this folder.
+Give whatever name you want to give
+
+Go to the guest and type
+
+mount -t vboxsf shared_with_vm /home/bineesh/host/
+
+shared_with_vm is the name I gave on shared folder settings
+
+/home/bineesh/host is the folder I want it mounted on.
+
+These folders are mounted as root.
+*** Backing up anaconda2 to make room for upgrade
+
+
+drwxrwxr-x 20 bineesh bineesh    4096 Sep 18  2017 anaconda2
+
+
+bineesh@ubuntu-16:~$ ls -l anaconda2/
+total 144
+drwxrwxr-x   2 bineesh bineesh 12288 Jun 12 18:06 bin
+drwxrwxr-x   2 bineesh bineesh 12288 Sep 18  2017 conda-meta
+drwxrwxr-x   3 bineesh bineesh  4096 Feb  9  2017 doc
+drwxrwxr-x   2 bineesh bineesh  4096 Feb  9  2017 envs
+drwxrwxr-x   7 bineesh bineesh  4096 Feb  9  2017 etc
+drwxrwxr-x  26 bineesh bineesh  4096 Feb  9  2017 include
+drwxrwxr-x  14 bineesh bineesh 32768 Feb  9  2017 lib
+drwxrwxr-x   3 bineesh bineesh  4096 Feb  9  2017 libexec
+-rw-rw-r--   1 bineesh bineesh  4524 Feb  5  2016 LICENSE.txt
+drwxrwxr-x  97 bineesh bineesh  4096 Feb  9  2017 mkspecs
+drwxrwxr-x   2 bineesh bineesh  4096 Feb  9  2017 phrasebooks
+drwxrwxr-x 210 bineesh bineesh 12288 Sep 18  2017 pkgs
+drwxrwxr-x  15 bineesh bineesh  4096 Feb  9  2017 plugins
+drwxrwxr-x  14 bineesh bineesh  4096 Feb  9  2017 qml
+drwxrwxr-x   2 bineesh bineesh  4096 Feb  9  2017 sbin
+drwxrwxr-x  18 bineesh bineesh  4096 Feb  9  2017 share
+drwxrwxr-x   3 bineesh bineesh  4096 Feb  9  2017 ssl
+drwxrwxr-x   2 bineesh bineesh 12288 Feb  9  2017 translations
+drwxrwxr-x   3 bineesh bineesh  4096 Feb  9  2017 var
+
+** Use winscp to share
+** Use samba to share
+** Use http to share
+* Apache
+sudo apt install apache2
+sudo systemctl restart apache2.service
+
+#+BEGIN_SRC sh :dir /sudo:: :results output
+apt install libapache2-mod-wsgi  
+
+#+END_SRC
+
+#+RESULTS:
+
+* Converting tex to org
+#+BEGIN_SRC sh :results output
+pandoc -f latex -t org << END
+ \documentclass{paper}
+ \begin{document}
+ \section{Heading}
+ 
+ Hello
+ 
+ \subsection{Sub-heading}
+ 
+ \textbf{World}!
+ \end{document}
+ END
+
+
+#+END_SRC
+
+#+RESULTS:
+: * Heading
+: 
+: Hello
+: 
+: ** Sub-heading
+: 
+: *World*!
+
+* Docker
+
+** DONE Install docker on my machine
+   SCHEDULED: <2017-06-28 Wed 11:00>
+
+*** Step 1 Apt get update and install dependencies
+#+BEGIN_SRC sh :dir /sudo:: :results output
+apt-get update
+apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+0% [Working]            Hit:1 http://in.archive.ubuntu.com/ubuntu xenial InRelease
+0% [Waiting for headers]0% [1 InRelease gpgv 247 kB] [Waiting for headers] [Waiting for headers]                                                                        0% [Waiting for headers] [Waiting for headers]                                              Get:2 http://in.archive.ubuntu.com/ubuntu xenial-updates InRelease [102 kB]
+0% [2 InRelease 3,177 B/102 kB 3%] [Waiting for headers]                                                        Get:3 http://security.ubuntu.com/ubuntu xenial-security InRelease [102 kB]
+0% [2 InRelease 10.1 kB/102 kB 10%] [3 InRelease 3,161 B/102 kB 3%]                                                                   0% [3 InRelease 37.9 kB/102 kB 37%]0% [2 InRelease gpgv 102 kB] [Waiting for headers] [3 InRelease 37.9 kB/102 kB                                                                                0% [Waiting for headers] [3 InRelease 55.2 kB/102 kB 54%]                                                         Get:4 http://in.archive.ubuntu.com/ubuntu xenial-backports InRelease [102 kB]
+0% [4 InRelease 3,177 B/102 kB 3%] [3 InRelease 94.9 kB/102 kB 93%]                                                                   0% [3 InRelease 94.9 kB/102 kB 93%]0% [4 InRelease gpgv 102 kB] [3 InRelease 94.9 kB/102 kB 93%]                                                             0% [4 InRelease gpgv 102 kB] [Waiting for headers]                                                  0% [Waiting for headers]0% [3 InRelease gpgv 102 kB] [Waiting for headers]                                                  Get:5 http://in.archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [572 kB]
+0% [3 InRelease gpgv 102 kB] [5 Packages 10.2 kB/572 kB 2%]                                                           26% [5 Packages 60.9 kB/572 kB 11%]                                   Get:6 http://security.ubuntu.com/ubuntu xenial-security/main amd64 DEP-11 Metadata [54.6 kB]
+28% [5 Packages 126 kB/572 kB 22%] [6 Components-amd64 3,265 B/54.6 kB 6%]                                                                          29% [5 Packages 148 kB/572 kB 26%]29% [6 Components-amd64 store 0 B] [5 Packages 148 kB/572 kB 26%] [Waiting for                                                                                31% [5 Packages 186 kB/572 kB 32%] [Waiting for headers]                                                        Get:7 http://security.ubuntu.com/ubuntu xenial-security/main DEP-11 64x64 Icons [50.7 kB]
+33% [5 Packages 248 kB/572 kB 43%] [7 icons-64x64 39.1 kB/50.7 kB 77%]                                                                      Get:8 http://security.ubuntu.com/ubuntu xenial-security/universe amd64 DEP-11 Metadata [35.8 kB]
+34% [5 Packages 248 kB/572 kB 43%] [8 Components-amd64 35.8 kB/35.8 kB 100%]                                                                            Get:9 http://security.ubuntu.com/ubuntu xenial-security/universe DEP-11 64x64 Icons [52.2 kB]
+                                                                            35% [5 Packages 248 kB/572 kB 43%] [9 icons-64x64 27.0 kB/52.2 kB 52%]35% [7 icons-64x64 store 0 B] [5 Packages 248 kB/572 kB 43%] [9 icons-64x64 27.                                                                               35% [5 Packages 248 kB/572 kB 43%] [9 icons-64x64 27.0 kB/52.2 kB 52%]35% [8 Components-amd64 store 0 B] [5 Packages 248 kB/572 kB 43%] [9 icons-64x6                                                                               36% [5 Packages 310 kB/572 kB 54%] [9 icons-64x64 27.0 kB/52.2 kB 52%]                                                                      38% [5 Packages 373 kB/572 kB 65%]38% [9 icons-64x64 store 0 B] [5 Packages 373 kB/572 kB 65%]                                                            39% [5 Packages 373 kB/572 kB 65%]43% [5 Packages 561 kB/572 kB 98%]                                  43% [Working]43% [5 Packages store 0 B] [Waiting for headers]                                                Get:10 http://in.archive.ubuntu.com/ubuntu xenial-updates/main i386 Packages [553 kB]
+43% [5 Packages store 0 B] [10 Packages 0 B/553 kB 0%]                                                      44% [10 Packages 53.5 kB/553 kB 10%]                                    50% [10 Packages 271 kB/553 kB 49%]55% [10 Packages 495 kB/553 kB 90%]                                   56% [Waiting for headers]                         Get:11 http://in.archive.ubuntu.com/ubuntu xenial-updates/main amd64 DEP-11 Metadata [299 kB]
+56% [11 Components-amd64 11.1 kB/299 kB 4%]56% [10 Packages store 0 B] [11 Components-amd64 11.1 kB/299 kB 4%]                                                                   57% [11 Components-amd64 14.6 kB/299 kB 5%]61% [11 Components-amd64 227 kB/299 kB 76%]                                           63% [Waiting for headers]                         Get:12 http://in.archive.ubuntu.com/ubuntu xenial-updates/main DEP-11 64x64 Icons [195 kB]
+63% [12 icons-64x64 9,433 B/195 kB 5%]63% [11 Components-amd64 store 0 B] [12 icons-64x64 9,433 B/195 kB 5%]                                                                      64% [12 icons-64x64 52.5 kB/195 kB 27%]                                       68% [Working]             Get:13 http://in.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [492 kB]
+68% [13 Packages 7,176 B/492 kB 1%]68% [12 icons-64x64 store 0 B] [13 Packages 7,176 B/492 kB 1%]                                                              69% [13 Packages 37.1 kB/492 kB 8%]73% [13 Packages 239 kB/492 kB 49%]78% [13 Packages 436 kB/492 kB 89%]                                 400 kB/s 2s                                                                               Get:14 http://in.archive.ubuntu.com/ubuntu xenial-updates/universe i386 Packages [473 kB]
+79% [14 Packages 6,691 B/473 kB 1%]                                 400 kB/s 2s79% [13 Packages store 0 B] [14 Packages 6,691 B/473 kB 1%]         400 kB/s 2s80% [14 Packages 13.6 kB/473 kB 3%]                                 400 kB/s 2s86% [14 Packages 268 kB/473 kB 57%]                                 400 kB/s 1s90% [14 Packages 462 kB/473 kB 98%]                                 400 kB/s 0s90% [Waiting for headers]                                           400 kB/s 0s                                                                               Get:15 http://in.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 DEP-11 Metadata [163 kB]
+91% [15 Components-amd64 6,634 B/163 kB 4%]                         400 kB/s 0s                                                                               91% [14 Packages store 0 B] [15 Components-amd64 32.6 kB/163 kB 20%]92% [15 Components-amd64 56.4 kB/163 kB 35%]                        400 kB/s 0s94% [Working]                                                       400 kB/s 0s                                                                               Get:16 http://in.archive.ubuntu.com/ubuntu xenial-updates/universe DEP-11 64x64 Icons [203 kB]
+94% [16 icons-64x64 2,489 B/203 kB 1%]                              400 kB/s 0s                                                                               94% [15 Components-amd64 store 0 B] [16 icons-64x64 2,489 B/203 kB 1%]95% [16 icons-64x64 19.8 kB/203 kB 10%]                             400 kB/s 0s99% [Waiting for headers]                                           400 kB/s 0s                                                                               Get:17 http://in.archive.ubuntu.com/ubuntu xenial-updates/multiverse amd64 DEP-11 Metadata [2,516 B]
+99% [Waiting for headers]                                           400 kB/s 0s                                                                               Get:18 http://in.archive.ubuntu.com/ubuntu xenial-backports/main amd64 DEP-11 Metadata [3,328 B]
+                                                                               Get:19 http://in.archive.ubuntu.com/ubuntu xenial-backports/universe amd64 DEP-11 Metadata [4,672 B]
+99% [Working]                                                       400 kB/s 0s99% [16 icons-64x64 store 0 B]                                      400 kB/s 0s100% [Working]                                                      400 kB/s 0s100% [17 Components-amd64 store 0 B]                                400 kB/s 0s100% [Working]                                                      400 kB/s 0s100% [18 Components-amd64 store 0 B]                                400 kB/s 0s100% [Working]                                                      400 kB/s 0s100% [19 Components-amd64 store 0 B]                                400 kB/s 0s100% [Working]                                                      400 kB/s 0s                                                                               Fetched 3,460 kB in 8s (411 kB/s)
+Reading package lists... 0%Reading package lists... 0%Reading package lists... 1%Reading package lists... 4%Reading package lists... 4%Reading package lists... 9%Reading package lists... 9%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 35%Reading package lists... 38%Reading package lists... 38%Reading package lists... 65%Reading package lists... 65%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 80%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 81%Reading package lists... 82%Reading package lists... 83%Reading package lists... 83%Reading package lists... 86%Reading package lists... 86%Reading package lists... 87%Reading package lists... 87%Reading package lists... 88%Reading package lists... 88%Reading package lists... 88%Reading package lists... 88%Reading package lists... 88%Reading package lists... 88%Reading package lists... 90%Reading package lists... 90%Reading package lists... 92%Reading package lists... 92%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 93%Reading package lists... 94%Reading package lists... 94%Reading package lists... 95%Reading package lists... 95%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... Done
+Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 0%Reading state information... Done
+ca-certificates is already the newest version (20160104ubuntu1).
+apt-transport-https is already the newest version (1.2.20).
+curl is already the newest version (7.47.0-1ubuntu2.2).
+software-properties-common is already the newest version (0.96.20.7).
+0 upgraded, 0 newly installed, 0 to remove and 17 not upgraded.
+#+end_example
+
+*** Step 2 Add dockers official GPG Key
+#+BEGIN_SRC sh :dir /sudo:: :results output
+pwd
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+apt-key fingerprint 0EBFCD88
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+#+END_SRC
+
+#+RESULTS:
+: /root
+: OK
+: pub   4096R/0EBFCD88 2017-02-22
+:       Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+: uid                  Docker Release (CE deb) <docker@docker.com>
+: sub   4096R/F273FCD8 2017-02-22
+: 
+
+*** Step 3 Add a stable repository
+
+#+BEGIN_SRC sh :dir /sudo:: :results output
+pwd
+
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+#+END_SRC
+
+#+RESULTS:
+: /root
+
+*** Step 3 Update packages and install docker
+
+#+BEGIN_SRC sh :dir /sudo:: :results output
+pwd
+apt-get update
+apt-get install docker-ce
+#docker run hello-world
+
+#+END_SRC
+
+#+RESULTS:
+
+
+*** Step 4 Test docker with hello world
+
+#+BEGIN_SRC sh :dir /sudo:: :results output
+docker run hello-world
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://cloud.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
+
+#+end_example
+
+** DONE Go through the docker tutorial
+   SCHEDULED: <2017-07-17 Mon 11:00>
+   CLOCK: [2017-07-14 Fri 12:35]--[2017-07-14 Fri 12:38] =>  0:03
+
+*** Orientation
+https://docs.docker.com/get-started/
+
+*** Containers
+
+https://docs.docker.com/get-started/part2/
+
+**** Dockerfile
+
+**** App
+
+**** Build app
+
+**** Run app
+
+**** Share image
+
+**** Publish image
+
+**** Pull and run image
+
+*** Services
+
+*** Swarm
+
+*** Stacks
+
+*** Deploy your app
+
+* Rsycnc and scp choice
+Use rsync when there are large number of files or if the data is huge
+
+This is the one I used.
+
+rsync -avzhe ssh --progress /home/rpmpkgs root@192.168.0.100:/root/rpmpkgs
+-a archive
+-v verbose
+-z compress
+-h human readable
+-e specify the remote shell to use
+
+
+rsync -avzhe ssh --progress incremental ec2-user@10.152.54.25:incremental
+
+https://www.tecmint.com/rsync-local-remote-file-synchronization-commands/
+
+* Passwordless ssh
+
+cat .ssh/id_rsa.pub | ssh sheena@192.168.0.11 'cat >> .ssh/authorized_keys'
+
+cat .ssh/id_rsa.pub | ssh bineesh.panangat@bastion.prod.cc.oneplatform.build 'cat >> .ssh/authorized_keys'

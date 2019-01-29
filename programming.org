@@ -1,0 +1,386 @@
+* Hello world
+Hello World program is the first program to write in any programming language.
+
+** Python
+#+BEGIN_SRC python :results output
+print "hello world"
+#+END_SRC
+
+#+RESULTS:
+: hello world
+
+** Shell
+#+BEGIN_SRC sh :results output
+echo "hello world"
+#+END_SRC
+
+#+RESULTS:
+: hello world
+   
+** Scala
+
+#+BEGIN_SRC scala :results output
+println("Hello World")
+#+END_SRC
+
+#+RESULTS:
+: Hello World
+
+** Java
+Java classname should be given in header
+#+HEADERS: :classname HelloWorld
+#+BEGIN_SRC java :results output :exports both
+
+public class HelloWorld {
+    public static void main(String[] args){
+        System.out.println("Hello World");
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+: Hello World
+
+** Trying a C program
+This is more difficult because this is a compiled language
+Main is not required. If you don't give main an implicit main
+is included.
+#+BEGIN_SRC C :results output :tangle yes :tangle /tmp/hello.c
+
+printf("Hello World\n");
+
+#+END_SRC
+
+#+RESULTS:
+: Hello World
+
+Using implicit main again to add 2 numbers.
+#+BEGIN_SRC C :results output
+int a=1;
+int b=1;
+printf("%d\n", a+b);
+
+#+END_SRC
+
+#+RESULTS:
+: 2
+
+Here I have added an explicit main function.
+It is working fine.
+#+BEGIN_SRC C :results output
+ 
+print_one_to_maxnum(int max_num)
+{
+   int i;
+   for(i=1; i < max_num ; i++)
+       printf("%d, ", i);
+   printf("%d\n", max_num);
+}
+int main()
+{
+   print_one_to_maxnum(5);
+   return 0;
+}
+#+END_SRC
+
+#+RESULTS:
+: 1, 2, 3, 4, 5
+
+* Java script
+#+BEGIN_SRC :js :results output
+
+
+
+#+END_SRC
+
+* Elisp
+#+BEGIN_SRC elisp :results output
+(print "hello world")
+
+#+END_SRC
+
+#+RESULTS:
+: 
+: "hello world"
+
+#+BEGIN_SRC elisp :results output
+(defun print-string (s count maxvalue)
+  (print s)
+  (cond ((< count maxvalue) (print-string s (+ count 1) maxvalue)))
+  )
+(print-string "hello world" 1 5)
+(cond ((< 4 5) (print "True" )))
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+"hello world"
+
+"hello world"
+
+"hello world"
+
+"hello world"
+
+"hello world"
+
+"True"
+#+end_example
+
+
+
+* Scala
+** Hello world
+#+BEGIN_SRC scala :results output
+    object HelloWorld {
+      def main(args: Array[String]): Unit = {
+        println("Hello, world!")
+      }
+    }
+
+
+#+END_SRC
+
+#+RESULTS:
+: Hello, world!
+
+** Basic types 
+** Variables
+#+BEGIN_SRC scala :results output
+val x = 10
+println(x)
+var y = 10
+
+y = 11
+println(y)
+
+val z: Int = 10
+val a: Double = 1.0
+
+// Notice automatic conversion from Int to Double, result is 10.0, not 10
+val b: Double = 10
+
+var h:String = "hello world"
+println(h.length)
+println(h.replace('h' , 'H'))
+#+END_SRC
+
+#+RESULTS:
+: 10
+: 11
+
+** Control structures
+*** Conditional statements
+
+**** Trivial conditional
+#+BEGIN_SRC scala :results output
+val foo = false
+val bar = "bar"
+val baz = "baz"    
+val res = if (foo) bar else baz
+print(res) 
+#+END_SRC
+
+#+RESULTS:
+: baz
+
+
+#+BEGIN_SRC scala :results output
+var x = 0
+while (x < 5)
+{
+println(x)
+x += 1
+}
+
+val terminate = 5
+var i = 0
+do {
+  println(s"$i is still less than $terminate")
+  i += 1
+} while (i < terminate)
+
+val r = 1 to 5
+println(r)
+r.foreach(println)
+
+r foreach println
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+0
+1
+2
+3
+4
+0 is still less than 5
+1 is still less than 5
+2 is still less than 5
+3 is still less than 5
+4 is still less than 5
+Range(1, 2, 3, 4, 5)
+1
+2
+3
+4
+5
+1
+2
+3
+4
+5
+#+end_example
+
+** functions
+
+*** Simple function
+#+BEGIN_SRC scala :results output
+def SimpleFunction = 3
+println(SimpleFunction)
+
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+*** Function with one variable
+#+BEGIN_SRC scala :results output
+
+#+END_SRC
+
+#+BEGIN_SRC scala :results output
+def oneVariable_cube(a: Int) = a * a * a
+
+println(oneVariable_cube(3))
+#+END_SRC
+
+#+RESULTS:
+: 27
+
+*** Function with two variables
+#+BEGIN_SRC scala :results output
+
+def subtract(x: Int, y: Int): Int = x - y
+
+def hypotenuse(base: Double, altitude: Double): Double = math.sqrt(base * base + altitude * altitude)
+
+println(hypotenuse(3, 4))
+println(subtract(5, 4))
+
+
+#+END_SRC
+
+#+RESULTS:
+: 5.0
+: 1
+
+** Inbuilt data structures
+** File IO
+** Command line arguments
+** Data structures
+* Learn x in y minutes
+https://learnxinyminutes.com/
+** DONE Read elisp section first pass
+     SCHEDULED: <2016-10-26 Wed>
+** DONE Read scala section first pass
+   SCHEDULED: <2016-10-27 Thu>
+** DONE [#B] Read java section first pass
+   SCHEDULED: <2016-11-01 Tue>
+* Decorator
+** Python
+#+BEGIN_SRC python :results output
+def funA(a):
+    def wrapper():
+        print 'entering funA'
+        a()
+        print 'exiting from funA'
+    return wrapper
+
+def funB(b):
+    def wrapper():
+        print 'entering funB'
+        b()
+        print 'exiting from funB'
+    return wrapper
+
+
+
+@funA
+@funB
+def funC():
+    print 'inside funC'
+
+
+funC()
+
+#+END_SRC
+
+#+RESULTS:
+: entering funA
+: entering funB
+: inside funC
+: exiting from funB
+: exiting from funA
+
+* guile scheme
+This is partially working.
+Mic scheme is not working properly with emacs org mode
+Even guile is not working properly
+#+BEGIN_SRC scheme
+(car (cdr (list 'singam 'karthi 'bini)))
+#+END_SRC
+
+#+RESULTS:
+: karthi
+
+
+#+BEGIN_SRC scheme :tangle yes :tangle /tmp/zdefine.ss
+(define pi 3.14)
+(define (square x) (* x x))
+
+#+END_SRC
+** What is pig latin?
+Piglatin(scheme) = emeschay
+scheme
+chemes
+hemesc
+emesch
+emeschay
+#+BEGIN_SRC sh :results output :tangle yes :tangle /tmp/piglatin.ss
+
+(define (vowel letter)
+(if (memq letter (list 'a 'e 'i 'o 'u))
+#t
+#f
+))
+
+(define lst1 (list 'a 'b 'c 'd))
+(define lst2 (list 'e 'f 'g))
+
+(define (extend lst1 lst2)
+(let ((first (car lst2))
+      (rest (cdr lst2))
+     )
+      (if (eq? rest ())
+        (append lst1 first)
+        (append (append lst1 first) rest)
+      )
+))
+
+(extend lst1 lst2)
+
+(pigl word
+(let ((first (car word))
+      (rest (cdr word))
+      )
+     (if (vowel first)
+         (word)
+         (pigl word (list rest first)))
+)
+(vowel 'a)
+
+(pigl (list 'korea))
+#+END_SRC
+

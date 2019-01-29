@@ -1,0 +1,1758 @@
+* Breaking it up
+** Languages
+   file:programming.org
+*** Python
+file:python.org
+*** Scala
+file:scala.org
+*** Java
+*** Clojure
+*** Shell
+*** Javascript
+*** Haskell
+*** Common Lisp
+*** Asm
+*** Go
+*** Swift
+*** C
+** Data structures and Algorithms
+file:data_stuctures_and_algorithms.org
+** Design
+*** Design patterns
+**** Creational
+Class instantiation or object creation
+***** Abstract Factory
+***** Factory
+#+BEGIN_SRC python :results output
+
+  class A:
+      def __init__(sellf):
+          print('class A created')
+
+  class B:
+      def __init__(sellf):
+          print('class B created')
+
+  my_classes = [A, B]
+  for cls in my_classes:
+      cls()
+
+  my_class_dict = { "A" : A,
+                    "B": B
+      }
+
+  for class_name_key in my_class_dict.keys():
+      my_class_dict[class_name_key]()
+#+END_SRC
+
+#+RESULTS:
+: class A created
+: class B created
+: class A created
+: class B created
+
+***** Builder
+***** Singleton
+
+The Singleton pattern is used when we want to guarantee that only one instance of a given class exists during runtime.
+Do we really need this pattern in Python? Based on my experience, it’s easier to simply create one instance intentionally
+and then use it instead of implementing the Singleton pattern.
+
+But should you want to implement it, here is some good news: In Python, we can alter the instantiation process (along
+with virtually anything else). Remember the __new__() method I mentioned earlier? Here we go:
+
+class Logger(object):
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, '_logger'):
+            cls._logger = super(Logger, cls
+                    ).__new__(cls, *args, **kwargs)
+        return cls._logger
+
+In this example, Logger is a Singleton.
+
+These are the alternatives to using a Singleton in Python:
+
+1. Use a module. 
+2. Create one instance somewhere at the top-level of your application, perhaps in the config file. 
+P3. ass the instance to every object that needs it. That’s a dependency injection and it’s a powerful and easily mastered
+ mechanism. 
+
+Singleton is a special case if we consider a class which restricts
+the production of just n instances
+
+#+BEGIN_SRC python :results output
+  class Singleton:
+      __instance = None
+      @staticmethod
+      def getinstance():
+          if Singleton.__instance:
+              return Singleton.__instance
+
+      def __init__(self):
+          if Singleton.__instance == None:
+              Singleton.__instance = self
+          else:
+              raise Exception('This class is a Singleton, Use Singleton.getinstance()')
+          
+
+  s = Singleton()
+  try:
+      Singleton()
+  except Exception as e:
+      print(e)
+
+  s1 = Singleton.getinstance()
+
+  assert s == s1
+  print(s)
+  print(s1)
+#+END_SRC
+
+#+RESULTS:
+: This class is a Singleton, Use Singleton.getinstance()
+: <__main__.Singleton instance at 0x7f7726c5fe18>
+: <__main__.Singleton instance at 0x7f7726c5fe18>
+
+***** Object pool
+***** Prototype
+**** Structural
+About organising different classes and objects to form larger structeres and provide new functionality
+
+***** Adapter
+
+***** Bridge
+
+***** Composite
+
+***** Decorator
+
+***** Facade
+
+***** Flyweight
+
+***** Private class Data and Proxy
+
+
+**** Behavioral
+
+Behavioral patterns are about identifyig common communication patterns between objects and realize these patterns
+
+***** Chain of resposibility
+
+This pattern gives us a way to treat a request using different methods, each one addressing a specific part of the request. You know, one of the best principles for good code is the Single Responsibility principle.
+
+Every piece of code must do one, and only one, thing.
+
+This principle is deeply integrated in this design pattern.
+
+For example, if we want to filter some content we can implement different filters, each one doing one precise and clearly defined type of filtering. These filters could be used to filter offensive words, ads, unsuitable video content, and so on.
+
+
+It is a chain of responsibility.
+Each filters are chained together.
+
+Or is this a good example?
+Is this actually a command pattern
+Check once more.
+
+#+BEGIN_SRC python :results output
+
+  # simulating with simple text search
+
+  example_content = """I am a good content 1
+  I am an offensive content
+  I am a good content 2
+  I am a good content 3
+  I am an ad
+  I am a good content 4
+  I am an unsuitable video
+  I am a good content 5"""
+
+
+  def word_filter(content, word_to_remove):
+      lines = []
+      for line in content.split('\n'):
+          if word_to_remove not in line:
+              lines.append(line)
+      return '\n'.join(lines)
+
+  def offensive_filter(content):
+      return word_filter(content, 'offensive')
+
+  def ads_filter(content):
+      return word_filter(content, 'ad')
+
+  def unsuitable_video_filter(content):
+      return word_filter(content, 'unsuitable video')
+
+
+  class ContentFilter(object):
+      def __init__(self, filters=None):
+          self._filters = list()
+          if filters is not None:
+              self._filters = filters
+
+      def filter(self, content):
+          for filter in self._filters:
+              content = filter(content)
+          return content
+
+
+  filter = ContentFilter([
+                  offensive_filter,
+                  ads_filter,
+                  unsuitable_video_filter])
+
+  filtered_content = filter.filter(example_content)
+
+  print('original data was:')
+  print(example_content)
+  print()
+  print('filtered data is:')
+  print(filtered_content)
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+original data was:
+I am a good content 1
+I am an offensive content
+I am a good content 2
+I am a good content 3
+I am an ad
+I am a good content 4
+I am an unsuitable video
+I am a good content 5
+()
+filtered data is:
+I am a good content 1
+I am a good content 2
+I am a good content 3
+I am a good content 4
+I am a good content 5
+#+end_example
+
+***** Command
+
+
+The command pattern is handy in situations when, for some reason, we need to start by preparing what will be executed and then to execute it when needed. The advantage is that encapsulating actions in such a way enables
+Python developers to add additional functionalities related to the executed actions, such as undo/redo, or keeping a
+history of actions and the like.
+
+Let’s see what a simple and frequently used example looks like:
+
+#+BEGIN_SRC python :results output
+
+    import os
+    import tempfile
+
+    class RenameFileCommand(object):
+        def __init__(self, from_name, to_name):
+            self._from = from_name
+            self._to = to_name
+
+        def execute(self):
+            os.rename(self._from, self._to)
+
+        def undo(self):
+            os.rename(self._to, self._from)
+
+    class History(object):
+        def __init__(self):
+            self._commands = list()
+
+        def add(self, command):
+            self._commands.append(command)
+            
+        def execute():
+            for command in self._commands:
+                command.execute()
+
+        def undo(self):
+            self._commands.pop().undo()
+
+    tempdir = tempfile.gettempdir()
+    docs_dir = 'docs'
+    docs_dir_full_path = os.path.join(tempdir, docs_dir)
+    if os.path.exists(docs_dir_full_path):
+        os.rmdir(docs_dir_full_path)
+    os.mkdir(docs_dir_full_path)
+    old_file_1 = os.path.join(docs_dir_full_path, 'old_file_1.txt')
+    new_file_1 = os.path.join(docs_dir_full_path, 'new_file_1.txt')
+    old_file_2 = os.path.join(docs_dir_full_path, 'old_file_2.txt')
+    new_file_2 = os.path.join(docs_dir_full_path, 'new_file_2.txt')
+
+    def create_file(filename):
+        with open(filename, 'w') as f:
+            f.write(filename)  # add some dummy data into it
+
+    # prepare the data for testing
+
+    create_file(old_file_1)
+    create_file(old_file_2)
+
+    history = History()
+    print(os.listdir(docs_dir_full_path))
+    history.add(RenameFileCommand(old_file_1, new_file_1))
+    history.add(RenameFileCommand(old_file_2, new_file_2))
+    history.execute()
+    print(os.listdir(docs_dir_full_path))
+    history.undo()
+    history.undo()
+    print(os.listdir(docs_dir_full_path))
+    
+#+END_SRC
+
+#+RESULTS:
+: ['old_file_2.txt', 'old_file_1.txt']
+: ['new_file_2.txt', 'new_file_1.txt']
+: ['old_file_2.txt', 'old_file_1.txt']
+
+
+***** Interpreter
+
+***** Iterator
+Built into python
+Can use iterator and generator.
+
+#+BEGIN_SRC python :results output
+for i in range(3):
+    print(i)
+
+#+END_SRC
+
+#+RESULTS:
+: 0
+: 1
+: 2
+
+***** Mediator
+
+***** Memento
+
+***** Null Object
+
+***** Observer
+
+***** State
+
+***** Strategy
+#+BEGIN_SRC python :results output
+  def strategy1():
+      print('first strategy')
+
+  def strategy2():
+      print('second strategy')
+
+  strategy = strategy1
+  strategy()
+
+  strategy = strategy2
+  strategy()
+#+END_SRC
+
+Assume that movie tickets are priced based on the demand
+If the demand is likely to be high then increase the price accordingly
+
+
+#+BEGIN_SRC python :results output
+  def weekday_strategy():
+      print('weekday')
+
+  def weekend_strategy():
+      print('weekend')
+
+
+  class DynamicPricer:
+      def __init__(self, strategy):
+          self.strategy = strategy
+
+      def get_price(self):
+          return self.strategy()
+
+  # May be the code can check the date and implement strategy
+  # based on date
+  dp = DynamicPricer(weekday_strategy)
+  dp.get_price()
+#+END_SRC
+
+#+RESULTS:
+: weekday
+
+***** Template method
+
+***** Visitor
+
+** Debugging
+sept 1947
+Tape- A moth between relays. removed the moth
+1800 debugging
+Shakesphere - bug(needless exercise which causes fear, anxiety)
+
+Mistakes = bugs
+
+Aim
+Not the eliminate one bug quickly but to move towards a bug free program
+
+Transferable skill to other areas
+
+Debugger
+Tools are not important.
+Craftsman is
+
+Search for bugs using binary search
+
+How could it have done what it has done
+
+Print statements
+
+Scientific method
+
+1. Study available data(prg text)
+2. Test result
+3. Hypothesis consistent with data
+4. Design and run a repeatable experiment
+5. Replay things
+
+fubd a small piece of input that produces the bug
+Process of binary search
+
+There is no such thing as the bug.
+There is only a bug.
+
+Test harness.
+Print the expected result as well as actual result.
+
+Randomly generated test input
+
+** Testing
+** Devops
+file:devops.org
+** Blogs to read
+http://www.sw-engineering-candies.com
+http://www.makinggoodsoftware.com/
+** Computer maintenence
+*** Linux
+**** DONE [#C] Install Detox cleansup filenames in linux
+     SCHEDULED: <2016-10-22 Sat>
+     Another option is to find another way and do it in python or in elisp
+Example of bad filename
+'Exploring Wikipedia With Apache Spark' - Advanced Training by Sameer Farooqui (Databricks)-vlVnSpJ6TDE.mp4
+#+BEGIN_SRC python :results output
+bad_filename = "'Exploring Wikipedia With Apache Spark' - Advanced Training by Sameer Farooqui (Databricks)-vlVnSpJ6TDE.mp4"
+bad_characters = {"'":"",
+                  " ": "_",
+                  "(": "",
+                  ")": ""
+                 }
+new_chars = []
+for c in bad_filename:
+    #print c, ord(c)
+    
+    if c in bad_characters:
+        c = bad_characters[c]
+    if c != "":
+        new_chars.append(c)
+
+print "".join(new_chars)
+
+
+#+END_SRC
+
+#+RESULTS:
+: Exploring_Wikipedia_With_Apache_Spark_-_Advanced_Training_by_Sameer_Farooqui_Databricks-vlVnSpJ6TDE.mp4
+
+http://detox.sourceforge.net/
+#+BEGIN_SRC sh :results output
+tempdir=$(mktemp -d /tmp/detox.XXXXX)
+cd $tempdir
+ls $tempdir
+firefox https://sourceforge.net/projects/detox/files/latest/download?source=files
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh :results output
+dir_1=$(ls -lrth /tmp|grep detox|tail -1|awk '{print $NF}')
+directory=/tmp/$dir_1
+echo $dir_1
+echo $directory
+mv ~/Downloads/detox*tar.bz2 $directory
+cd $directory
+ls -lrth
+tar -jxvf detox*
+ls -lrth
+cd detox-1.2.0
+cat README
+2>&1 ./configure && make
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC sh :dir /sudo:: :results output
+apt install detox
+
+#+END_SRC
+
+#+RESULTS:
+: Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+: Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+: Reading state information... 0%Reading state information... 0%Reading state information... Done
+: detox is already the newest version (1.2.0-6).
+: 0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.
+
+** Angular 2
+file:angular2-writeup.org
+
+** Platforms
+file:aws.org
+** Editors
+file:emacs.org
+** Linux
+   file:gentoo.org
+** Version control
+   file:git.org
+** Interview
+*** Generic advices
+Slow
+Methodical
+Psuedocode
+Estimation questions
+Use full board
+Real code
+Short resume
+Tell me about yourself
+Real results not responsibilities
+Projects
+Ask questions
+Understand the problem correctly before attempting
+can try bruteforce first
+Test code
+*** About experience
+Most challenging thing
+Hardest bug
+Most interesting
+Enjoyed
+Conflicts
+What I learned
+** Architect
+   http://www.ibm.com/developerworks/rational/library/mar06/eeles/
+Technical leader
+Software development
+Business domain knowledge
+Technology knowledge
+Design
+Programming
+Communication
+Decision
+Politics
+Negotiator
+
+*** Software architecture youtube popular playlist
+
+https://www.youtube.com/playlist?list=PLJB7c0GMW
+
+*** UML
+
+**** Plantuml
+
+(setq org-plantuml-jar-path
+      (expand-file-name "~/.emacs.d/plantuml.jar"))
+
+#+BEGIN_SRC sh
+mkdir -p images
+
+#+END_SRC
+
+#+RESULTS:
+
+***** Sequence diagram
+
+#+BEGIN_SRC plantuml :file images/sequence_diagram.png 
+
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml
+#+END_SRC
+
+#+RESULTS:
+[[file:images/sequence_diagram.png]]
+
+***** Use case daigram
+
+****** Use case
+#+BEGIN_SRC plantuml :file images/use_case.png 
+@startuml
+(First usecase)
+(Another usecase) as (UC2)  
+usecase UC3
+usecase (Last usecase) as UC4
+@enduml
+
+#+END_SRC
+
+#+RESULTS:
+[[file:images/use_case.png]]
+
+******* Actors
+#+BEGIN_SRC plantuml :file images/actors.png 
+@startuml
+
+:First Actor:
+:Another\nactor: as Men2  
+actor Men3
+actor :Last actor: as Men4
+
+@enduml
+
+#+END_SRC
+
+#+RESULTS:
+[[file:images/actors.png]]
+
+******* Multiple actors 
+#+BEGIN_SRC plantuml :file images/multiple_actors.png 
+@startuml
+
+:First Actor:
+:Another\nactor: as Men2  
+actor Men3
+actor :Last actor: as Men4
+
+@enduml
+
+#+END_SRC
+
+#+RESULTS:
+[[file:images/multiple_actors.png]]
+
+
+*** System design
+Ask good questions
+strict time frame
+feature set is small
+
+dont use buzz words
+
+clear and organized thinking
+
+drive discussions 80 20 rule
+
+**** Things to consider
+***** Features
+
+***** Define APIs
+
+***** Availability
+
+***** Latency or performance
+
+***** Scalability
+
+***** Durability
+
+***** Class Diagram
+
+***** Security and Privacy
+
+***** Cost effectivity
+
+**** Concepts to know
+
+***** Vertical vs Horizontal scaling
+
+****** Vertical
+More memory cpu to same host
+
+****** Horizontal
+infinitely add more hosts
+Distributed system problems
+
+***** CAP theorem
+Can achieve only two out of three
+Traditional sql consitency
+no sql availability
+
+n the absence of network failure – that is, when the distributed system is running normally – both availability and consistency can be satisfied.
+
+CAP is frequently misunderstood as if one has to choose to abandon one of the three guarantees at all times. In fact, the choice is really between consistency and availability only when a network partition or failure happens; at all other times, no trade-off has to be made.
+
+https://en.wikipedia.org/wiki/CAP_theorem
+
+****** Consistency
+Read has the most recent write
+****** Availability 
+May or may not be the most recent write
+****** Parition tolerance
+Between two nodes you might be dropping packets
+
+
+***** ACID vs BASE
+
+ACID - sql
+BASE - nosql
+
+
+****** ACID
+The key ACID guarantee is that it provides a safe environment in which to operate on your data. The ACID acronym stands for:
+
+1. Atomic
+ All operations in a transaction succeed or every operation is rolled back.
+  
+2. Consistent
+On the completion of a transaction, the database is structurally sound.
+
+3. Isolation
+Transactions do not contend with one another. Contentious access to data is moderated by the database so that transactions appear to run sequentially.
+
+4. Durable
+The results of applying a transaction are permanent, even in the presence of failures.
+
+****** BASE
+1. Basic Availability
+The database appears to work most of the time.
+2. Soft-state
+Stores don't have to be write-consistent, nor do different replicas have to be mutually consistent all the time.
+3. Eventual consistency
+Stores exhibit consistency at some later point (e.g., lazily at read time).
+BASE properties are much looser than ACID guarantees, but there isn't a direct one-for-one mapping between the two consistency models. 
+
+A BASE datastore values availability (since that's important for scale), but it doesn't offer guaranteed consistency of replicated data at write time. Overall, the BASE consistency model provides a less strict assurance than ACID: data will be consistent in the future, either at read time (e.g., Riak) or it will always be consistent, but only for certain processed past snapshots (e.g., Datomic).
+
+
+***** Partition / Sharding Data
+Trillions of records cannot be stored on one hosts
+how to shard to multiple machines
+
+Sharding is horizontal partitioning, ie distribution of partitions to different machines
+
+consistent hashing
+
+***** Optimistic vs Pessimistic locking
+
+****** Optimistic
+No locks but check before a write
+
+****** Pessimistic
+Locks more aggressively
+***** Strong vs Eventual consistency
+reads will always see latest write
+
+reads will see some writes and eventually becomes consistent
+***** Relational DB vs NoSql
+No sql scales better
+higher availability
+***** Types of NoSql
+
+****** key value
+Simplest
+
+****** Wide column
+many different kind of columns
+****** Document based
+Semi structured data like json, xml
+****** Graph based
+Graph based no sequel db
+***** Caching
+Speed up frequently accessed data
+Caches not shared vs Distributed cache
+Cache is not the source of truth
+***** Data center / Racks / hosts
+Data center -> racks -> hosts
+What is the latency?
+What happens when a rack go down, or data centre go down
+***** CPU / Memory / Hard Drive / Network Bandwidth
+
+***** Random vs Sequential Read / write on disk
+Random reads and writes are slower for disk
+***** Http vs http2 vs websockets
+request reply
+http2 improvement multiple requests on single connection
+websocket bi directional
+***** TCP / IP model
+4 layers
+***** Ipv4 vs ipv6
+32 bit 
+128 bit addresses
+***** TCP vs UDP
+Connection oriented vs unreliable
+***** DNS lookup
+
+***** HTTPS and TLS
+
+***** Public key infrastructure and Certificate authority
+
+***** Symmetric Key vs Asymmetric Key
+symmetric aes
+***** Load balancer L4 vs L7
+Delegate
+Round robin
+
+L7 most of them
+https://www.quora.com/What-is-the-difference-between-layer-3-and-layer-4-load-balancing-Why-is-layer-7-LB-used-inspite-of-its-drawbacks-of-being-a-bottleneck
+
+***** CDNs and Edge
+
+content delivery close to me
+Performance and latency
+
+Edge - Processing close to end user
+dedicated
+***** Bloom Filters and Count min sketch
+False positive
+Space efficient
+
+
+***** Paxos Consensus ove distributed hosts
+
+****** Leader election
+
+***** Design patterns and object oriented design
+
+***** Virtual machines and containers
+
+***** Publisher subscriber or Queue
+
+***** Map reduce
+
+***** Multithreading, concurrency, locks, synchronization, CAS
+
+**** Implementations of these concepts
+
+***** Cassandra
+wide column high scalable
+time series
+
+***** Mongodb/couchdb
+acid property
+***** Mysql
+full set of acid property
+master slave
+***** memcached
+distributed cache
+key value
+***** Redis
+distributed cache
+cluster, key value, flush data to harddrive
+***** Zookeeper
+centralized conf management
+distributed locking
+scales for read, but not write
+***** Kafka
+fault tolerant
+message ordered
+***** Nginx
+
+***** HAproxy
+loadbalancer
+***** Solr, elastic search
+search platform on top of lucene
+full text search
+***** Blobstore like amazon s3
+
+***** Docker
+kubermetes
+mesos
+
+tools to coordinate docker
+***** Hadoop / Spark
+hdfs
+
+* Web development
+file:web_development.org
+
+* Asynchronous programming
+
+** Definition
+In synchronous programming, when we call something usually we wait for it to return and then proceed.
+In asnychronous we return immediately and assume that they are going to call us back when they are done with the result.
+
+** Synchronous programming
+
+Go to the shop and buy a pair of shoes.
+
+** Asynchronous
+
+Go order online a pair of shoes.
+We place the order we forget about it.
+In a few days we get a call from the courier about our presence in the delivery location.
+And eventually the courier is delivered.
+
+
+
+* Solve interview question
+
+* Go through standard libraries of programming languages
+  
+* Must read books for software engineers
+https://www.quora.com/What-are-the-must-read-books-for-software-engineers
+** 13. Pragmatic thinking and learning
+
+Pragmatic Thinking and Learning by Andy Hunt
+
+
+Probably the best, non-charlatanic book on improving your thinking that I've found. I only wish I'd found it sooner.
+Summary Notes
+
+This is a book about changing how you think and learn. It's excellent, and overdelivers on that promise. Here I'll try to clarify some of the most important pieces.
+
+There are also some 'recipes' that the author supplies, which I'll list up here
+Recipes
+
+    Always consider the context. Everything is a part of a system, and you can get into trouble by only considering things in isolation.
+    Use rules for novices, intuition for experts. This is one of the core principles of the Dreyfus skill model.
+    Know what you don't know, be humble about your understanding and assume you don't have a complete understanding or the full picture.
+    Learn by watching and imitating, not by being lectured at.
+    Keep practicing in order to remain an expert.
+    Avoid formal methods if you need creativity, intuition, or inventiveness.
+    Learn the skill of learning.
+    Capture all of your ideas, such as in a notebook, to get more of them.
+    Strive for good design, it really works better.
+    The more senses you engage in a task, the more involved and focused your brain will be. Fiddling, music, walking, etc.
+    Step away from the keyboard from time to time to solve hard problems, you need the space to let your background processes figure out the problems you're encountering.
+    Change your viewpoint to solve the problem: look at it in reverse, exaggerate it to the extreme, change your point of reference.
+    Watch for outliers: rarely doesn't mean never.
+    Be comfortable with uncertainty.
+    Trust ink over memory, every mental read is a write.
+    Hedge your bets with diversity.
+    Allow for different bugs in different people.
+    Act like you've evolved, breathe, don't hiss.
+    Trust intuition, but verify.
+    Create SMART objectives to reach your goals.
+    Plan your investment in learning deliberately and developing your mind.
+    Discover how you learn best, it might not be like other people.
+    Form study groups to learn and teach.
+    Read deliberately.
+    To learn better: see it, do it, and teach it.
+    Play more in order to learn more.
+    Learn from similarities, unlearn from differences.
+    Explore, invent, and apply in your environment'safely.
+    See without judging and then act.
+    Give yourself permission to fail; it's the path to success.
+    Groove your mind for success through envisioning it.
+    Learn to pay attention.
+    Make thinking time.
+    Use a personal wiki to organize your knowledge and learning.
+    Establish rules of engagement to manage interruptions.
+    Send less email and you'll receive less.
+    Choose your own tempo for an email conversation, you can slow it down.
+    Hide interruptions to maintain focus.
+    Use multiple monitors to avoid context switching.
+    Optimize your personal workflow to maximize context.
+    Grab the wheel, you can't steer on autopilot.
+
+Other Notes
+
+You can't just rely on a good teacher. A teacher doesn't just teach, a student must also do the learning, and you must know how to learn effectively.
+
+A lot of the book focuses on the Dreyfus model of skill acquisition. I enjoyed that so much that I dedicated a whole article to it which you can read here .
+
+The book also focuses a lot on Deliberate practice. I have a big guide to that , too, which will be more helpful than re-summarizing his notes here.
+
+Cubicles cure neurons. Part of why we thoughts you couldn't grow new neurons is that the people being studied were in dull environments, but if you're in an exciting environment where you're thriving, neuron growth is quite natural.
+
+Uncorrected problems that you're aware of only get worse. Fix them as soon as possible.
+
+Questions to ask yourself to challenge your intuition:
+
+    How do you know?
+    Says who?
+    How specifically?
+    How does what I'm doing cause you to'?
+    Compared to what or whom?
+    Does it always happen?
+    Can you think of an exception?
+    What would happen if you did (or didn't)?
+    What stops you from'?
+
+The planning is more important than the plan. Just because your plan is likely to change doesn't mean planning isn't valuable.
+
+Use the SQ3R method to make reading more effective:
+
+    Survey: Scan the table of contents and chapter summaries for an overview.
+    Question: Note any questions you have.
+    Read: Read in its entirety.
+    Recite: Summarize, take notes, and put in your own words.
+    Review: Reread, expand notes, and discuss with colleagues.
+
+The rule of three: If you can't think of three ways a plan can go wrong or three different solution to a problem, then you haven't thought about it hard enough.
+
+** 12. Working Effectively with Legacy Code
+I love this book because almost every software developer, at some point in their career, has to support and work with a legacy system. In this book, Michael Feathers offers start-to-finish strategies for working more effectively with large, untested legacy code bases. This book draws on material Michael created for his renowned Object Mentor seminars: techniques Michael has used in mentoring to help hundreds of developers, technical managers, and testers bring their legacy systems under control.
+
+https://softwareengineering.stackexchange.com/questions/122014/what-are-the-key-points-of-working-effectively-with-legacy-code
+
+** 11. The Mythical Man-Month
+This book is a classic, but recently revised and corrected. The amazing thing is how relevant the book still is to software product development. If you are involved in software, this book is a must-read. The most valuable part of the book, I believe, is the “plan to throw out” prototype chapter. While the goal is always to make a bigger, better, fast whatever, it is almost an axiom that you WILL build something that has to be discarded and reworked. This absolutely happens every time, I can tell you from first-hand experience. Therefore, it is vital to plan to throw out so you can migrate your users to whatever will follow. If you dream that the first product is THE ONE, you risk abandoning them on a product that will inevitably evolve. Planning the throw-away also helps meet the schedule goals by setting reasonable milestones that can be met.
+http://www.cs.usfca.edu/~parrt/course/601/lectures/man.month.html
+
+** 10. Design Patterns
+If you are planning to be an architect or designer of a system, you will most likely be required to read this book. Hailed as one of the greatest software development books ever written, this books goes into great detail on the many different design patterns that have been developed over the years to help software engineers avoid and handle common problems that the industry faces. Following the stategies in this book will allow you to build higher quality, flexible, and maintainable software. This book also goes by the name “Gang of Four” in software groups because of its famous 4 authors that put this book together.
+
+** 9. Programming Perls (2nd Edition)
+This book is slightly different from the other books on the list. I would say this book helps a person “think like a programmer”. Programming Pearls is a compendium of 15 columns previously published in Communications of the ACM. The columns cover a wide range of topics related to programming: from requirements gathering to performance tuning. The focus is primarily on coding techniques and algorithms.
+Each column has been reorganized as a chapter. Chapters usually start with the presentation of a practical problem. Then various solutions are presented and are used as lessons to be learned. The writing style is clear and fun.
+Programming Pearls is not a usual book teaching new programming concepts. Although it contains good and sometimes quite novel ideas, the aim of the book is not to teach something new but to help you become a better problem solver
+.
+** 8. CODE: The Hidden Language of Computer Hardware and Software
+This book really cleared up a lot of the “Magic” that goes into creating and developing complex systems. There are so many abstractions these days that the low level details are sometimes unknown to the developer. Though you may not find yourself using this book 24/7 in practice…I believe it is a good idea to have an understanding of what you are building on top of and how the whole orchestration works. It may come in handy when you need to open up that “Black Box” and deep dive into the software or hardware to fix a pesky bug. “CODE: The Hidden Language of Computer Hardware and Software” by Charles Petzold deals with a number of programming concepts starting from number systems – decimal, octal, binary to high level languages. The book explains packet based communication protocols and TCP. Many chapters are about hardware concepts and five chapters are devoted for software and explain about the operating system, floating point arithmetic and GUIs.
+** 7. Art of Computer Programming
+This is another classic. This was written by the famous author Donald Kenuth and is highly praised by many of the top programmers in the industry. Even Bill Gates is quoted saying ”
+If you think you’re a really good programmer… read [Knuth’s] Art of Computer Programming… You should definitely send me a resume if you can read the whole thing.
+–Bill Gates
+”
+The book begins with basic programming concepts and techniques, then focuses more particularly on information structures–the representation of information inside a computer, the structural relationships between data elements and how to deal with them efficiently. Elementary applications are given to simulation, numerical methods, symbolic computing, software and system design.
+
+** 6. Refactoring
+“Refactoring” by Martin Fowler is about improving the design of existing code. It is the process of changing a software system in such a way that it does not alter the external behavior of the code, yet improves its internal structure. With refactoring you can even take a bad design and rework it into a good one. This book offers a thorough discussion of the principles of refactoring, including where to spot opportunities for refactoring, and how to set up the required tests. There is also a catalog of more than 40 proven refactorings with details as to when and why to use the refactoring, step by step instructions for implementing it, and an example illustrating how it works The book is written using Java as its principle language, but the ideas are applicable to any OO language.
+https://github.com/HugoMatilla/Refactoring-Summary
+
+** 5. Clean Code
+“Clean Code”, written by Robert C. Martin, is divided into three parts. The first describes the principles, patterns, and practices of writing clean code. The second part consists of several case studies of increasing complexity. Each case study is an exercise in cleaning up code—of transforming a code base that has some problems into one that is sound and efficient. The third part is the payoff: a single chapter containing a list of heuristics and “smells” gathered while creating the case studies. The result is a knowledge base that describes the way we think when we write, read, and clean code.
+
+http://www.inf.fu-berlin.de/inst/ag-se/teaching/K-CCD-2014/Clean-Code-summary.pdf
+https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29
+
+** 4. Introduction to Algorithms
+This has to be the single best book for understanding and developing algorithms (which you will be doing a lot of in software development). Some books on algorithms are rigorous but incomplete; others cover masses of material but lack rigor. Introduction to Algorithms uniquely combines rigor and comprehensiveness. The book covers a broad range of algorithms in depth, yet makes their design and analysis accessible to all levels of readers. Each chapter is relatively self-contained and can be used as a unit of study. The algorithms are described in English and in a pseudocode designed to be readable by anyone who has done a little programming. The explanations have been kept elementary without sacrificing depth of coverage or mathematical rigor.The first edition became a widely used text in universities worldwide as well as the standard reference for professionals. The second edition featured new chapters on the role of algorithms, probabilistic analysis and randomized algorithms, and linear programming.
+
+** 3. Structure and Interpretation of Computer Programs
+With an analytical and rigorous approach to problem solving and programming techniques, this book is oriented toward engineering. Structure and Interpretation of Computer Programs emphasizes the central role played by different approaches to dealing with time in computational models. Its unique approach makes it appropriate for an introduction to computer science courses, as well as programming languages and program design. The book further explains the four trends of programming languages – imperative, object-oriented, logic based and applicative programming.
+
+** 2. Pragmatic Programmer
+This actually was one of the first programming books I read. I had a friend recommend it to me in my first professional job. I’m glad he did. Though the book was written in 1999 (I believe), the concepts are the basis of how we go about developing a complex system in a practical manor. Programmers are craftspeople trained to use a certain set of tools (editors, object managers, version trackers) to generate a certain kind of product (programs) that will operate in some environment (operating systems on hardware assemblies). Like any other craft, computer programming has spawned a body of wisdom, most of which isn’t taught at universities or in certification classes. Most programmers arrive at the so-called tricks of the trade over time, through independent experimentation. In The Pragmatic Programmer, Andrew Hunt and David Thomas codify many of the truths they’ve discovered during their respective careers as designers of software and writers of code.
+Some of the authors’ nuggets of pragmatism are concrete, and the path to their implementation is clear. They advise readers to learn one text editor, for example, and use it for everything. They also recommend the use of version-tracking software for even the smallest projects, and promote the merits of learning regular expression syntax and a text-manipulation language. Other (perhaps more valuable) advice is more light-hearted. In the debugging section, it is noted that, “if you see hoof prints think horses, not zebras.” That is, suspect everything, but start looking for problems in the most obvious places. There are recommendations for making estimates of time and expense, and for integrating testing into the development process. You’ll want a copy of The Pragmatic Programmer for two reasons: it displays your own accumulated wisdom more cleanly than you ever bothered to state it, and it introduces you to methods of work that you may not yet have considered.
+
+*** Pragmatic programmer 
+http://www.inf.fu-berlin.de/inst/ag-se/teaching/K-CCD-2014/Pragmatic-Programmer-summary.pdf
+
+The essence of
+"Pragmatic 
+Programmer
+" 
+A heavily paraphrased summary of the book
+Andrew Hunt, David Thomas
+: The Pragmatic 
+Programmer: From Journeyman to Master
+, 
+Addison
+-Wesley Professional 1999 (321 
+pages) 
+(Lutz Prechelt, 2013)
+Ch. 1: A Pragmatic 
+Philosophy
+"Pragmatic Programmers [...] think beyond 
+the immediate problem, always trying to 
+place it in its larger context, always trying to 
+be aware of the bigger picture."
+ They think 
+critically.
+They take responsibility for everything they 
+do  , refuse doin
+g it if they cannot, and have 
+no fear of appearing weak or incompetent.
+If something goes wrong, they act 
+constructively and offer options, not excuses. 
+When they see how things ought to be, they 
+work as catalysts to make it happen (e.g. 
+using the 
+stone soup
+ trick).
+They understand the context in which they 
+work and so understand 
+what is sufficient
+: 
+What makes 
+good
+-enough software
+. They 
+explicitly trigger requirements discussion on 
+quality levels.
+But 
+they will immediately repair 
+(or at least 
+board up) 
+any "broken window" they find: 
+anything in the software that is not clear and 
+orderly.
+They keep learning explicitly all the time
+ and 
+also continually strive to become better at 
+communicating 
+and understa
+nding their 
+audience
+. They treat learning like financial 
+investment, with notions of diversification, 
+making both low
+-risk and high
+-risk 
+investments, buying low and selling high, and 
+rebalancing the portfolio.
+Ch. 
+2: 
+A Pragmatic Approach
+There are some ide
+as 
+how to approach 
+software development 
+that apply at many 
+different 
+levels and in any software 
+development domain: 
+7.  "Every piece of knowledge must have a 
+single, unambiguous, authoritative 
+representation within a system.", or shorter: 
+Don't repeat yours
+elf (DRY).
+Some duplication may seem unavoidable (e.g. 
+because the same thing must be expressed in 
+more than one notation), sometimes it 
+happens because of inattentiveness or 
+laz
+iness of one developer or because several 
+people introduce the same knowledge 
+independently, 
+but all of these types can be 
+avoided: e.g. by code generators, by 
+recognizing that duplication will usually 
+become costly later on, by making modules 
+easy to reuse
+, and by a sound software 
+architecture and strong communication.
+8. Orthogonality: Eliminate effects of one 
+thing onto an unrelated thing. This will make 
+changes local, make parts testable 
+individually and more reusable, make the 
+overall system more robust
+. Even team 
+members can be more or less orthogonal to 
+each other.
+ Also, avoid relying on things you 
+cannot control. Use refactoring to constantly 
+move towards more nearly orthogonal code.
+Testing and bugfixing provide good indicators 
+of successful orthogon
+ality: Can you easily 
+write tests that test only a single module? 
+Does fixing a bug usually involve a single file 
+only? Then the system's orthogonality is high.
+9. Reversibility: There are no final decisions. 
+Make sure that reversing a decision is cheap. 
+Introducing suitable abstrac
+tions goes a long 
+way for that.
+10. Tracer Bullets: Write your system in such 
+a way that your code helps to find out quickly 
+and easily how close to the target you are
+ – 
+and (unlike prototyping) supports getting 
+closer
+.  The actua
+l solution
+ must be 
+operational 
+long
+ before it is fully functional
+: 
+to provide something to show the users, to 
+prov
+ide an architecture and integration 
+platform for the developers, and to provide a 
+definite measure of progress.
+11. Prototypes
+: Prototypes are
+ vehicles for 
+understanding a few particular aspects of a 
+system, e.g. of visual design, a workflow, a 
+critical performance issue, or the behavior of 
+some technology. They are built in the 
+cheapest possible manner (which needs not 
+involve program code) and
+ are thrown away 
+after the question is solved, because they are 
+about the lesson learned only.
+ Make sure 
+everybody involved understands they will be 
+thrown away.
+12. Domain
+-specific 
+languages: Program close 
+to the application domain. Use domain 
+vocabulary 
+at least. If domain experts use 
+unambiguous language, emulate its 
+semantics and perhaps also its syntax (either 
+for specification only or even in executable 
+fashion). Consider different mini
+-languages 
+for different types of users.
+ There can be 
+mere data la
+nguages (often using rather 
+simple formats), executable languages, or 
+metaprogramming (generating or 
+manipulating parts of the application).
+13. Estimating: Make it a habit to estimate 
+how large things are going to be: Memory 
+requirements, disk space requi
+rements, 
+bandwidth requirements, run times, 
+development times, event frequencies (both 
+at run time and in the development process) 
+and so on. This avoids surprises. 
+Consider the accuracy required and use 
+suitable units.
+ Draw on the experience of 
+others if
+ possible. Make assumptions explicit. 
+Build model
+s. If the estimate is difficult
+ but 
+important, produce multiple estimates with 
+different approaches. For project estimates, 
+that very same project can be a source of 
+estimation knowledge if incremental 
+devel
+opment is used.
+ When asked for an 
+estimate, answer "I'll get back to you" and 
+take your time.
+Ch. 
+3: 
+The Basic Tools
+Every craftsman needs high
+-quality tools. 
+Their skilled use improves only over time but 
+you should still constantly look for better 
+tools, 
+too.
+14. 
+Plain text: Our material is knowledge, its 
+best representation is human
+-understandable 
+structured or semi
+-structured plain text, 
+because that is best for analysis and 
+manipulation (except sometimes when small 
+size and high processing speed of 
+binary 
+format prevails)
+, is most interoperable, does 
+not become obsolete, and is best supported 
+by tools
+. 
+15. Shell: The shell is to a programmer what 
+a work bench is to a woodworker: The center 
+of work. GUI tools are just too inflexible to 
+make the shell 
+obsolete. On MS Windows, use 
+Cygwin.
+16. Editor: Know one editor really well
+; it 
+should be mu
+lti  -platform, extensible, and 
+programmable
+. 
+17. Version control: Is required to undo 
+multiple days of changes when needed, to 
+find out who changed what when, to me
+asure 
+the amount of change over time, to find 
+hotspots of change
+, to automate builds,
+ etc. 
+Use it for all development (even throw
+-away 
+stuff) and version all relevant files, not only 
+source code.
+18. Debugging: Debugging is just problem 
+solving; treat it a
+s such. 
+•
+Focus on the problem, not on blaming. 
+•
+Don't panic. Think. 
+•
+Fix the cause of the failure, not its 
+symptoms. 
+•
+Fix any compiler warnings first. Reproduce 
+the failure then (get help if you cannot) 
+and automate the reproduction. 
+•
+Preferably use a good
+ debugger program 
+with data visualization capabilities.
+•
+Use binary search to narrow problems 
+down. 
+•
+Use tracing/logging where the debugger 
+does not work well and use or make 
+software that helps to wade through the 
+tracing output. 
+•
+Explain partial insights
+ to someone else to 
+complete them. 
+•
+Suspect your project's code first, not 
+compilers or external libraries, but 
+changes to those (or the OS) may break 
+your code without you doing anything. 
+•
+Don't assume, check. 
+•
+Once you found the problem, add the test 
+tha
+t would have caught it and look for 
+further similar problems. If the failure 
+happens far away from the defect, add 
+more integrity checks to the code.
+•
+If the defect was due to a 
+misunderstanding, make sure to clear that 
+up with the author and find a way to
+ avoid 
+similar misunderstandings in the future.
+•
+If debugging took long, reflect why.
+19. Text manipulation: Learn Python, Ruby, 
+or Perl for sifting through and processing 
+plain text. Use it for automating many things.
+20. Code generators: Write code that w
+rites 
+code
+, either for subsequent manual editing 
+(passive generators: for convenience; the 
+code needs not be complete or perfect) or for 
+immediate use (active generators: for 
+following the DRY principle).
+Ch.  4: 
+Pragmatic Paranoia
+You cannot write perfect
+ software. Therefore, 
+do not waste energy trying; be pragmatic.
+Code defensively: Don't trust the code and 
+data of others 
+--    nor your own!
+21. Design by contract: 
+Specify preconditions 
+and (simplified) postconditions explicitly. 
+Perform run
+-time checking f
+or them, using 
+assert if you have nothing else or using a 
+stronger mechanism (that includes 
+inheritance and object invariants) if available 
+for your language. Preprocessors tend to be 
+messy.
+22. Crash early: Check many things that 
+"cannot happen" or absolu
+tely must not 
+happen and crash the program if they 
+happen.
+23. Assertions: Check many things that 
+"cannot happen" or absolutely must not 
+happen and do not be intimidated by the 
+runtime overhead prematurely. Turn off only 
+those assertions that are really to
+o slow. 
+Make very sure your assertions have no side 
+effects.
+24. Exceptions: Use exceptions to free the 
+code from too much intermingled problem 
+handling in order to make the main execution 
+path clearly visible. Use exceptions for 
+unwanted conditions that 
+are at least 
+somewhat surprising, not for fully regular 
+ones.
+25. Resource management: Whenever you 
+can, "finish what you start", i.e. the routine 
+that allocates a resource should be 
+responsible for deallocating it. Deallocate in 
+the opposite order of allocation.
+ Use standard 
+allocation orders to avoid deadlock. Wrap 
+resource use in classes so the destructor can 
+clean up left
+-over resources. In Java, 
+finally
+is your friend for cleaning up reliably. Where 
+"finish what you start" is not applicable, the 
+resource should become part of some 
+container that is responsible for deallocation.
+Ch. 
+5: 
+Bend or Break 
+The world changes constantly, so code must 
+be flexible, too.
+26. Decoupling and the Law of Demeter: 
+Couple your classes to no more other classes 
+than reasona
+bly 
+necessary
+: your instance 
+variables
+, method arguments
+, and new local 
+objects (
+the Law of Demeter)
+. H
+ave those 
+objects
+ perform a complete service for you 
+rather than giving you an object with which 
+you
+ can perform the service.
+ This will require 
+many dele
+gation
+-only methods, though.
+27. Metaprogramming: Provide many 
+configuration option to avoid change 
+programming. Put abstractions in code, 
+details in metadata. If you drive this far 
+enough, y
+ou may even be able to implement 
+different 
+systems 
+using the same
+ application 
+engine, 
+just 
+with different metadata.
+ Business 
+rules and workflows are good candidates for 
+business data. 
+Great applications can change 
+them even without requiring a restart.
+28. Temporal coupling: Design for maximal 
+concurrency, avoid introduce unneeded 
+ordering constraints on steps. This may help 
+your design quality, too, 
+e.g. 
+because you 
+may ask yourself why that global variable 
+that you now need to lock exists at all.
+29. Events and views: Event
+-based control is 
+a good decoupling mechanism, e.g. in a 
+publish/subscribe (observer) structure. In 
+particular, separate views from models, e.g. 
+in a model
+-view
+-controller (MVC) structure, 
+whether in the context of GUIs or elsewh
+ere. 
+You can stack them: One structure's view 
+becomes the next
+-higher structure's model.
+30. Blackboards: 
+An even stronger form of 
+decoupling, where only data structures (or 
+objects) are shared but no call coupling is 
+explicit is a blackboard storage (tupl
+e space, 
+e.g. JavaSpace), asynchronous and possibly 
+transactional, were events are created by the 
+fact that an object with certain properties 
+appears in the storage (written by some other 
+participant). Often combined with rules 
+engines to coordinate workfl
+ows.
+Ch. 
+6: 
+While You Are Coding
+31.
+ Programming by coincidence: To make 
+sure your program works tomorrow, you must 
+thoroughly understand why it works today.
+ If 
+you don't, your code may be slow, confusing, 
+only partially correct, error-
+prone to change, 
+and
+ prone to collapse if the objects change 
+that it is calling. Know what you are relying 
+on. Don't rely on anything you need not rely 
+on.
+32: Algorithm speed: O
+-Notation and runtime 
+complexity classes. Complexity estimation 
+rules
+-of  -thumb. Estimate. Then tes
+t your 
+estimates. Be pragmatic about algorithm 
+choice. 
+33. Refactoring: Building SW is more like 
+gardening than like construction; a constant 
+process of monitoring and care. Regularly 
+refactor your SW to push back duplication, 
+non
+-orthogonal design, outdat
+ed knowledge, 
+and performance degradation. Refactor early, 
+refactor often 
+– and avoid telling your clients 
+you do it. Make small steps and do not 
+change functionality at the same time. Have 
+automated tests to safeguard your changes.
+34. Code that's easy to
+ test: 
+Write automated 
+tests for each module that test against its 
+contract (self
+-testing code). Use assertions in 
+the code. Test lowest
+-level modules first and 
+higher
+-level modules later (to simplify defect 
+localization). Co
+-design code and its tests. 
+Sto
+re the test code close to the module code. 
+Tests also serve as documentation. Use a test 
+harness. Do not throw away the ad
+-hoc tests 
+you invented during debugging. Make sure 
+you can test your software during production, 
+too. Log files and semi
+-official deb
+ugging 
+console windows or built
+-in webservers are 
+helpful.
+ Establish a standardized test culture 
+(as e.g. on the Perl platform).
+35. Evil wizards: If you use a Code 
+Generation Wizard, make sure you 
+understand the code produced, because it will 
+be interwove
+n with your application.
+Ch. 
+7: 
+Before the Project
+36. The requirements pit: "Requirements 
+rarely lie on the surface. Normally, they’re 
+buried deep beneath layers of assumptions, 
+misconceptions,and politics." Identify policies 
+(e.g. access privilege rules)
+ that come as part 
+of requirements a
+nd expect them to be 
+volatile; m
+ake them configurable.
+ Identify 
+user interface details that come as part of 
+requirements and initially treat them as 
+manner of speaking only. Understand and 
+document why users want certain
+ things, not 
+just what. To understand the domain, become 
+a user yourself for a week 
+– it helps build 
+trust and rapport, too. To document 
+requirements, use a suitable Use Case 
+format. Do not overspecify, stick to what's 
+strictly needed.
+ Track all requiremen
+ts 
+changes to avoid creeping featurism. Maintain 
+a glossary and stick to those terms. Use 
+hypertext and internally publish the 
+requirements.
+37.
+ Solving impossible puzzles: The key to 
+coping with seemingly impossible problems is 
+discriminating real constra
+ints from perceived 
+ones.
+ Are you even solving the right problem? 
+Then, enumerate all conceivable (not: 
+possible) routes and carefully explain for each 
+why it cannot work. Find your weak 
+arguments: There are your possibilities.
+38. Not until you're ready: 
+Don't start as long 
+as you have doubts, but start when you are 
+ready. How to discriminate real doubts from 
+mere procrastination? Prototyping will often 
+reveal the problem behind your doubts or 
+quickly get you to readiness.
+39. The specification trap: 
+Don't
+ write highly 
+detailed specifications.
+40. Circles and arrows: Don't become a slave 
+to formalized methods. Beware of 
+requirements specification notations your end 
+users do not understand, beware of developer 
+overspecialization, beware of methods that 
+restrict the flexibility of your designs (e.g. 
+regarding the use of metadata for configuring 
+behaviors). Never underestimate the learning 
+cost for a new method. Each method should 
+be a tool in your toolbox, selected and used 
+when appropriate and its use constan
+tly 
+refined.
+Ch. 
+8: 
+Pragmatic Projects
+41. Pragmatic teams: 
+All the above advice 
+applies even more strongly at the team level. 
+Teams must not accept broken windows, 
+must constantly look out for deteriorating 
+conditions, avoid duplication. A team should 
+cre
+ate a brand for itself and communicate 
+consistently to the outside. Appoint topic 
+experts. Use groupware. Communicate and 
+discuss lively within the team. Organize 
+around functionality, not job roles.
+ Isolate 
+sub
+-teams from each other by design by 
+contract, 
+Law of Demeter, orthogonality. Even 
+good teams need a technical head and an 
+administrative head, larger ones also a 
+librarian and a tool builder.
+42. Ubiquitous automation: Avoid manual 
+procedures. Automation is more efficient, 
+more consistent, and more a
+ccurate. Use 
+scripts (such as buildfiles) to automate 
+routines and cron to automate even their 
+occurrence.
+ Apply this even to tasks with 
+manual aspects in them, e.g. by manually 
+annotating code with "needs review" and then 
+automating the review management 
+only.
+43. Ruthless testing: Test early, test often, 
+test automatically. Use unit tests to catch 
+local defects and integration tests to catch 
+non
+-local ones. A good project may have 
+more test code than production code. 
+Besides 
+functional testing there are r
+equirements 
+validation tests(*), error
+-and
+-recovery tests, 
+performance tests, load tests, usability 
+tests(*), and others. Except for (*), they are 
+automatable: automate them. Use artificial as 
+well as real data. Avoid testing at the GUI 
+level much. Test your tests by planting 
+defects intentionally and see how many are 
+caught. Assess your tests' coverage
+, 
+preferably state coverage, not just code 
+coverage. Add an automated test for it when 
+you manually found a defect.
+44. It's all writing: Treat documentation
+ as an 
+integral part of your project. Apply all the 
+other principles: Treat English as just another 
+programming language, avoid duplication, 
+automate, etc. Code comments should 
+explain WHY something is done and anything 
+else that is not obvious
+. Consider g
+enerating 
+code or operations from documents, not just 
+the other way round
+. Prefer documentation 
+based on plain text formats (e.g. DocBook) 
+over complex word processor formats.
+45. Great expectations: In reality, project 
+success 
+means to fulfill the users' 
+expectations; some of them too high, others 
+too conservative. Understand and then groom 
+and manage these expectations. Avoid big 
+surprises but try to surprise and delight them 
+a little: go the extra mile.
+46. Pride and prejudice: Sign your work. This 
+guard
+s against sloppiness. Collective code 
+ownerships works well in XP (because of pair 
+programming) but is problematic elsewhere. 
+But don't become territorial either.
+Further material
+The book contains a quick reference guide 
+with a three
+-line summary of each 
+of the 70 
+tips contained in the book.
+The guide also provides 11 short, itemized 
+checklists representing criteria embedded in 
+some of the tips.
+The book contains a number of exercises 
+(with solutions in an appendix).
+It suggests a number of books for readi
+ng 
+and explains why. It suggests becoming a 
+member of ACM and IEEE (and perhaps a 
+national association) and reading several 
+specific ones of their magazines.
+It recommends a number of specific tools [but 
+that list is fairly dated by now].
+
+** 1. Code Complete 2
+And this is it! The number one book (IMHO) to read if you are going to be a great software engineer. Widely considered one of the best practical guides to programming, Steve McConnell’s original CODE COMPLETE has been helping developers write better software for more than a decade. Now this classic book has been fully updated and revised with leading-edge practices—and hundreds of new code samples—illustrating the art and science of software construction. Capturing the body of knowledge available from research, academia, and everyday commercial practice, McConnell synthesizes the most effective techniques and must-know principles into clear, pragmatic guidance. No matter what your experience level, development environment, or project size, this book will inform and stimulate your thinking—and help you build the highest quality code.
+Discover the timeless techniques and strategies that help you:
+
+    Design for minimum complexity and maximum creativity
+    Reap the benefits of collaborative development
+    Apply defensive programming techniques to reduce and flush out errors
+    Exploit opportunities to refactor—or evolve—code, and do it safely
+    Use construction practices that are right-weight for your project
+    Debug problems quickly and effectively
+    Resolve critical construction issues early and correctly
+    Build quality into the beginning, middle, and end of your project
+
+Well that’s it for now!
+Let me know in the comments if you have read any of these or have any other must reads for software developers!
+P.S. If you enjoy posts like this, subscribe to my blog at JasonRoell.com
+
+*** Code complete 2
+https://softwareengineering.stackexchange.com/questions/2777/what-are-the-key-points-of-code-complete
+
+
+
+Code Complete is about software craftsmanship; it is an advanced-beginner/intermediate-level book, written for the working programmer, but it would still be very useful to someone who's been programming for at least a year.
+
+Thus the key points of Code Complete (2nd ed.) are nicely summarized in its Chapter 34, Themes in Software Craftsmanship. As paraphrased from my notes:
+
+***    Conquer Complexity: reduce the cognitive load on your mind via discipline, conventions, and abstraction.
+***    Pick Your Process: be conscious of quality from start (requirements) to finish (deployment) and beyond (maintenance).
+***    Write Programs for People First, Computers Second: code readability is hugely important for comprehensibility, review-ability, error-rate, error-correction, modifiability, and the consequent development time and quality.
+***    Program into Your Language, Not in it: think of the What? and Why? before the How?
+***    Focus Your Attention with the Help of Conventions: conventions manage complexity by providing structure where it's needed, so that the ultimate resource - your attention - can be effectively used.
+***    Program in Terms of the Problem Domain: work at the highest level of abstraction possible; top-level code should describe the problem being solved. Distinguish OS level, programming language level, low-level implementation structures, low-level problem domain terms, and finally, high-level problem-domain terms that would make total sense to the (non-coder) user.
+***    Watch for Falling Rocks: as programming merges art and science, good judgement is vital, including heeding warning signs.
+***    Iterate, Repeatedly, Again and Again: iterate requirements, design, estimates, code, code tuning.
+***    Thou Shalt Render Software and Religion Asunder: be eclectic and willing to experiment. Don't be an inflexible zealot, it precludes curiosity and learning. Go beyond having just a hammer in your toolbox.
+
+*** Other important points
+But the most important take-aways are in Chapter 33, Personal Character: once you consciously seek to improve as a coder, you can and will. The fastest way to do so is to take on the the attitudes of master coders (humility, curiosity, intellectual honesty, discipline, creativity), while also practicing their habits (many good habits are listed in the book, e.g. choosing good variable/value names).
+
+Also, the book makes clear that the gap between average and excellent in software is immense; that fact alone should drive the conscientious coder to better himself.
+
+That's the short of it; the long version is in the book. :) I can also send you my not-so-long, not-so-short notes if you want more details. But the book is certainly money and time well-spent, even if the writing style is tiresome at times.
+
+Beyond Code Complete, I'd highly recommend The Pragmatic Programmer. It's for intermediate-level programmers, nicely-written and a great mix of high, medium, and low-level advice.
+
