@@ -223,7 +223,7 @@ for i in s.split('\n'):
 
     The value that appears most often
 
-    ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+    ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
     import sys
 
     def get_mode(values):
@@ -253,6 +253,10 @@ for i in s.split('\n'):
 
     print(get_mode(values))
 
+    ```
+
+    ``` {.example}
+    [1, 2, 3, 4]
     ```
 
 4.  Variance

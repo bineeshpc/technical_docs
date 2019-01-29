@@ -234,7 +234,7 @@ then the mean of two middle items
 The value that appears most often
 
 
-#+BEGIN_SRC python :results output
+#+BEGIN_SRC python :results output :exports both
   import sys
 
   def get_mode(values):
