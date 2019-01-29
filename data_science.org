@@ -234,10 +234,11 @@ then the mean of two middle items
 The value that appears most often
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output
   import sys
 
   def get_mode(values):
+      """ return multiple modes in the values iterable """
       count_dict = {}
       for i in values:
           if i in count_dict:
@@ -245,7 +246,7 @@ The value that appears most often
           else:
               count_dict[i] = 1
       modes = []
-      max_value = -sys.maxint # -infinity
+      max_value = -sys.maxsize # -infinity
       for i in count_dict:
           count = count_dict[i]
           if count > max_value:
@@ -265,6 +266,8 @@ The value that appears most often
 
 #+END_SRC
 
+#+RESULTS:
+: [1, 2, 3, 4]
 
 **** Variance
 #+BEGIN_SRC python
