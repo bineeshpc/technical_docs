@@ -95,18 +95,11 @@ status1 projects/tr_clarivate_work
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
-I am in directory /home/bineesh/temp/projects
-M captured_notes/journal_2017.org
-M captured_notes/journal_2018.org
-M devops.org
-M home.org
-M projects.org
-M self_development.org
-/home/bineesh/temp/projects
-I am in directory /home/bineesh/temp/projects/tr_clarivate_work
-/home/bineesh/temp/projects
-#+end_example
+: I am in directory /home/bineesh/temp/projects
+: ! data_stuctures_and_algorithms.org
+: /home/bineesh/temp/projects
+: I am in directory /home/bineesh/temp/projects/tr_clarivate_work
+: /home/bineesh/temp/projects
 
 ** Diff
 #+BEGIN_SRC sh :results output
@@ -154,7 +147,6 @@ commit1 projects/tr_clarivate_work
 
 #+RESULTS:
 : /home/bineesh/temp/projects
-: nothing changed
 : /home/bineesh/temp/projects
 
 ** check log

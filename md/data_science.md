@@ -482,6 +482,45 @@ binisearch.py -o 'chi square test'
     c = 0 independent c &gt; 0 correlated either positive or negative
     further test required
 
+    chi square = Sigma \[ square((Oi-Ei)) / Ei \]
+
+    Chi square value should be less than a threshold depending on the
+    degrees of freedom of a categorical variable
+
+    \\begin{equation} % arbitrary environments, x=\sqrt{b} % even
+    tables, figures \\end{equation} % etc
+
+    If $a^2=b$ and $ b=2 $, then the solution must be either
+    $$ a=+\sqrt{2} $$ or $$ a=-\sqrt{2} $$.
+
+### Degrees of Freedom
+
+In statistics, the number of degrees of freedom is the number of values
+in the final calculation of a statistic that are free to vary.
+
+The number of independent ways by which a dynamic system can move,
+without violating any constraint imposed on it, is called number of
+degrees of freedom. In other words, the number of degrees of freedom can
+be defined as the minimum number of independent coordinates that can
+specify the position of the system completely.
+
+1.  In some cases(read later)
+
+    Depends on situation.
+
+    Degree of freedom is one less than the number of values possible for
+    a categorical variable
+
+    For a coin it is 1 (H, T) cardinality(target set) - 1
+
+    2 - 1 = 1
+
+    Dice (1, 2 ,3 ,4 ,5, 6)
+
+    cardinality((1, 2 ,3 ,4 ,5, 6) )
+
+    is 6 - 1 = 5
+
 ### Estimation
 
 ``` {.bash}
@@ -544,6 +583,28 @@ binisearch.py -o covariance
 
 Check some scatter plots for covariance matrix Plot it. Check statistics
 datacamp 1 , chapter 1
+
+1.  Data frame example
+
+    ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
+    import pandas as pd
+    df = pd.DataFrame([(1, 2), (0, 3), (2, 0), (1, 1)],
+                       columns=['dogs', 'cats'])
+
+    print(df)
+    print(df.cov())
+    ```
+
+    ``` {.example}
+       dogs  cats
+    0     1     2
+    1     0     3
+    2     2     0
+    3     1     1
+              dogs      cats
+    dogs  0.666667 -1.000000
+    cats -1.000000  1.666667
+    ```
 
 ### Correlation
 
