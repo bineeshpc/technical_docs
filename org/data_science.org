@@ -1728,8 +1728,65 @@ plt.show()
 *** Distributions
 https://seaborn.pydata.org/tutorial/distributions.html
 
+*** Contour
+https://www.python-course.eu/matplotlib_contour_plot.php
 
+#+BEGIN_SRC python :results output
+import matplotlib.pyplot as plt
+import numpy as np
 
+xlist = np.linspace(-3.0, 3.0, 3)
+ylist = np.linspace(-3.0, 3.0, 4)
+X, Y = np.meshgrid(xlist, ylist)
+Z = np.sqrt(X**2 + Y**2)
+print(X)
+plt.figure()
+cp = plt.contour(X, Y, Z)
+plt.clabel(cp, inline=True, 
+          fontsize=10)
+plt.title('Contour Plot')
+plt.xlabel('x (cm)')
+plt.ylabel('y (cm)')
+plt.show()
+
+#+END_SRC
+
+#+RESULTS:
+: [[-3.  0.  3.]
+:  [-3.  0.  3.]
+:  [-3.  0.  3.]
+:  [-3.  0.  3.]]
+
+**** What is mesh grid?
+#+BEGIN_SRC python :results output
+import numpy as np
+
+xlist = np.arange(1, 7)
+ylist = np.arange(1, 7)
+X, Y = np.meshgrid(xlist, ylist)
+print(xlist)
+print(ylist)
+print(X)
+print(Y)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+[1 2 3 4 5 6]
+[1 2 3 4 5 6]
+[[1 2 3 4 5 6]
+ [1 2 3 4 5 6]
+ [1 2 3 4 5 6]
+ [1 2 3 4 5 6]
+ [1 2 3 4 5 6]
+ [1 2 3 4 5 6]]
+[[1 1 1 1 1 1]
+ [2 2 2 2 2 2]
+ [3 3 3 3 3 3]
+ [4 4 4 4 4 4]
+ [5 5 5 5 5 5]
+ [6 6 6 6 6 6]]
+#+end_example
 
 *** Boxplot
 http://python-graph-gallery.com/boxplot/

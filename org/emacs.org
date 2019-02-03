@@ -211,3 +211,180 @@ You can also edit local files as root with either of the following (note the dou
 
 * Good tutorial
 http://ehneilsen.net/notebook/orgExamples/org-examples.html
+
+* Insert file contents in emacs
+https://www.gnu.org/software/emacs/manual/html_node/elisp/Reading-from-Files.html
+M x insert-fil
+(insert-file-contents /tmp/c.sh nil)
+* Org mode batch execution
+
+This script can be used to execute an entire org mode file from commandline
+Output cannot be seen
+But I will figure out that
+
+Org security is overridden with 
+(setq org-confirm-babel-evaluate nil)
+https://orgmode.org/manual/Code-evaluation-security.html
+https://orgmode.org/manual/Batch-execution.html
+
+#!/bin/sh
+# tangle files with org-mode
+#
+emacs -Q --batch --eval "
+    (progn
+      (require 'ob-tangle)
+      ;; programming languages supported in org mode
+(org-babel-do-load-languages
+ 'org-babel-load-languages '(
+(python . t)
+(sh . t)
+(scala . t)
+(C . t)
+(java . t)
+(plantuml . t)
+(scheme . t)
+(latex . t)
+;;(ipython . t)
+))
+(setq org-confirm-babel-evaluate nil)
+      (dolist (file command-line-args-left)
+        (with-current-buffer (find-file-noselect file)
+          (org-babel-execute-buffer))))
+  " "$@" 
+
+
+* Interesting cheatsheet about org babel
+https://necromuralist.github.io/posts/org-babel-cheat-sheet/
+
+Learned about org-babel-execute-buffer from above link
+
+* Literate devops in org mode
+
+http://www.howardism.org/Technical/Emacs/literate-devops.html
+
+
+** Idea is to check the movies in my raspberry pi
+
+:PROPERTIES:
+:var: machine="10.47.47.10"
+:results: output
+:END:
+
+#+NAME: files_list
+#+BEGIN_SRC sh :results list
+ls | head -3
+#+END_SRC      
+
+#+RESULTS: files_list
+: - agile.org
+: - angular2-writeup.org
+: - angular2-writeup.org~
+
+#+BEGIN_SRC sh :var my_list=files_list
+echo $my_list
+
+#+END_SRC
+
+#+RESULTS:
+: agile.org angular2-writeup.org angular2-writeup.org~
+
+#+BEGIN_SRC sh :dir /usr
+ls
+#+END_SRC
+
+#+RESULTS:
+: bin
+: games
+: include
+: lib
+: local
+: locale
+: sbin
+: share
+: src
+
+
+#+BEGIN_SRC sh :dir /ssh:pi@10.47.47.10:/usr
+ls
+#+END_SRC
+
+#+RESULTS:
+: bin  games  include  lib  local  man  sbin  share  src
+
+
+#+BEGIN_SRC sh :session client
+ssh pi@10.47.47.10
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+> > > bineesh@ubuntu-16:~/temp/projects$ Linux raspberrypi 4.14.34-v7+ #1110 SMP Mon Apr 16 15:18:51 BST 2018 armv7l
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+You have new mail.
+Last login: Sun Feb  3 16:32:33 2019 from 10.47.47.16
+#+end_example
+
+#+BEGIN_SRC sh :session client
+hostname
+#+END_SRC
+
+#+RESULTS:
+: 
+: > > pi@raspberrypi:~$ raspberrypi
+
+#+BEGIN_SRC sh :session client
+filename=/tmp/read_movies.py
+cat > $filename << 'delim'
+import os
+filename = '/tmp/movies.txt'
+lines = [line.strip() for line in open(filename)]
+print('')
+s = set()
+for i in range(0, len(lines), 4):
+    filmname = lines[i]
+    to_search = filmname.strip().split()[0]
+    s.add(to_search)
+s.remove('excuted')
+os.system('mkdir /tmp/movies')
+cmd = '/usr/bin/python ~/agile/get_movie_links/analyse.py {word} > /tmp/movies/{word}.txt'
+for word in s:
+    cmd_concrete = cmd.format(word=word)
+    print(cmd_concrete)
+    os.system(cmd_concrete)
+delim
+cd ~/agile/get_movie_links
+python $filename
+#+END_SRC
+
+#+RESULTS:
+: 
+: > > pi@raspberrypi:~/agile/get_movie_links$ pi@raspberrypi:~/agile/get_movie_links$ > > > > > > > > > > > > > > > > > pi@raspberrypi:~/agile/get_movie_links$ pi@raspberrypi:~/agile/get_movie_links$ 
+: mkdir: cannot create directory ‘/tmp/movies’: File exists
+: /tmp/movies/Vantha.txt
+: /tmp/movies/Evanukku.txt
+: /tmp/movies/Maari.txt
+: /tmp/movies/Ezhumin.txt
+: /tmp/movies/Thuppakki.txt
+
+#+BEGIN_SRC sh :session client
+cd /tmp
+cat ~/bin/get_movies.sh
+#python3 -m http.server
+#+END_SRC
+
+#+RESULTS:
+: 
+: > > pi@raspberrypi:/tmp$ pi@raspberrypi:/tmp$ #!/bin/sh
+: cd /tmp
+: timeout 7200 python3 -m http.server &
+: sleep 5
+: cd /home/pi/agile/get_movie_links
+: python3 get_movie_links.py | tee /tmp/movies.txt
+
