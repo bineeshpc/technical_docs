@@ -1,0 +1,20 @@
+filename = 'sudoku.txt'
+
+def read_input(filename):
+    lines = [line.strip() for line in open(filename)]
+    length = len(lines)
+    n = length / 10
+    i = 0
+    problems = []
+    for _ in n:
+        i += 1 # pass the game number
+        problem = [[] for _ in range(9)]
+        for k in range(9):
+            one_row = [int(j) for j in lines[i].split('')]
+            problem[k].append(one_row)
+            i += 1
+        problems.append(problem)
+        print(problem)
+
+read_input(filename)
+        

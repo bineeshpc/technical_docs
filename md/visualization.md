@@ -393,7 +393,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Make a fake dataset:
-height = [3, 12, 5, 18, 45]
+height = [7, 12, 5, 18, 45]
 bars = ('A', 'B', 'C', 'D', 'E')
 y_pos = np.arange(len(bars))
 
@@ -405,7 +405,7 @@ plt.xticks(y_pos, bars)
 
 # Show graphic
 #plt.show()
-display_inline('./images/barplot.png')
+display_inline('./images/barplot.png', plt)
 
 ```
 

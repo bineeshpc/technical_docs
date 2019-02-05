@@ -1,0 +1,80 @@
+# http://www.spoj.com/problems/ACODE/
+
+import string
+
+alpha_number = {v: k+1 for k, v in enumerate(string.uppercase)}
+number_alpha = [v for v in string.uppercase]
+valid_codes = {}
+
+
+class Node(object):
+    def __init__(self, end_of_string=False):
+        self.end_of_string = end_of_string
+        self.children = {}
+
+
+def print_node(node):
+    for code in node.children:
+        print_node(node.children[code])
+
+def get_number(alpha):
+    return alpha_number[alpha]
+
+def get_alpha(number):
+    return number_alpha[number - 1]
+
+def get_valid_codes(str1):
+    if str1 in valid_codes:
+        return valid_codes[str1]
+    length = len(str1)
+    candidates = []
+    for i in range(length):
+        candidate1 = int(str1[i])
+        candidates.append((candidate1, str1[i+1:]))
+        if i+2 <= length:
+            candidate2 = int(str1[i:i+2])
+            if candidate2 <= 26:
+                candidates.append((candidate2, str1[i+2:]))
+    valid_codes[str1] = candidates
+    return candidates
+ 
+def get_num_alpha_code(str1, node):
+    if str1 == '':
+        print 'end of string'
+        node.end_of_string = True
+    else:
+        for code, substr in get_valid_codes(str1):
+            print code, substr
+            if code in node.children:
+                node1 = node.children[code]
+            else:
+                node1 = Node()
+                node.children[code] = node1
+            get_num_alpha_code(substr, node1)
+    
+
+def count_strings(node):
+    if node.end_of_string == True:
+        return 1
+    count = 0
+    for code in node.children:
+        node1 = node.children[code]
+        count += count_strings(node1)
+    return count
+
+def process():
+    while True:
+        str1 = raw_input()
+        if str1 == '0':
+            break
+        else:
+            length = len(str1)
+            print get_num_alpha_code(str1)
+
+
+x = '25114'
+print x
+node = Node('#')
+print get_num_alpha_code(x, node)
+# print_node(node)
+print count_strings(node)

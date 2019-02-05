@@ -1,0 +1,11 @@
+
+def main():
+    num_cases = int(raw_input())
+    n = num_cases
+    while n > 0:
+        num = int(raw_input())
+        print num
+        n -= 1
+
+
+main()

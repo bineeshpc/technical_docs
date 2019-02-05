@@ -1,0 +1,38 @@
+"""
+
+find the maximum sum over all subarrays of a given array of integer.
+
+-5, -2, 1, 2, 3, 4, -5, -6, -7, -8, 9
+
+Answer is 10 1, 2, 3, 4
+
+"""
+
+def get_sum_array_0_to_i(nums):
+    sum_array_0_to_i = [0 for _ in nums]
+    sum_array_0_to_i[0] = nums[0]
+    for index in range(1, len(nums)):
+        sum_array_0_to_i[index] = sum_array_0_to_i[index - 1] + nums[index]
+    return sum_array_0_to_i
+
+def find_max_of_subarray(nums):
+    sum_array_0_to_i = get_sum_array_0_to_i(nums)
+    min_sum = 0
+    sum1 = 0
+    max_sum = 0
+    
+    for i in range(len(sum_array_0_to_i)):
+        sum1 += sum_array_0_to_i[i]
+
+        if sum1 < min_sum:
+            min_sum = sum1
+            
+        if sum1 - min_sum > max_sum:
+            max_sum = sum1 - min_sum
+
+    return max_sum
+
+
+
+nums = [-5, -2, 1, 2, 3, 4, -5, -6, -7, -8, 9]
+print find_max_of_subarray(nums)

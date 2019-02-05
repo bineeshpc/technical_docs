@@ -1,0 +1,39 @@
+def evaluate(expr):
+    """
+    evaluate("7") -> 7
+    evaluate("(2+3)") -> 5
+    evaluate("((2+3)*(1+2))") -> 15
+    """
+    def isdigit(ch):
+        try:
+            int(ch)
+            return True
+        except:
+            return False
+        
+    def evaluate_helper(expr, index=0):
+        ch = expr[index]
+
+        if ch == '(':
+            # complex
+            index += 1
+            left = evaluate_helper(expr, index)
+            index += 1
+            opr = expr[index]
+            index += 1
+            right = evaluate_helper(expr, index)
+            if opr == '+':
+                return left + right
+            elif opr == '*':
+                return left * right
+            index += 1  # to move past closing paranthesis
+        else:
+            if isdigit(ch):
+                return int(ch)
+            
+
+    return evaluate_helper(expr, 0)
+
+
+print evaluate("(7 + 2)")
+print evaluate("5")

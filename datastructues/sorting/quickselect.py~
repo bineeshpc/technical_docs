@@ -1,0 +1,21 @@
+import quicksort
+
+
+def quickselect(a, rank):
+    """
+    Select the rank th smallest element from the list
+    """
+    def quickselect_helper(a, p, r, rank):
+        if p < r:
+            q = quicksort.partition(a, p, r)
+            if q == rank - 1:
+                return a[q]
+            elif rank - 1 < q:
+                quickselect_helper(a, p, q - 1, rank)
+            elif rank - 1 > q:
+                quickselect_helper(a, q + 1, r, rank)
+
+    return quickselect_helper(a, 0, len(a) - 1, rank)
+
+
+print quickselect(range(1, 11), 5)

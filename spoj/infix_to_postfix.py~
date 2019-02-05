@@ -1,0 +1,181 @@
+# http://www.spoj.com/problems/ONP/
+
+
+class Stack(object):
+    def __init__(self, total_size):
+        self.total_size = total_size
+        self.data = [-1 for _ in range(self.total_size)]
+        self.size = 0
+
+    def push(self, element):
+        if self.size < self.total_size:
+            self.data[self.size] = element
+            self.size += 1
+        else:
+            raise Exception('stack full')
+
+    def pop(self):
+        if self.size > 0:
+            element = self.data[self.size]
+            self.size -= 1
+            return element
+        else:
+            raise Exception('stack empty')
+
+    def peek(self):
+        if self.size > 0:
+            element = self.data[self.size-1]
+            return element
+        else:
+            raise Exception('stack empty')
+
+    def is_empty(self):
+        return self.size == 0
+
+
+def infix_to_postfix(expression):
+    """ Given an expression in infix form return 
+    it's postfix expression
+    Transform the algebraic expression with brackets 
+    into RPN form (Reverse Polish Notation). 
+    Two-argument operators: +, -, *, /, ^ 
+    (priority from the lowest to the highest),
+    brackets ( ). 
+    Operands: only letters: a,b,...,z. 
+    Assume that there is only one RPN form 
+    (no expressions like a*b*c). 
+
+    we need an operator stack
+    we need an operand stack
+    consider operator precedance
+    parathesis will have hightest precedance
+    paranthesis can probably be pushed into operand stack
+
+    +, -, *, /, ^  (operator precedance from low to high)
+    Consider case 1: a+b*c
+    
+    we get a
+    it is an operand
+    since the stack is empty
+    push to operand stack
+    
+    we get +
+    it is an operator
+    since stack is empty
+    push to operator stack
+    
+    we get b
+    it is an operand
+    no precedance for operands
+    push to operand stack
+
+    we get * 
+    it is an operator
+    peek into stack
+    stack contains + on top.
+    I cannot push onto stack because priority of * is above +
+    pop 2 operands from operand stack
+    output them
+    
+    output *
+
+    now the expression is complete.
+    we see end of it.
+    
+    now output every elements from operand stack
+    followed by every elements in operand stack
+
+    Another thing to notice is that I need 
+    to take out the second operand first from 
+    stack and take the first operand from stank second
+
+    While printing them it should be printed in reverse order
+    
+    What to do when there is paranthesis?
+    consider paranthesis as an operator.
+    When ( comes push it on to stack.
+    when the ) comes pop everything from stack until
+    we get ( and output all of them
+
+    I am not sure whether this algorithms is going to work.
+    Try this out and check
+
+    """
+    postfix = []
+    length_of_expression = len(expression)
+    operator_stack = Stack(length_of_expression)
+    operand_stack = Stack(length_of_expression)
+    for letter in expression:
+        if letter == '(':
+            operator_stack.push(letter)
+        elif letter == ')':
+            operand2 = operand_stack.pop()
+            operand1 = operand_stack.pop()
+            postfix.append(operand1)
+            postfix.append(operand2)
+            postfix.append(operator)
+        elif is_operator(letter):
+            operator = letter
+            print operator_stack.is_empty()
+            print operator_stack.data
+            if operator_stack.is_empty():
+                operator_stack.push(operator)
+            else:
+                top = operator_stack.peek()
+                print "here", top
+                if get_precedance(operator) > get_precedance(top):
+                    operand2 = operand_stack.pop()
+                    operand1 = operand_stack.pop()
+                    postfix.append(operand1)
+                    postfix.append(operand2)
+                    postfix.append(operator)
+                else:
+                    operator_stack.push(operator)
+        elif is_operand(letter):
+            operand = letter
+            operand_stack.push(operand)
+    print postfix     
+    return ''.join(postfix)
+
+import string
+precedance = dict((v, k) for k, v in enumerate(['+', '-', '*', '/', '^']))
+operands = {i: True for i in string.lowercase}
+
+print precedance
+
+def is_operator(letter):
+    if precedance.get(letter) is not None:
+        return True
+    else:
+        return False
+
+    
+def is_operand(letter):
+    if operands.get(letter) is not None:
+        return True
+    else:
+        return False
+
+
+def get_precedance(operator):
+    # bracket will have precedance = 100 for time being
+    # if more than 100 operators are added this should change
+    if operator == '(' or operator == ')':
+        return 100
+    else:
+        return precedance[operator]
+
+def test_precedance():
+    print get_precedance('+')
+    print get_precedance('^') > get_precedance('/')
+
+def test():
+    expressions = ["a+b*c", "(a+b)*c"]
+    postfixes = ["abc*+", "ab+c*"]
+    for infix, postfix in zip(expressions, postfixes):
+        stack_size = len(infix)
+        assert infix_to_postfix(infix) == postfix
+
+
+test()
+# test_precedance()

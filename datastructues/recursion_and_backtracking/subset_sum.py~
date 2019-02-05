@@ -1,0 +1,22 @@
+
+
+def subset_sum(s, value):
+    """
+    Given a set of integers and a target value, determine whether it is
+    possible to find a subset of those integers whose sum is equal to
+    the specified target.
+
+    s = { -2, 3 , 1, 8 }
+
+    subset_sum(s, 7)==> true because of (-2, 1, 8)
+    """
+    # base case
+    # set is empty
+    
+    # recursive case
+    # set is non empty
+    # divide it into two branches
+    # that includes a particular number
+    # and that does not include a particular number
+
+    

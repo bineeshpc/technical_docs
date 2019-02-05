@@ -1,0 +1,89 @@
+import random
+
+
+rows = 3
+cols = 3
+blocked_cell = -2
+
+def make_grid(rows, cols, pempty=0.9):
+    grid = []
+    for i in range(rows):
+        grid.append([])
+        for j in range(cols):
+            random_val = random.random()
+            if random_val < pempty:
+                grid[i].append(0)
+            else:
+                grid[i].append(blocked_cell)
+    grid[0][0] = 0
+    grid[rows-1][cols-1] = 0
+    return grid
+
+
+def print_grid(grid):
+    print
+    for i in grid:
+        print i
+
+
+def get_mem_grid():
+    grid = []
+    for i in range(rows):
+        grid.append([])
+        for j in range(cols):
+            grid[i].append(-1)
+    return grid
+    
+
+def get_num_paths(grid, row, col):
+    if row == (rows - 1) and col == (cols - 1):
+        return 1
+    elif grid[row][col] == blocked_cell:
+        return 0
+    else:
+        r = c = 0
+        if row < (rows - 1):
+            r = get_num_paths(grid, row + 1, col)
+        if col < (cols - 1):
+            c = get_num_paths(grid, row, col + 1)
+        return r + c
+
+
+def get_num_paths_dp_memoize(grid, row, col):
+    mem_grid = get_mem_grid()
+    def get_num_paths_dp_helper(grid, row, col, mem_grid):
+        if mem_grid[row][col] > -1:
+            return mem_grid[row][col]
+        if row == (rows - 1) and col == (cols - 1):
+            mem_grid[row][col] = 1
+            return mem_grid[row][col]
+        elif grid[row][col] == blocked_cell:
+            mem_grid[row][col] = 0
+            return mem_grid[row][col]
+        else:
+            r = c = 0
+            if row < (rows - 1):
+                r = get_num_paths(grid, row + 1, col)
+            if col < (cols - 1):
+                c = get_num_paths(grid, row, col + 1)
+            mem_grid[row][col] = r + c
+            return mem_grid[row][col]
+    return get_num_paths_dp_helper(grid, row, col, mem_grid)
+
+
+def get_num_paths_dp_tabulation(grid, rows, cols):
+    mem_grid = get_mem_grid()
+    def cell_value(row, col, mem_grid):
+        if row == rows - 1:
+            row_value = 0
+        else:
+            row_value = mem_grid[0
+        if col == cols - 1:
+            col_value = 0
+        
+        
+    
+grid = make_grid(rows, cols, 0.9)
+print_grid(grid)
+print get_num_paths(grid, 0, 0)
+print get_num_paths_dp_memoize(grid, 0, 0)

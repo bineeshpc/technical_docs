@@ -1,0 +1,28 @@
+# http://www.spoj.com/problems/ADDREV/
+
+def reverse_number(number, base):
+    value = 0
+    first_non_zero_found = False
+    while number != 0:
+        remainder = number % base
+        quotient = number / base
+        if remainder == 0 and not first_non_zero_found:
+            number = quotient
+        else:
+            first_non_zero_found = True
+            number = quotient
+            value *= base
+            value += remainder
+    return value
+
+
+
+num_testcases = int(raw_input())
+count = 0
+while count < num_testcases:
+    value = raw_input()
+    first, second = value.split(' ')
+    first = int(first)
+    second = int(second)
+    print reverse_number(reverse_number(first, 10) + reverse_number(second, 10), 10)
+    count += 1

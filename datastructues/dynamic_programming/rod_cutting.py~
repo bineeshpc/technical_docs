@@ -1,0 +1,25 @@
+import sys
+
+length = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+price = [1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
+
+
+def rod_cutting_simple_recursion(price, n):
+    """
+    n = 0 -> price = 0
+    else if n > 0
+    max(price[i], rate[i] + rate[n-i]) 
+    1<=i<=n
+
+    """
+    if n == 0:
+        return 0
+    else:
+        print n
+        q = -sys.maxint
+        for i in range(0, n):  # 1<=i<=n
+            q = max(q, price[i] + rod_cutting_simple_recursion(price, n-i))
+        return q
+
+
+print rod_cutting_simple_recursion(price, 1)

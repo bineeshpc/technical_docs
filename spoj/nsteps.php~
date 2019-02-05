@@ -1,0 +1,24 @@
+$x = 3;
+$y = 4;
+
+$ys[] = $x;
+$y1 = $x-2;
+
+if($y1 >= 0) {
+$ys[] = $y1;
+}
+
+if(in_array($y, $ys)) {
+echo $val = findval($x, $y);
+}
+else {
+echo "No Number";
+}
+
+function findval($x, $y) {
+if ($x % 2 == 0 && $y % 2 == 0)
+   $final = $x + $y;
+else
+   $final = $x + $y -1;
+return $final;
+}

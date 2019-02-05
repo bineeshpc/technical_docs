@@ -1,0 +1,5 @@
+def process():
+    t = int(raw_input())
+    for _ in range(t):
+        raw_input()  # blank line
+        g, m = map(int, raw_input().split())

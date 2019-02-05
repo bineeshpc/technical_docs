@@ -1,0 +1,13 @@
+def get_output(n):
+    while n > 1:
+        print n
+        if n == 3:
+            print "infinite"
+            break
+        if n % 2 == 0:
+            n = n / 2
+        else:
+            n = 3 * n + 3
+    print "terminates"
+
+get_output(9)

@@ -1,0 +1,62 @@
+class IncompatibleMatrix(Exception):
+    def __init__(self, message):
+        self.parameter = message
+
+    def __str__(self):
+        return str(self.parameter)
+
+class Matrix:
+    def __init(self, rows, columns, data=None):
+        self.rows = rows
+        self.columns = columns
+        self.initialize(data)
+        
+    def initialize(self, data=None):
+        if data:
+            self.data = data
+        else:
+            self.data = []
+            for i in range(self.rows):
+                row_i = []
+                for j in range(self.columns):
+                    row_i.append(0)
+                self.data.append(row_i)
+        
+    def print(self):
+        for i in range(self.rows):
+            print
+            for j in range(self.columns):
+                print self.data[i][j],
+
+
+    def __mul__(self, other):
+        if self.columns != other.rows:
+            raise IncompatibleMatrix
+        else:
+            c = Matrix(self.rows, other.columns)
+            for i in range(self.rows):
+                for j in range(self.columns):
+                    c[i][j] = 0
+                    for k in range(self.columns): # or other.rows
+                        c[i][j] += self.data[i][k] * other.data[k][j]
+            return c
+
+a = [[1, 2, 3],
+     [3, 4, 5]
+     ]
+
+
+b = [[1, 2],
+     [3, 4],
+     [6, 7]
+    ]
+
+
+a = Matrix(a)
+b = Matrix(b)
+a.print()
+b.print()
+
+c = a * b
+
+c.print()

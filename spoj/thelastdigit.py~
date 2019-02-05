@@ -1,0 +1,4 @@
+# http://www.spoj.com/problems/LASTDIG/
+
+for i in range(20):
+    print i, [(i ** b) % 10 for b in range(1, 30)] 

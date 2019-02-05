@@ -1,0 +1,10 @@
+import searchlib
+import random
+
+random.seed(42)
+a = [random.randint(1, 100) for i in range(20)]
+a.sort()
+print(a)
+print(searchlib.linear_search(a, 20))
+print(searchlib.binary_search(a, 20))
+

@@ -1,0 +1,6 @@
+import linkedlist
+
+lst = linkedlist.List()
+
+lst.createlist(range(1, 10))
+print lst.tolist()

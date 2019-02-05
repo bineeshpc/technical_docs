@@ -1,0 +1,22 @@
+
+
+def print_binary1(n):
+    print "..." * (N - n), 'print_binary({})'.format(n)
+    if n == 0:
+        return [""]
+    else:
+        lst = print_binary1(n-1)
+
+        lst1 = []
+        for x in lst:
+            lst1.append("0" + x)
+        for x in lst:
+            lst1.append("1" + x)
+
+        return lst1
+
+    
+N = 5
+n = N
+print
+print print_binary1(n)

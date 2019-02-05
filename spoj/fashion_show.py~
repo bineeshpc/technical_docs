@@ -1,0 +1,10 @@
+def process():
+    num_testcases = int(raw_input())
+    count = 0
+    while count < num_testcases:
+        num_participants = int(raw_input())
+        men = [int(i) for i in value.split(' ')]
+        women = [int(i) for i in value.split(' ')]
+        count += 1
+
+process()

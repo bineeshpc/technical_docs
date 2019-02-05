@@ -419,7 +419,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Make a fake dataset:
-height = [3, 12, 5, 18, 45]
+height = [7, 12, 5, 18, 45]
 bars = ('A', 'B', 'C', 'D', 'E')
 y_pos = np.arange(len(bars))
 
@@ -431,15 +431,15 @@ plt.xticks(y_pos, bars)
 
 # Show graphic
 #plt.show()
-display_inline('./images/barplot.png')
+display_inline('./images/barplot.png', plt)
 
 #+END_SRC
 
 #+RESULTS:
 : 
 : >>> >>> ... >>> >>> >>> >>> ... <BarContainer object of 5 artists>
-: >>> ... ([<matplotlib.axis.XTick object at 0x7f520ce53e80>, <matplotlib.axis.XTick object at 0x7f520ce5b128>, <matplotlib.axis.XTick object at 0x7f520ce5b390>, <matplotlib.axis.XTick object at 0x7f520d3fd400>, <matplotlib.axis.XTick object at 0x7f520d074390>], <a list of 5 Text xticklabel objects>)
-: >>> ... ... 
+: >>> ... ([<matplotlib.axis.XTick object at 0x7f51f739fd68>, <matplotlib.axis.XTick object at 0x7f51f739fc50>, <matplotlib.axis.XTick object at 0x7f51f73a2ac8>, <matplotlib.axis.XTick object at 0x7f51f732a5f8>, <matplotlib.axis.XTick object at 0x7f51f732aac8>], <a list of 5 Text xticklabel objects>)
+: ... ... 
 : [[./images/barplot.png]]
 
 ** Violinplot

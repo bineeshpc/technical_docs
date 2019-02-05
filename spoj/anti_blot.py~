@@ -1,0 +1,13 @@
+def get_answer(str1):
+    problem, answer = str1.split('=')
+    f, s = problem.split('+')
+    print f, s, answer    
+
+def process():
+    n = int(raw_input)
+    for _ in range(n):
+        raw_input()  # blank line
+        str1 = raw_input()
+        print get_answer(str1)
+
+process()
