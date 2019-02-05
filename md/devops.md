@@ -35,7 +35,7 @@ Commit
 hg status
 ```
 
-``` {.bash}
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-results="output"}
 commit_message='attempting a fix for images not displayed in generated md files'
 python move_data.py
 #hg commit -m $commit_message

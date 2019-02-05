@@ -64,10 +64,12 @@ Common code
 -----------
 
 ``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes"}
-def display_inline(filename):
+def display_inline(filename, plt):
     plt.savefig(filename)
     print()
     print('[[{}]]'.format(filename))
+    plt.clf()
+    plt.cla()
 
 ```
 
@@ -78,7 +80,7 @@ Histogram and Pie(Uni)
 binisearch.py -o 'Histogram and Pie(Uni)'
 ```
 
-``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 # alpha is opacity
 
 import numpy as np
@@ -87,9 +89,16 @@ import matplotlib.pyplot as plt
 
 x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
 num_bins = 5
-n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.1)
+n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.4)
 #plt.show()
-display_inline('./images/histogram.png')
+
+def display_inline(filename, plt):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+
+display_inline('./images/histogram.png', plt)
 
 ```
 
@@ -105,23 +114,32 @@ binisearch.py -o 'Tree and Treemap'
 
 <https://python-graph-gallery.com/200-basic-treemap-with-python/>
 
-``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 
 # libraries 
 import matplotlib.pyplot as plt 
 import squarify # pip install squarify (algorithm for treemap) 
 
+
+def display_inline(filename, plt):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+    plt.clf()
+    plt.cla()
+
+
 # If you have 2 lists 
 squarify.plot(sizes=[13,22,35,5], label=["group A", "group B", "group C", "group D"]) 
 plt.axis('off') 
-display_inline('./images/treemap1.png')
+display_inline('./images/treemap1.png', plt)
 
 # If you have a data frame? 
 import pandas as pd 
-df = pd.DataFrame({'nb_people':[8,3,4,2], 'group':["group A", "group B", "group C", "group D"] }) 
+df = pd.DataFrame({'nb_people':[8,3,4,2], 'group':["group P", "group Q", "group R", "group S"] }) 
 squarify.plot(sizes=df['nb_people'], label=df['group']) 
 plt.axis('off') 
-display_inline('./images/treemap2.png')
+display_inline('./images/treemap2.png', plt)
 
 
 ```
@@ -163,7 +181,7 @@ plt.ylabel('distance (Ward)')
 dendrogram(Z, labels=df.index, leaf_rotation=90)
 
 #plt.show()
-display_inline('./images/dendrogram.png')
+display_inline('./images/dendrogram.png', plt)
 
 ```
 
@@ -186,7 +204,7 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.plot(x, y, 'o', color='black');
-display_inline('./images/scatterplot1.png')
+display_inline('./images/scatterplot1.png', plt)
 ```
 
 ![alt ./images/scatterplot1.png](./images/scatterplot1.png)
@@ -201,7 +219,7 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.scatter(x, y, marker='o', color='black');
-display_inline('./images/scatterplot2.png')
+display_inline('./images/scatterplot2.png', plt)
 ```
 
 ![alt ./images/scatterplot2.png](./images/scatterplot2.png)
@@ -222,7 +240,7 @@ df = pd.DataFrame(np.random.random((5,5)), columns=["a","b","c","d","e"])
 
 # Default heatmap: just a visualization of this square matrix
 p1 = sns.heatmap(df)
-display_inline('./images/heatmap.png')
+display_inline('./images/heatmap.png', plt)
 ```
 
 ![alt ./images/heatmap.png](./images/heatmap.png)
@@ -245,7 +263,7 @@ y = np.sin(x)
 
 plt.plot(x, y, color='black');
 #plt.show()
-display_inline('./images/line_charts.png')
+display_inline('./images/line_charts.png', plt)
 
 ```
 
@@ -815,7 +833,7 @@ display_inline('./images/area_plot.png', plt)
 Stacked area plot
 -----------------
 
-``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 # library
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -839,6 +857,9 @@ display_inline('./images/area_plot_stacked.png', plt)
 
 
 
+```
+
+![alt ./images/area_plot_stacked.png](./images/area_plot_stacked.png)
 ```
 
 D3.Js

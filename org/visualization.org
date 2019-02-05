@@ -43,10 +43,12 @@ binisearch.py -o 'ggplot2'
 
 ** Common code
 #+BEGIN_SRC python :session
-def display_inline(filename):
+def display_inline(filename, plt):
     plt.savefig(filename)
     print()
     print('[[{}]]'.format(filename))
+    plt.clf()
+    plt.cla()
 
 #+END_SRC
 
@@ -61,7 +63,7 @@ binisearch.py -o 'Histogram and Pie(Uni)'
 #+END_SRC
 
 
-#+BEGIN_SRC python :session :results output :exports both
+#+BEGIN_SRC python :results output :exports both
 # alpha is opacity
 
 import numpy as np
@@ -70,15 +72,21 @@ import matplotlib.pyplot as plt
  
 x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
 num_bins = 5
-n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.1)
+n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.4)
 #plt.show()
-display_inline('./images/histogram.png')
+
+def display_inline(filename, plt):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+
+display_inline('./images/histogram.png', plt)
 
 #+END_SRC
 
 #+RESULTS:
 : 
-: >>> >>> ... >>> ... >>> >>> >>> ... 
 : [[./images/histogram.png]]
 
 ** Tree and Treemap
@@ -91,34 +99,40 @@ binisearch.py -o 'Tree and Treemap'
 
 https://python-graph-gallery.com/200-basic-treemap-with-python/
 
-#+BEGIN_SRC python :session :results output :exports both
+#+BEGIN_SRC python :results output :exports both
 
 # libraries 
 import matplotlib.pyplot as plt 
 import squarify # pip install squarify (algorithm for treemap) 
 
+
+def display_inline(filename, plt):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+    plt.clf()
+    plt.cla()
+
+
 # If you have 2 lists 
 squarify.plot(sizes=[13,22,35,5], label=["group A", "group B", "group C", "group D"]) 
 plt.axis('off') 
-display_inline('./images/treemap1.png')
+display_inline('./images/treemap1.png', plt)
 
 # If you have a data frame? 
 import pandas as pd 
-df = pd.DataFrame({'nb_people':[8,3,4,2], 'group':["group A", "group B", "group C", "group D"] }) 
+df = pd.DataFrame({'nb_people':[8,3,4,2], 'group':["group P", "group Q", "group R", "group S"] }) 
 squarify.plot(sizes=df['nb_people'], label=df['group']) 
 plt.axis('off') 
-display_inline('./images/treemap2.png')
+display_inline('./images/treemap2.png', plt)
 
 
 #+END_SRC
 
 #+RESULTS:
 : 
-: ... >>> >>> >>> ... <matplotlib.axes._subplots.AxesSubplot object at 0x7f8ce6ef6dd8>
-: (0.0, 100.0, 0.0, 100.0)
 : [[./images/treemap1.png]]
-: ... >>> >>> <matplotlib.axes._subplots.AxesSubplot object at 0x7f8ce6ef6dd8>
-: (0.0, 100.0, 0.0, 100.0)
+: 
 : [[./images/treemap2.png]]
 
 ** Dendrogram
@@ -153,7 +167,7 @@ plt.ylabel('distance (Ward)')
 dendrogram(Z, labels=df.index, leaf_rotation=90)
 
 #plt.show()
-display_inline('./images/dendrogram.png')
+display_inline('./images/dendrogram.png', plt)
 
 #+END_SRC
 
@@ -193,9 +207,9 @@ Ford Pantera L       15.8    8  351.0  264  4.22  3.170  14.50   0   1     5    
 Ferrari Dino         19.7    6  145.0  175  3.62  2.770  15.50   0   1     5     6
 Maserati Bora        15.0    8  301.0  335  3.54  3.570  14.60   0   1     5     8
 Volvo 142E           21.4    4  121.0  109  4.11  2.780  18.60   1   1     4     2
-... ... >>> >>> >>> ... Text(0.5,1,'Hierarchical Clustering Dendrogram')
-Text(0.5,-69.9778,'sample index')
-Text(29.5972,0.5,'distance (Ward)')
+>>> >>> ... ... >>> >>> >>> ... Text(0.5,1,'Hierarchical Clustering Dendrogram')
+Text(0.5,28.3833,'sample index')
+Text(53.9583,0.5,'distance (Ward)')
 {'icoord': [[25.0, 25.0, 35.0, 35.0], [15.0, 15.0, 30.0, 30.0], [5.0, 5.0, 22.5, 22.5], [95.0, 95.0, 105.0, 105.0], [85.0, 85.0, 100.0, 100.0], [75.0, 75.0, 92.5, 92.5], [65.0, 65.0, 83.75, 83.75], [55.0, 55.0, 74.375, 74.375], [45.0, 45.0, 64.6875, 64.6875], [125.0, 125.0, 135.0, 135.0], [145.0, 145.0, 155.0, 155.0], [130.0, 130.0, 150.0, 150.0], [115.0, 115.0, 140.0, 140.0], [54.84375, 54.84375, 127.5, 127.5], [13.75, 13.75, 91.171875, 91.171875], [165.0, 165.0, 175.0, 175.0], [195.0, 195.0, 205.0, 205.0], [185.0, 185.0, 200.0, 200.0], [215.0, 215.0, 225.0, 225.0], [192.5, 192.5, 220.0, 220.0], [170.0, 170.0, 206.25, 206.25], [255.0, 255.0, 265.0, 265.0], [245.0, 245.0, 260.0, 260.0], [235.0, 235.0, 252.5, 252.5], [285.0, 285.0, 295.0, 295.0], [275.0, 275.0, 290.0, 290.0], [305.0, 305.0, 315.0, 315.0], [282.5, 282.5, 310.0, 310.0], [243.75, 243.75, 296.25, 296.25], [188.125, 188.125, 270.0, 270.0], [52.4609375, 52.4609375, 229.0625, 229.0625]], 'dcoord': [[0.0, 5.147341546856977, 5.147341546856977, 0.0], [0.0, 10.201299345344859, 10.201299345344859, 5.147341546856977], [0.0, 16.89707975262787, 16.89707975262787, 10.201299345344859], [0.0, 8.65359029536296, 8.65359029536296, 0.0], [0.0, 14.21755048053871, 14.21755048053871, 8.65359029536296], [0.0, 19.89440928586052, 19.89440928586052, 14.21755048053871], [0.0, 30.38720376243924, 30.38720376243924, 19.89440928586052], [0.0, 41.765577612830086, 41.765577612830086, 30.38720376243924], [0.0, 62.39473420394506, 62.39473420394506, 41.765577612830086], [0.0, 0.6153251173160401, 0.6153251173160401, 0.0], [0.0, 1.5231546211727793, 1.5231546211727793, 0.0], [0.6153251173160401, 21.8609037438986, 21.8609037438986, 1.5231546211727793], [0.0, 77.831513556528, 77.831513556528, 21.8609037438986], [62.39473420394506, 124.42513884575622, 124.42513884575622, 77.831513556528], [16.89707975262787, 189.75327331432254, 189.75327331432254, 124.42513884575622], [0.0, 33.55086921377745, 33.55086921377745, 0.0], [0.0, 0.9826494797230624, 0.9826494797230624, 0.0], [0.0, 1.9956285559525688, 1.9956285559525688, 0.9826494797230624], [0.0, 14.015499455959462, 14.015499455959462, 0.0], [1.9956285559525688, 71.69000545171319, 71.69000545171319, 14.015499455959462], [33.55086921377745, 131.24667573749386, 131.24667573749386, 71.69000545171319], [0.0, 10.07612028510974, 10.07612028510974, 0.0], [0.0, 22.748314223256195, 22.748314223256195, 10.07612028510974], [0.0, 121.19933374404333, 121.19933374404333, 22.748314223256195], [0.0, 15.622444623041554, 15.622444623041554, 0.0], [0.0, 38.206294228394704, 38.206294228394704, 15.622444623041554], [0.0, 40.00524746830096, 40.00524746830096, 0.0], [38.206294228394704, 136.59795344708988, 136.59795344708988, 40.00524746830096], [121.19933374404333, 236.74277069464608, 236.74277069464608, 136.59795344708988], [131.24667573749386, 389.04227922692326, 389.04227922692326, 236.74277069464608], [189.75327331432254, 955.3712450494048, 955.3712450494048, 389.04227922692326]], 'ivl': ['Honda Civic', 'Toyota Corolla', 'Fiat 128', 'Fiat X1-9', 'Merc 240D', 'Lotus Europa', 'Merc 230', 'Volvo 142E', 'Datsun 710', 'Toyota Corona', 'Porsche 914-2', 'Ferrari Dino', 'Mazda RX4', 'Mazda RX4 Wag', 'Merc 280', 'Merc 280C', 'Hornet 4 Drive', 'Valiant', 'Merc 450SLC', 'Merc 450SE', 'Merc 450SL', 'Dodge Challenger', 'AMC Javelin', 'Maserati Bora', 'Ford Pantera L', 'Duster 360', 'Camaro Z28', 'Chrysler Imperial', 'Cadillac Fleetwood', 'Lincoln Continental', 'Hornet Sportabout', 'Pontiac Firebird'], 'leaves': [18, 19, 17, 25, 7, 27, 8, 31, 2, 20, 26, 29, 0, 1, 9, 10, 3, 5, 13, 11, 12, 21, 22, 30, 28, 6, 23, 16, 14, 15, 4, 24], 'color_list': ['g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'b']}
 >>> ... 
 [[./images/dendrogram.png]]
@@ -217,12 +231,12 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.plot(x, y, 'o', color='black');
-display_inline('./images/scatterplot1.png')
+display_inline('./images/scatterplot1.png', plt)
 #+END_SRC
 
 #+RESULTS:
 : 
-: >>> >>> >>> >>> >>> >>> [<matplotlib.lines.Line2D object at 0x7f8ce43976a0>]
+: >>> >>> >>> >>> >>> >>> [<matplotlib.lines.Line2D object at 0x7f520c9e24e0>]
 : [[./images/scatterplot1.png]]
 
 
@@ -235,12 +249,12 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.scatter(x, y, marker='o', color='black');
-display_inline('./images/scatterplot2.png')
+display_inline('./images/scatterplot2.png', plt)
 #+END_SRC
 
 #+RESULTS:
 : 
-: >>> >>> >>> >>> >>> <matplotlib.collections.PathCollection object at 0x7f8ce4348ba8>
+: >>> >>> >>> >>> >>> >>> <matplotlib.collections.PathCollection object at 0x7f520c9e24e0>
 : [[./images/scatterplot2.png]]
 
 ** Heatmap
@@ -256,7 +270,7 @@ df = pd.DataFrame(np.random.random((5,5)), columns=["a","b","c","d","e"])
  
 # Default heatmap: just a visualization of this square matrix
 p1 = sns.heatmap(df)
-display_inline('./images/heatmap.png')
+display_inline('./images/heatmap.png', plt)
 #+END_SRC
 
 #+RESULTS:
@@ -281,13 +295,13 @@ y = np.sin(x)
 
 plt.plot(x, y, color='black');
 #plt.show()
-display_inline('./images/line_charts.png')
+display_inline('./images/line_charts.png', plt)
 
 #+END_SRC
 
 #+RESULTS:
 : 
-: >>> >>> >>> >>> >>> >>> [<matplotlib.lines.Line2D object at 0x7f520d461ac8>]
+: >>> >>> >>> >>> >>> >>> [<matplotlib.lines.Line2D object at 0x7f51f8613e48>]
 : ... 
 : [[./images/line_charts.png]]
 
@@ -868,7 +882,7 @@ display_inline('./images/area_plot.png', plt)
 
 ** Stacked area plot
 
-#+BEGIN_SRC python :results output
+#+BEGIN_SRC python :results output :exports both
 # library
 import matplotlib.pyplot as plt
 import pandas as pd
