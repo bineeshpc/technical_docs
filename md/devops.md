@@ -25,13 +25,32 @@ robotframework version bigger than 2.7 but not 3
 conda install --channel https://conda.anaconda.org/userzimmermann robotframework
 ```
 
+Knowledge repo
+==============
+
+Commit
+------
+
+``` {.bash}
+hg status
+```
+
+``` {.bash}
+commit_message='attempting a fix for images not displayed in generated md files'
+python move_data.py
+#hg commit -m $commit_message
+cd ~/Dropbox/technical_docs
+python make_md.py
+#git commit -a -m $commit_message
+```
+
 Git
-===
+---
 
 <file:git.org>
 
 Mercurial
-=========
+---------
 
 hg commit -m "\$(date +'%c')"
 

@@ -1,3 +1,7 @@
+---
+startup: inlineimages 
+---
+
 Data science
 ============
 
@@ -255,8 +259,6 @@ for i in s.split('\n'):
 
     ```
 
-    ``` {.example}
-    [1, 2, 3, 4]
     ```
 
 4.  Variance
@@ -607,15 +609,6 @@ datacamp 1 , chapter 1
     print(df.cov())
     ```
 
-    ``` {.example}
-       dogs  cats
-    0     1     2
-    1     0     3
-    2     2     0
-    3     1     1
-              dogs      cats
-    dogs  0.666667 -1.000000
-    cats -1.000000  1.666667
     ```
 
 ### Correlation
@@ -1251,13 +1244,23 @@ binisearch.py -o 'Univariate bivariate and multivariate visualization'
 binisearch.py -o 'ggplot2'
 ```
 
+### Common code
+
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes"}
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[./{}]]'.format(filename))
+
+```
+
 ### Histogram and Pie(Uni)
 
 ``` {.bash}
 binisearch.py -o 'Histogram and Pie(Uni)'
 ```
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
 # alpha is opacity
 
 import numpy as np
@@ -1267,8 +1270,12 @@ import matplotlib.pyplot as plt
 x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
 num_bins = 5
 n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.1)
-plt.show()
+#plt.show()
+display_inline('images/histogram.png')
 
+```
+
+![alt ./images/histogram.png](./images/histogram.png)
 ```
 
 ### Tree and Treemap
@@ -1279,7 +1286,7 @@ binisearch.py -o 'Tree and Treemap'
 
 <https://python-graph-gallery.com/200-basic-treemap-with-python/>
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
 
 # libraries 
 import matplotlib.pyplot as plt 
@@ -1288,16 +1295,20 @@ import squarify # pip install squarify (algorithm for treemap)
 # If you have 2 lists 
 squarify.plot(sizes=[13,22,35,5], label=["group A", "group B", "group C", "group D"]) 
 plt.axis('off') 
-plt.show() 
+display_inline('./images/treemap1.png')
 
 # If you have a data frame? 
 import pandas as pd 
 df = pd.DataFrame({'nb_people':[8,3,4,2], 'group':["group A", "group B", "group C", "group D"] }) 
 squarify.plot(sizes=df['nb_people'], label=df['group']) 
 plt.axis('off') 
-plt.show() 
+display_inline('./images/treemap2.png')
 
 
+```
+
+![alt ././images/treemap1.png](././images/treemap1.png)
+![alt ././images/treemap2.png](././images/treemap2.png)
 ```
 
 ### Dendrogram {#dendrogram-1}
@@ -1569,12 +1580,19 @@ plt.show()
 
 <https://seaborn.pydata.org/generated/seaborn.lmplot.html>
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(color_codes=True)
 tips = sns.load_dataset("tips")
 g = sns.lmplot(x="total_bill", y="tip", data=tips)
-plt.show()
+filename = 'lmplot.png'
+#plt.show()
+plt.savefig(filename)
+print('[[./{}]]'.format(filename))
+
+```
+
+![alt ./lmplot.png](./lmplot.png)
 ```
 
 ### joinplot
@@ -1592,6 +1610,44 @@ plt.show()
 ### Distributions
 
 <https://seaborn.pydata.org/tutorial/distributions.html>
+
+### Contour
+
+<https://www.python-course.eu/matplotlib_contour_plot.php>
+
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+import matplotlib.pyplot as plt
+import numpy as np
+
+xlist = np.linspace(-3.0, 3.0, 3)
+ylist = np.linspace(-3.0, 3.0, 4)
+X, Y = np.meshgrid(xlist, ylist)
+Z = np.sqrt(X**2 + Y**2)
+print(X)
+plt.figure()
+cp = plt.contour(X, Y, Z)
+plt.clabel(cp, inline=True, 
+          fontsize=10)
+plt.title('Contour Plot')
+plt.xlabel('x (cm)')
+plt.ylabel('y (cm)')
+plt.show()
+
+```
+
+1.  What is mesh grid?
+
+    ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+    import numpy as np
+
+    xlist = np.arange(1, 7)
+    ylist = np.arange(1, 7)
+    X, Y = np.meshgrid(xlist, ylist)
+    print(xlist)
+    print(ylist)
+    print(X)
+    print(Y)
+    ```
 
 ### Boxplot
 

@@ -388,3 +388,44 @@ cat ~/bin/get_movies.sh
 : cd /home/pi/agile/get_movie_links
 : python3 get_movie_links.py | tee /tmp/movies.txt
 
+* Show inline images
+Adding a hook to execute after C-c C-c
+(add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+
+https://orgmode.org/manual/In_002dbuffer-settings.html
+
+https://emacs.stackexchange.com/questions/30520/org-mode-c-c-c-c-to-display-inline-image
+
+https://stackoverflow.com/questions/17621495/emacs-org-display-inline-images
+
+https://orgmode.org/manual/Handling-links.html#Handling-links
+
+* Test the session
+
+** Initialize session
+#+BEGIN_SRC python :session :results output
+x = 1
+
+#+END_SRC
+
+#+RESULTS:
+
+** Since session was used in the code it worked
+
+#+BEGIN_SRC python :session :results output
+print(x)
+
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+** Since session was not used in the code it failed
+
+#+BEGIN_SRC python :results output
+print(x)
+
+#+END_SRC
+
+#+RESULTS:
+

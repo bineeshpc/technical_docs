@@ -15,18 +15,35 @@ Overview
 Spark SQL is a Spark module for structured data processing. Methods to
 interact with Spark SQL a) SQL b) Dataset API.
 
-DataFrame
-=========
+Boilerplate code in all spark programs
+======================================
 
-A DataFrame is a Dataset organized into named columns.
+    from pyspark import SparkContext, SparkConf
 
-Json and parquet files DataFrame can write to parquet files
+    sc = SparkContext("local", "my app name")
 
-Example codes of untyped dataset operations or DataFrame operations
-===================================================================
+    from pyspark.sql import SQLContext
+    sqlContext = SQLContext(sc)
 
-``` {.bash .rundoc-block rundoc-language="sh" rundoc-results="output"}
-cat /home/bineesh/temp/hadoop/spark-2.0.0-bin-hadoop2.7/examples/src/main/resources/people.json
+
+    * DataFrame
+    A DataFrame is a Dataset organized into named columns.
+
+    Json and parquet files
+    DataFrame can write to parquet files
+    * Example codes of untyped dataset operations or DataFrame operations
+    #+BEGIN_SRC sh :results output
+    cat /home/bineesh/temp/hadoop/spark-2.0.0-bin-hadoop2.7/examples/src/main/resources/people.json
+
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+import os
+for k in os.environ:
+    print(k, os.environ[k])
+
+```
+
+``` {.bash}
+ls ~/temp/hadoop/spark-2.4.0-bin-hadoop2.7/examples/src/main/resources/people.csv
 ```
 
 ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
@@ -36,29 +53,28 @@ sc = SparkContext(conf=conf)
 from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
 
-path = '/home/bineesh/temp/hadoop/spark-2.0.0-bin-hadoop2.7/examples/src/main/resources/people.json'
+path = '/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/examples/src/main/resources/people.json'
 df = sqlContext.read.json(path)
-
 
 # Displays the content of the DataFrame to stdout
 df.show()
-print "Schema is"
+print("Schema is")
 df.printSchema()
 
-print "only name column"
+print("only name column")
 df.select("name").show()
 
-print "df name and df age + 1"
+print("df name and df age + 1")
 df.select(df['name'], df['age'] + 1).show()
 
 
-print "Select people older than 21"
+print("Select people older than 21")
 df.filter(df['age'] > 21).show()
 ## age name
 ## 30  Andy
 
 
-print "Count people by age"
+print("Count people by age")
 df.groupBy("age").count().show()
 ## age  count
 ## null 1
@@ -73,15 +89,19 @@ delete the temporary file I created. Only when the show command is
 called the evaluation of the dataframe happened
 
 ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+import io
 from pyspark import SparkContext, SparkConf
-conf = SparkConf().setAppName("dummy app name").setMaster("local")
-sc = SparkContext(conf=conf)
+try:
+    conf = SparkConf().setAppName("dummy app name").setMaster("local")
+    sc = SparkContext(conf=conf)
+except:
+    pass
 from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
 
 from tempfile import NamedTemporaryFile
 
-raw_data = """
+raw_data = b"""
 {"name":"Michael"}
 {"name":"Andy", "age":30}
 {"name":"Justin", "age":19}
@@ -94,20 +114,22 @@ def read_from_string(string1):
     with NamedTemporaryFile(delete=False) as f:
         f.write(raw_data)
         tempfilename = f.name
+        print(tempfilename)
     df = sqlContext.read.json(tempfilename)
     return df    
 
+
 df = read_from_string(raw_data)
-print "Count people by age"
+print("Count people by age")
 df.groupBy("age").count().show()
 
 df.createOrReplaceTempView("people")
 
-print "Printing everything from table using sql"
+print("Printing everything from table using sql")
 sqlDF = sqlContext.sql("SELECT * FROM people")
 sqlDF.show()
 
-print "selectting columns based on a filter using sql"
+print("selectting columns based on a filter using sql")
 sqlContext.sql("select * from people where age = 30").show()
 
 ```
@@ -126,7 +148,7 @@ Like Relational algebra rename operation
 GroupBy
 =======
 
-``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output"}
 # Warning: do not import * here; only import specifically needed names
 from pyspark.sql.functions import explode
 from pyspark.sql.types import StructField, StructType, StringType, ArrayType
@@ -134,30 +156,27 @@ from pyspark.sql.window import Window
 import pyspark.sql.functions as F
 import re
 from pyspark import SparkContext, SparkConf
-#conf = SparkConf().setAppName("dummy app name").setMaster("local")
-sc = SparkContext("local", "my app name")
+
+try:
+    conf = SparkConf().setAppName("dummy app name").setMaster("local")
+    sc = SparkContext("local", "my app name")
+except:
+    pass
 
 from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
 
 lst1 = [(i, 2 * i, 3 * i, i ** 2) for i in range(1, 5)]
 rdd = sc.parallelize(lst1)
-print rdd.collect()
+print()
+print(rdd.collect())
 ri = rdd.groupBy(lambda x: x[0])
 
-print ri.collect()
-print ri.mapValues(list).take(2)
+print(ri.collect())
+print(ri.mapValues(list).take(3))
 ```
 
-Boilerplate code in all spark programs
-======================================
-
-    from pyspark import SparkContext, SparkConf
-
-    sc = SparkContext("local", "my app name")
-
-    from pyspark.sql import SQLContext
-    sqlContext = SQLContext(sc)
+\#+END~SRC~
 
 How to take a sample of a large rdd?
 ====================================
@@ -197,14 +216,14 @@ from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
 
 rdd1 = sc.parallelize(range(100))
-#print help(rdd1)
+#print(help(rdd1))
 rdd2 = rdd1.sample(False, 0.1)
-print rdd2.collect()
+print(rdd2.collect())
 
 l = [('Alice', 1)]
 df1 = sqlContext.createDataFrame(l)
-print df1.collect()
-print help(df1)
+print(df1.collect())
+print(help(df1))
 ```
 
 How to take a sample of a large dataframe?
@@ -220,9 +239,11 @@ How to take a sample of a large dataframe?
 ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import Row
-sc = SparkContext("local", "my app name")
-
-from pyspark.sql import SQLContext
+try:
+   sc = SparkContext("local", "my app name")
+   from pyspark.sql import SQLContext
+except:
+    pass
 sqlContext = SQLContext(sc)
 
 lst1 = [Row(name='Name%s' %i, age=i, height=i)  for i in range(1, 101)]
@@ -270,13 +291,20 @@ from pyspark import SparkContext, SparkConf
 from pyspark.sql import SQLContext
 import tempfile
 import os
-sc = SparkContext("local", "my app name")
-sqlContext = SQLContext(sc)
+try:
+    sc = SparkContext("local", "my app name")
+    from pyspark.sql import SQLContext
+except:
+    pass
+
 
 rdd1 = sc.parallelize(range(10))
 
 filename = '/tmp/saved'
-os.remove(filename)
+try:
+    os.remove(filename)
+except:
+    pass
 rdd1.saveAsTextFile(filename)
 
 ```
@@ -321,12 +349,12 @@ path = os.path.join(directory, *full_path)
 def fileAtS3Path(p, bucket=AwsBucketName):
   return 's3n://{}:{}@{}/{}'.format(AccessKey, SecretKey, bucket, p)
 
-print fileAtS3Path(path, bucket)
+print(fileAtS3Path(path, bucket))
 
 path1 = os.path.join(directory, 'to_save_rdd.txt')
-print path1
+print(path1)
 newpath = fileAtS3Path(path1, bucket)
-print newpath
+print(newpath)
 
 rdd1 = sc.parallelize(range(10))
 rdd1.saveAsTextFile(newpath)
@@ -348,9 +376,9 @@ sqlContext = SQLContext(sc)
 a = [Row(record_index=376549, ot=[u'vasin_S-7406-2016', u'Vasin', u'V', u'Victor', None, None, u'S-7406-2016'], cluster_id=u'vasin_S-7406-2016', profile_ut=u'WOS:000070627200023', name=u'Vasin, VA', pos=u'3', similarity=0.8161098161098161, rank=1)]
 
 xrdd = sc.parallelize(a)
-print xrdd, type(xrdd)
+print(xrdd, type(xrdd))
 xdf = xrdd.toDF()
-print xdf, type(xdf)
+print(xdf, type(xdf))
 ```
 
 Help docstring of dataframes
@@ -1280,16 +1308,16 @@ def quick_delete(filename):
     try:
         shutil.rmtree(filename)
     except OSError:
-        print "Failed to delete", filename
+        print("Failed to delete", filename)
 
 def quick_print_directory(directory):
     import glob
     files = glob.glob(directory + "/*")
-    print "printing ", directory
+    print("printing ", directory)
     for file1 in files:
-        print "...printing", file1
+        print("...printing", file1)
         with open(file1) as f:
-            print f.read()
+            print(f.read())
 
 written_directory = '/tmp/save_file_test'
 quick_delete(written_directory)
@@ -3063,7 +3091,7 @@ from pyspark.sql.window import Window
 
 w =  Window.partitionBy(df.k).orderBy(df.v)
 
-print w
+print(w)
 ```
 
 Databricks error
@@ -3205,7 +3233,7 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10))
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 
 ```
@@ -3220,10 +3248,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10))
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 rdd1 = rDD.map(lambda x: x * 2)
-print rdd1.collect()
+print(rdd1.collect())
 ```
 
 Filter on a spark RDD
@@ -3236,10 +3264,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10))
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 even_rdd = rDD.filter(lambda x: x % 2 == 0)
-print even_rdd.collect()
+print(even_rdd.collect())
 ```
 
 Removing duplicate with distinct
@@ -3256,10 +3284,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10) + range(10)) # duplicate the same list twice
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 distinct_rdd = rDD.distinct()
-print distinct_rdd.collect()
+print(distinct_rdd.collect())
 ```
 
 ### With 1 partition distinct gives output in same ascending order
@@ -3271,10 +3299,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10) + range(10)) # duplicate the same list twice
 rDD = sc.parallelize(data)
-print rDD.collect()
+print(rDD.collect())
 
 distinct_rdd = rDD.distinct()
-print distinct_rdd.collect()
+print(distinct_rdd.collect())
 ```
 
 Usage of map like lambda x: \[x, x+1\]
@@ -3288,11 +3316,11 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(0, 10, 2))
 odd_rdd = sc.parallelize(data, 4) # 4 partitions
-print odd_rdd.collect()
+print(odd_rdd.collect())
 
 all_numbers_rdd = odd_rdd.map(lambda x: [x, x + 1])
 
-print all_numbers_rdd.collect()
+print(all_numbers_rdd.collect())
 
 ```
 
@@ -3307,11 +3335,11 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(0, 10, 2))
 odd_rdd = sc.parallelize(data, 4) # 4 partitions
-print odd_rdd.collect()
+print(odd_rdd.collect())
 
 all_numbers_rdd = odd_rdd.flatMap(lambda x: [x, x + 1])
 
-print all_numbers_rdd.collect()
+print(all_numbers_rdd.collect())
 
 ```
 
@@ -3325,12 +3353,12 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1, 10 + 1))
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 sum_of_rdd = rdd.reduce(lambda a, b: a + b)
 
-print sum_of_rdd
-print sum(data)
+print(sum_of_rdd)
+print(sum(data))
 
 ```
 
@@ -3344,11 +3372,11 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1, 10 + 1))
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 taken_from_rdd = rdd.take(2)
 
-print taken_from_rdd
+print(taken_from_rdd)
 
 ```
 
@@ -3362,7 +3390,7 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1, 10 + 1))
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 
 ```
@@ -3378,12 +3406,12 @@ sc = SparkContext("local", "my app name")
 data = list(range(1, 10 + 1))
 random.shuffle(data)
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 takeordered_from_rdd = rdd.takeOrdered(5, lambda x: x)
-print takeordered_from_rdd
+print(takeordered_from_rdd)
 takeordered_from_rdd = rdd.takeOrdered(5, lambda x: -x)
-print takeordered_from_rdd
+print(takeordered_from_rdd)
 ```
 
 Rdd reduce elements by key reduceByKey method
@@ -3397,10 +3425,10 @@ sc = SparkContext("local", "my app name")
 data_list = [(1,2), (3,4), (3, 6), (1, 5), (2,4), (2, 3), (2, 3), (1, 3)]
 data_list.sort()
 rdd = sc.parallelize(data_list)
-print rdd.collect()
+print(rdd.collect())
 
 reduced_list = rdd.reduceByKey(lambda x, y: x + y).collect()
-print reduced_list
+print(reduced_list)
 
 
 ```
@@ -3416,12 +3444,12 @@ sc = SparkContext("local", "my app name")
 data_list = [(1,2), (3,4), (3, 6), (1, 5), (2,4), (2, 3), (2, 3), (1, 3)]
 random.shuffle(data_list)
 rdd = sc.parallelize(data_list)
-print rdd.collect()
+print(rdd.collect())
 
 sorted_list = rdd.sortByKey().collect()
-print sorted_list
+print(sorted_list)
 
-print (sorted(data_list, cmp=lambda x, y: cmp(x, y), key=lambda x: x[0]))
+print((sorted(data_list, cmp=lambda x, y: cmp(x, y), key=lambda x: x[0])))
 
 ```
 
@@ -3436,13 +3464,13 @@ sc = SparkContext("local", "my app name")
 data_list = [(1,2), (3,4), (3, 6), (1, 5), (2,4), (2, 3), (2, 3), (1, 3)]
 random.shuffle(data_list)
 rdd = sc.parallelize(data_list)
-print rdd.collect()
+print(rdd.collect())
 
 grouped_list = rdd.groupByKey().collect()
 
 for x, y in grouped_list:
-    print "{}: ".format(x),
-    print list(y)
+    print("{}: ".format(x),)
+    print(list(y))
 
 ```
 
@@ -3455,7 +3483,7 @@ import random
 sc = SparkContext("local", "my app name")
 
 broadcastVar = sc.broadcast([1,2,3])
-print broadcastVar.value
+print(broadcastVar.value)
 
 ```
 
@@ -3504,20 +3532,20 @@ filename = "/tmp/wordsworth.txt"
 lines = sc.textFile(filename)
 
 words_list = lines.flatMap(tostrings)
-print words_list.collect()
+print(words_list.collect())
 
 wordcount_pair = words_list.map(towordcountpair)
-print wordcount_pair.collect()
+print(wordcount_pair.collect())
 
 final_word_count = wordcount_pair.reduceByKey(lambda a, b : a + b)
 
-print final_word_count.collect()
+print(final_word_count.collect())
 
 final_word_count = (lines.flatMap(tostrings).
                     map(towordcountpair).
                     reduceByKey(lambda a, b: a + b))
 
-print final_word_count.collect()
+print(final_word_count.collect())
 
 ```
 
@@ -3539,7 +3567,7 @@ final_word_count = (sc.textFile(filename).
                     map(lambda x: (x, 1)).
                     reduceByKey(lambda a, b: a + b))
 
-print final_word_count.collect()
+print(final_word_count.collect())
 
 ```
 
@@ -3587,7 +3615,7 @@ FlatmapValues
 
 ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-tangle="yes" rundoc-tangle="/tmp/spark_cheatsheet.py"}
 
-print (rdd4.
+print((rdd4.)
 flatMapValues(lambda x: x)
 .collect())
 
@@ -3601,17 +3629,17 @@ Simulating flatmap values with flatmap
 
 ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-tangle="yes" rundoc-tangle="/tmp/spark_cheatsheet.py"}
 
-print (rdd4.
+print((rdd4.)
 flatMapValues(lambda x: x)
 .collect())
 
 
-print (rdd4.
+print((rdd4.)
 map(lambda x: [(x[0], i) for i in x[1]])
 .collect())
 
 
-print (rdd4.
+print((rdd4.)
 flatMap(lambda x: [(x[0], i) for i in x[1]])
 .collect())
 
@@ -3624,10 +3652,10 @@ iterating over rdd
 ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-tangle="yes" rundoc-tangle="/tmp/spark_cheatsheet.py"}
 
 def g(x):
-    print x
-# print rdd1
+    print(x)
+# print(rdd1)
 rdd1.foreach(g)
-# print help(rdd1)
+# print(help(rdd1))
 def f(x): print(x)
 sc.parallelize([1, 2, 3, 4, 5]).foreach(f)
 
@@ -3650,5 +3678,5 @@ sc = SparkContext("local", "my app name")
 
 from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
-print help(sqlContext)
+print(help(sqlContext))
 ```

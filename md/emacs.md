@@ -1,3 +1,7 @@
+---
+results: 'files_list'
+---
+
 Installation on ubuntu
 ======================
 
@@ -226,3 +230,142 @@ Good tutorial
 =============
 
 <http://ehneilsen.net/notebook/orgExamples/org-examples.html>
+
+Insert file contents in emacs
+=============================
+
+<https://www.gnu.org/software/emacs/manual/html_node/elisp/Reading-from-Files.html>
+M x insert-fil (insert-file-contents /tmp/c.sh nil)
+
+Org mode batch execution
+========================
+
+This script can be used to execute an entire org mode file from
+commandline Output cannot be seen But I will figure out that
+
+Org security is overridden with (setq org-confirm-babel-evaluate nil)
+<https://orgmode.org/manual/Code-evaluation-security.html>
+<https://orgmode.org/manual/Batch-execution.html>
+
+\#!/bin/sh
+
+\# emacs -Q --batch --eval " (progn (require 'ob-tangle) ;; programming
+languages supported in org mode (org-babel-do-load-languages
+'org-babel-load-languages '( (python . t) (sh . t) (scala . t) (C . t)
+(java . t) (plantuml . t) (scheme . t) (latex . t) ;;(ipython . t) ))
+(setq org-confirm-babel-evaluate nil) (dolist (file
+command-line-args-left) (with-current-buffer (find-file-noselect file)
+(org-babel-execute-buffer)))) " "\$@"
+
+Interesting cheatsheet about org babel
+======================================
+
+<https://necromuralist.github.io/posts/org-babel-cheat-sheet/>
+
+Learned about org-babel-execute-buffer from above link
+
+Literate devops in org mode
+===========================
+
+<http://www.howardism.org/Technical/Emacs/literate-devops.html>
+
+Idea is to check the movies in my raspberry pi
+----------------------------------------------
+
+``` {#files_list .bash .rundoc-block rundoc-language="sh" rundoc-results="list"}
+ls | head -3
+```
+
+```
+
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-var="my_list=files_list"}
+echo $my_list
+
+```
+
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-dir="/usr"}
+ls
+```
+
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-dir="/ssh:pi@10.47.47.10:/usr"}
+ls
+```
+
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-session="client"}
+ssh pi@10.47.47.10
+```
+
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-session="client"}
+hostname
+```
+
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-session="client"}
+filename=/tmp/read_movies.py
+cat > $filename << 'delim'
+import os
+filename = '/tmp/movies.txt'
+lines = [line.strip() for line in open(filename)]
+print('')
+s = set()
+for i in range(0, len(lines), 4):
+    filmname = lines[i]
+    to_search = filmname.strip().split()[0]
+    s.add(to_search)
+s.remove('excuted')
+os.system('mkdir /tmp/movies')
+cmd = '/usr/bin/python ~/agile/get_movie_links/analyse.py {word} > /tmp/movies/{word}.txt'
+for word in s:
+    cmd_concrete = cmd.format(word=word)
+    print(cmd_concrete)
+    os.system(cmd_concrete)
+delim
+cd ~/agile/get_movie_links
+python $filename
+```
+
+``` {.bash .rundoc-block rundoc-language="sh" rundoc-session="client"}
+cd /tmp
+cat ~/bin/get_movies.sh
+#python3 -m http.server
+```
+
+Show inline images
+==================
+
+Adding a hook to execute after C-c C-c (add-hook
+'org-babel-after-execute-hook 'org-redisplay-inline-images)
+
+<https://orgmode.org/manual/In_002dbuffer-settings.html>
+
+<https://emacs.stackexchange.com/questions/30520/org-mode-c-c-c-c-to-display-inline-image>
+
+<https://stackoverflow.com/questions/17621495/emacs-org-display-inline-images>
+
+<https://orgmode.org/manual/Handling-links.html#Handling-links>
+
+Test the session
+================
+
+Initialize session
+------------------
+
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output"}
+x = 1
+
+```
+
+Since session was used in the code it worked
+--------------------------------------------
+
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output"}
+print(x)
+
+```
+
+Since session was not used in the code it failed
+------------------------------------------------
+
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+print(x)
+
+```

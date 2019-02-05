@@ -1,5 +1,6 @@
 * Data science
 
+#+STARTUP: inlineimages 
 
 
 ** General Plan
@@ -1351,6 +1352,17 @@ binisearch.py -o 'ggplot2'
 #+END_SRC
 
 
+*** Common code
+#+BEGIN_SRC python :session
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[./{}]]'.format(filename))
+
+#+END_SRC
+
+#+RESULTS:
+
 *** Histogram and Pie(Uni)
 
 #+BEGIN_SRC sh
@@ -1358,7 +1370,7 @@ binisearch.py -o 'Histogram and Pie(Uni)'
 #+END_SRC
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :session :results output :exports both
 # alpha is opacity
 
 import numpy as np
@@ -1368,12 +1380,15 @@ import matplotlib.pyplot as plt
 x = [21,22,23,4,5,6,77,8,9,10,31,32,33,34,35,36,37,18,49,50,100]
 num_bins = 5
 n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.1)
-plt.show()
+#plt.show()
+display_inline('images/histogram.png')
 
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: >>> >>> ... >>> ... >>> >>> >>> ... 
+: [[./images/histogram.png]]
 
 *** Tree and Treemap
 
@@ -1385,7 +1400,7 @@ binisearch.py -o 'Tree and Treemap'
 
 https://python-graph-gallery.com/200-basic-treemap-with-python/
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :session :results output :exports both
 
 # libraries 
 import matplotlib.pyplot as plt 
@@ -1394,20 +1409,26 @@ import squarify # pip install squarify (algorithm for treemap)
 # If you have 2 lists 
 squarify.plot(sizes=[13,22,35,5], label=["group A", "group B", "group C", "group D"]) 
 plt.axis('off') 
-plt.show() 
+display_inline('./images/treemap1.png')
 
 # If you have a data frame? 
 import pandas as pd 
 df = pd.DataFrame({'nb_people':[8,3,4,2], 'group':["group A", "group B", "group C", "group D"] }) 
 squarify.plot(sizes=df['nb_people'], label=df['group']) 
 plt.axis('off') 
-plt.show() 
+display_inline('./images/treemap2.png')
 
 
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: ... >>> >>> >>> ... <matplotlib.axes._subplots.AxesSubplot object at 0x7f8ce6ef6dd8>
+: (0.0, 100.0, 0.0, 100.0)
+: [[././images/treemap1.png]]
+: ... >>> >>> <matplotlib.axes._subplots.AxesSubplot object at 0x7f8ce6ef6dd8>
+: (0.0, 100.0, 0.0, 100.0)
+: [[././images/treemap2.png]]
 
 *** Dendrogram
 
@@ -1700,16 +1721,21 @@ plt.show()
 
 *** lmplot
 https://seaborn.pydata.org/generated/seaborn.lmplot.html
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(color_codes=True)
 tips = sns.load_dataset("tips")
 g = sns.lmplot(x="total_bill", y="tip", data=tips)
-plt.show()
+filename = 'lmplot.png'
+#plt.show()
+plt.savefig(filename)
+print('[[./{}]]'.format(filename))
+
 #+END_SRC
 
 #+RESULTS:
-: None
+: [[./lmplot.png]]
+: <img src='./lmplot.png' alt='lmplot not displayed'>
 
 *** joinplot
 https://seaborn.pydata.org/generated/seaborn.jointplot.html

@@ -12,6 +12,17 @@ Overview
 
 Spark SQL is a Spark module for structured data processing.  
 Methods to interact with Spark SQL a) SQL b) Dataset API.
+
+* Boilerplate code in all spark programs
+#+BEGIN_SRC python results output
+from pyspark import SparkContext, SparkConf
+
+sc = SparkContext("local", "my app name")
+
+from pyspark.sql import SQLContext
+sqlContext = SQLContext(sc)
+
+
 * DataFrame
 A DataFrame is a Dataset organized into named columns.
 
@@ -28,46 +39,153 @@ cat /home/bineesh/temp/hadoop/spark-2.0.0-bin-hadoop2.7/examples/src/main/resour
 : {"name":"Justin", "age":19}
 
 #+BEGIN_SRC python :results output
-from pyspark import SparkContext, SparkConf
-conf = SparkConf().setAppName("dummy app name").setMaster("local")
-sc = SparkContext(conf=conf)
-from pyspark.sql import SQLContext
-sqlContext = SQLContext(sc)
+import os
+for k in os.environ:
+    print(k, os.environ[k])
 
-path = '/home/bineesh/temp/hadoop/spark-2.0.0-bin-hadoop2.7/examples/src/main/resources/people.json'
-df = sqlContext.read.json(path)
-
-
-# Displays the content of the DataFrame to stdout
-df.show()
-print "Schema is"
-df.printSchema()
-
-print "only name column"
-df.select("name").show()
-
-print "df name and df age + 1"
-df.select(df['name'], df['age'] + 1).show()
-
-
-print "Select people older than 21"
-df.filter(df['age'] > 21).show()
-## age name
-## 30  Andy
-
-
-print "Count people by age"
-df.groupBy("age").count().show()
-## age  count
-## null 1
-## 19   1
-## 30   1
-"""
-"""
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
+LS_COLORS rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+
+STY 2889.samurai
+LESSCLOSE /usr/bin/lesspipe %s %s
+XDG_MENU_PREFIX xfce-
+HADOOP_HOME /home/bineesh/temp/hadoop/hadoop-2.8.2
+_ /home/bineesh/agile/additional_space/anaconda3/bin/python
+LANG en_IN
+GDM_LANG en_US
+DISPLAY :0.0
+GTK2_MODULES overlay-scrollbar
+GTK_OVERLAY_SCROLLING 0
+GTK_CSD 0
+COLORTERM truecolor
+JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+XDG_VTNR 7
+SSH_AUTH_SOCK /run/user/1000/keyring/ssh
+MANDATORY_PATH /usr/share/gconf/xubuntu.mandatory.path
+S_COLORS auto
+GLADE_CATALOG_PATH :
+XDG_SESSION_ID c2
+XDG_GREETER_DATA_DIR /var/lib/lightdm-data/bineesh
+USER bineesh
+GLADE_MODULE_PATH :
+DESKTOP_SESSION xubuntu
+DEFAULTS_PATH /usr/share/gconf/xubuntu.default.path
+QT_QPA_PLATFORMTHEME gtk2
+PWD /home/bineesh/temp/projects
+HOME /home/bineesh
+WINDOW 1
+SSH_AGENT_PID 2235
+QT_ACCESSIBILITY 1
+XDG_SESSION_TYPE x11
+XDG_DATA_DIRS /usr/share/xfce4:/usr/share/xubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop:/var/lib/snapd/desktop:/usr/share
+XDG_SESSION_DESKTOP xubuntu
+SPARK_HOME /home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7
+GLADE_PIXMAP_PATH :
+GTK_MODULES gail:atk-bridge
+CLUTTER_BACKEND x11
+TERM dumb
+SHELL /bin/bash
+VTE_VERSION 5202
+XDG_SEAT_PATH /org/freedesktop/DisplayManager/Seat0
+XDG_CURRENT_DESKTOP XFCE
+GPG_AGENT_INFO /run/user/1000/gnupg/S.gpg-agent:0:1
+XDG_SEAT seat0
+SHLVL 3
+LANGUAGE en_IN:en
+PYTHONPATH /home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip:/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/python:/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/python/build:/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip:/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/python:/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/python/build:
+WINDOWID 67108867
+GDMSESSION xubuntu
+LOGNAME bineesh
+DBUS_SESSION_BUS_ADDRESS unix:path=/run/user/1000/bus
+XDG_RUNTIME_DIR /run/user/1000
+XAUTHORITY /home/bineesh/.Xauthority
+XDG_SESSION_PATH /org/freedesktop/DisplayManager/Session0
+XDG_CONFIG_DIRS /etc/xdg/xdg-xubuntu:/etc/xdg:/etc/xdg
+PATH /home/bineesh/problemsolving/problemsolving/bin:/home/bineesh/Dropbox/bin:/home/bineesh/agile/additional_space/anaconda3/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin:/home/bineesh/problemsolving/problemsolving/bin:/home/bineesh/Dropbox/bin:/home/bineesh/agile/additional_space/anaconda3/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin:/home/bineesh/bin:/home/bineesh/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/bin:/home/bineesh/temp/hadoop/hadoop-2.8.2/bin:/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/bin:/home/bineesh/temp/hadoop/hadoop-2.8.2/bin
+LD_PRELOAD libgtk3-nocsd.so.0
+TERMCAP SC|screen.xterm-256color|VT 100/ANSI X3.64 virtual terminal:\
+	:DO=\E[%dB:LE=\E[%dD:RI=\E[%dC:UP=\E[%dA:bs:bt=\E[Z:\
+	:cd=\E[J:ce=\E[K:cl=\E[H\E[J:cm=\E[%i%d;%dH:ct=\E[3g:\
+	:do=^J:nd=\E[C:pt:rc=\E8:rs=\Ec:sc=\E7:st=\EH:up=\EM:\
+	:le=^H:bl=^G:cr=^M:it#8:ho=\E[H:nw=\EE:ta=^I:is=\E)0:\
+	:li#35:co#135:am:xn:xv:LP:sr=\EM:al=\E[L:AL=\E[%dL:\
+	:cs=\E[%i%d;%dr:dl=\E[M:DL=\E[%dM:dc=\E[P:DC=\E[%dP:\
+	:im=\E[4h:ei=\E[4l:mi:IC=\E[%d@:ks=\E[?1h\E=:\
+	:ke=\E[?1l\E>:vi=\E[?25l:ve=\E[34h\E[?25h:vs=\E[34l:\
+	:ti=\E[?1049h:te=\E[?1049l:us=\E[4m:ue=\E[24m:so=\E[3m:\
+	:se=\E[23m:mb=\E[5m:md=\E[1m:mh=\E[2m:mr=\E[7m:\
+	:me=\E[m:ms:\
+	:Co#8:pa#64:AF=\E[3%dm:AB=\E[4%dm:op=\E[39;49m:AX:\
+	:vb=\Eg:G0:as=\E(0:ae=\E(B:\
+	:ac=\140\140aaffggjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~..--++,,hhII00:\
+	:po=\E[5i:pf=\E[4i:Km=\E[M:k0=\E[10~:k1=\EOP:k2=\EOQ:\
+	:k3=\EOR:k4=\EOS:k5=\E[15~:k6=\E[17~:k7=\E[18~:\
+	:k8=\E[19~:k9=\E[20~:k;=\E[21~:F1=\E[23~:F2=\E[24~:\
+	:F3=\E[1;2P:F4=\E[1;2Q:F5=\E[1;2R:F6=\E[1;2S:\
+	:F7=\E[15;2~:F8=\E[17;2~:F9=\E[18;2~:FA=\E[19;2~:\
+	:FB=\E[20;2~:FC=\E[21;2~:FD=\E[23;2~:FE=\E[24;2~:kb=:\
+	:K2=\EOE:kB=\E[Z:kF=\E[1;2B:kR=\E[1;2A:*4=\E[3;2~:\
+	:*7=\E[1;2F:#2=\E[1;2H:#3=\E[2;2~:#4=\E[1;2D:%c=\E[6;2~:\
+	:%e=\E[5;2~:%i=\E[1;2C:kh=\E[1~:@1=\E[1~:kH=\E[4~:\
+	:@7=\E[4~:kN=\E[6~:kP=\E[5~:kI=\E[2~:kD=\E[3~:ku=\EOA:\
+	:kd=\EOB:kr=\EOC:kl=\EOD:km:
+SESSION_MANAGER local/ubuntu-16:@/tmp/.ICE-unix/2253,unix/ubuntu-16:/tmp/.ICE-unix/2253
+LESSOPEN | /usr/bin/lesspipe %s
+#+end_example
+
+#+BEGIN_SRC sh
+ls ~/temp/hadoop/spark-2.4.0-bin-hadoop2.7/examples/src/main/resources/people.csv
+#+END_SRC
+
+#+RESULTS:
+: 
+
+#+BEGIN_SRC python :results output
+  from pyspark import SparkContext, SparkConf
+  conf = SparkConf().setAppName("dummy app name").setMaster("local")
+  sc = SparkContext(conf=conf)
+  from pyspark.sql import SQLContext
+  sqlContext = SQLContext(sc)
+
+  path = '/home/bineesh/temp/hadoop/spark-2.4.0-bin-hadoop2.7/examples/src/main/resources/people.json'
+  df = sqlContext.read.json(path)
+
+  # Displays the content of the DataFrame to stdout
+  df.show()
+  print("Schema is")
+  df.printSchema()
+
+  print("only name column")
+  df.select("name").show()
+
+  print("df name and df age + 1")
+  df.select(df['name'], df['age'] + 1).show()
+
+
+  print("Select people older than 21")
+  df.filter(df['age'] > 21).show()
+  ## age name
+  ## 30  Andy
+
+
+  print("Count people by age")
+  df.groupBy("age").count().show()
+  ## age  count
+  ## null 1
+  ## 19   1
+  ## 30   1
+  """
+  """
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+2019-02-04 18:19:04 WARN  Utils:66 - Your hostname, ubuntu-16 resolves to a loopback address: 127.0.1.1; using 10.0.2.15 instead (on interface enp0s3)
+2019-02-04 18:19:04 WARN  Utils:66 - Set SPARK_LOCAL_IP if you need to bind to another address
+2019-02-04 18:19:10 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 +----+-------+
 | age|   name|
 +----+-------+
@@ -123,78 +241,52 @@ temporary file I created.
 Only when the show command is called the evaluation of the dataframe
 happened
 #+BEGIN_SRC python :results output
-from pyspark import SparkContext, SparkConf
-conf = SparkConf().setAppName("dummy app name").setMaster("local")
-sc = SparkContext(conf=conf)
-from pyspark.sql import SQLContext
-sqlContext = SQLContext(sc)
+  import io
+  from pyspark import SparkContext, SparkConf
+  try:
+      conf = SparkConf().setAppName("dummy app name").setMaster("local")
+      sc = SparkContext(conf=conf)
+  except:
+      pass
+  from pyspark.sql import SQLContext
+  sqlContext = SQLContext(sc)
 
-from tempfile import NamedTemporaryFile
+  from tempfile import NamedTemporaryFile
 
-raw_data = """
-{"name":"Michael"}
-{"name":"Andy", "age":30}
-{"name":"Justin", "age":19}
-{"name":"Albert", "age":100}
-{"name":"Niel", "age":100}
-{"name":"Vargheese", "age":30}
-"""
+  raw_data = b"""
+  {"name":"Michael"}
+  {"name":"Andy", "age":30}
+  {"name":"Justin", "age":19}
+  {"name":"Albert", "age":100}
+  {"name":"Niel", "age":100}
+  {"name":"Vargheese", "age":30}
+  """
 
-def read_from_string(string1):
-    with NamedTemporaryFile(delete=False) as f:
-        f.write(raw_data)
-        tempfilename = f.name
-    df = sqlContext.read.json(tempfilename)
-    return df    
+  def read_from_string(string1):
+      with NamedTemporaryFile(delete=False) as f:
+          f.write(raw_data)
+          tempfilename = f.name
+          print(tempfilename)
+      df = sqlContext.read.json(tempfilename)
+      return df    
 
-df = read_from_string(raw_data)
-print "Count people by age"
-df.groupBy("age").count().show()
 
-df.createOrReplaceTempView("people")
+  df = read_from_string(raw_data)
+  print("Count people by age")
+  df.groupBy("age").count().show()
 
-print "Printing everything from table using sql"
-sqlDF = sqlContext.sql("SELECT * FROM people")
-sqlDF.show()
+  df.createOrReplaceTempView("people")
 
-print "selectting columns based on a filter using sql"
-sqlContext.sql("select * from people where age = 30").show()
+  print("Printing everything from table using sql")
+  sqlDF = sqlContext.sql("SELECT * FROM people")
+  sqlDF.show()
+
+  print("selectting columns based on a filter using sql")
+  sqlContext.sql("select * from people where age = 30").show()
 
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
-Count people by age
-+----+-----+
-| age|count|
-+----+-----+
-|  19|    1|
-|null|    1|
-| 100|    2|
-|  30|    2|
-+----+-----+
-
-Printing everything from table using sql
-+----+---------+
-| age|     name|
-+----+---------+
-|null|  Michael|
-|  30|     Andy|
-|  19|   Justin|
-| 100|   Albert|
-| 100|     Niel|
-|  30|Vargheese|
-+----+---------+
-
-selectting columns based on a filter using sql
-+---+---------+
-|age|     name|
-+---+---------+
-| 30|     Andy|
-| 30|Vargheese|
-+---+---------+
-
-#+end_example
 
 
 
@@ -208,7 +300,7 @@ f1 = flatClustering1.withColumnRenamed('item', 'item_may')
 Like Relational algebra rename operation
 
 * GroupBy
-#+BEGIN_SRC python :results output
+#+BEGIN_SRC python :session :results output
 # Warning: do not import * here; only import specifically needed names
 from pyspark.sql.functions import explode
 from pyspark.sql.types import StructField, StructType, StringType, ArrayType
@@ -216,35 +308,33 @@ from pyspark.sql.window import Window
 import pyspark.sql.functions as F
 import re
 from pyspark import SparkContext, SparkConf
-#conf = SparkConf().setAppName("dummy app name").setMaster("local")
-sc = SparkContext("local", "my app name")
+
+try:
+    conf = SparkConf().setAppName("dummy app name").setMaster("local")
+    sc = SparkContext("local", "my app name")
+except:
+    pass
 
 from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
 
 lst1 = [(i, 2 * i, 3 * i, i ** 2) for i in range(1, 5)]
 rdd = sc.parallelize(lst1)
-print rdd.collect()
+print()
+print(rdd.collect())
 ri = rdd.groupBy(lambda x: x[0])
 
-print ri.collect()
-print ri.mapValues(list).take(2)
+print(ri.collect())
+print(ri.mapValues(list).take(3))
 #+END_SRC
 
 #+RESULTS:
+: 
+: >>> >>> >>> >>> >>> >>> >>> ... ... ... ... ... >>> >>> >>> >>> >>> >>>
 : [(1, 2, 3, 1), (2, 4, 6, 4), (3, 6, 9, 9), (4, 8, 12, 16)]
-: [(1, <pyspark.resultiterable.ResultIterable object at 0x7f18af3c6a10>), (2, <pyspark.resultiterable.ResultIterable object at 0x7f18af3f9dd0>), (3, <pyspark.resultiterable.ResultIterable object at 0x7f18ae92c350>), (4, <pyspark.resultiterable.ResultIterable object at 0x7f18ae92c3d0>)]
-: [(1, [(1, 2, 3, 1)]), (2, [(2, 4, 6, 4)])]
+: [(1, <pyspark.resultiterable.ResultIterable object at 0x7f8d0602dc88>), (2, <pyspark.resultiterable.ResultIterable object at 0x7f8d0602d438>), (3, <pyspark.resultiterable.ResultIterable object at 0x7f8d0602d978>), (4, <pyspark.resultiterable.ResultIterable object at 0x7f8d0602dc18>)]
+: [(1, [(1, 2, 3, 1)]), (2, [(2, 4, 6, 4)]), (3, [(3, 6, 9, 9)])]
 
-
-* Boilerplate code in all spark programs
-#+BEGIN_SRC python results output
-from pyspark import SparkContext, SparkConf
-
-sc = SparkContext("local", "my app name")
-
-from pyspark.sql import SQLContext
-sqlContext = SQLContext(sc)
 
 #+END_SRC
 * How to take a sample of a large rdd?
@@ -287,14 +377,14 @@ from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
 
 rdd1 = sc.parallelize(range(100))
-#print help(rdd1)
+#print(help(rdd1))
 rdd2 = rdd1.sample(False, 0.1)
-print rdd2.collect()
+print(rdd2.collect())
 
 l = [('Alice', 1)]
 df1 = sqlContext.createDataFrame(l)
-print df1.collect()
-print help(df1)
+print(df1.collect())
+print(help(df1))
 #+END_SRC
 
 * How to take a sample of a large dataframe?
@@ -305,31 +395,36 @@ print help(df1)
  |      2
 
 #+BEGIN_SRC python :results output
-from pyspark import SparkContext, SparkConf
-from pyspark.sql import Row
-sc = SparkContext("local", "my app name")
+  from pyspark import SparkContext, SparkConf
+  from pyspark.sql import Row
+  try:
+     sc = SparkContext("local", "my app name")
+     from pyspark.sql import SQLContext
+  except:
+      pass
+  sqlContext = SQLContext(sc)
 
-from pyspark.sql import SQLContext
-sqlContext = SQLContext(sc)
-
-lst1 = [Row(name='Name%s' %i, age=i, height=i)  for i in range(1, 101)]
-df1 = sc.parallelize(lst1).toDF()
-df2 = df1.sample(False, .05)
-df2.show()
+  lst1 = [Row(name='Name%s' %i, age=i, height=i)  for i in range(1, 101)]
+  df1 = sc.parallelize(lst1).toDF()
+  df2 = df1.sample(False, .05)
+  df2.show()
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
-+---+------+------+
-|age|height|  name|
-+---+------+------+
-|  4|     4| Name4|
-| 36|    36|Name36|
-| 38|    38|Name38|
-| 56|    56|Name56|
-| 58|    58|Name58|
-| 65|    65|Name65|
-+---+------+------+
+2019-02-04 19:02:34 WARN  Utils:66 - Your hostname, ubuntu-16 resolves to a loopback address: 127.0.1.1; using 10.0.2.15 instead (on interface enp0s3)
+2019-02-04 19:02:34 WARN  Utils:66 - Set SPARK_LOCAL_IP if you need to bind to another address
+2019-02-04 19:02:41 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2019-02-04 19:02:45 WARN  Utils:66 - Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
++---+------+-------+
+|age|height|   name|
++---+------+-------+
+| 25|    25| Name25|
+| 34|    34| Name34|
+| 42|    42| Name42|
+| 50|    50| Name50|
+|100|   100|Name100|
++---+------+-------+
 
 #+end_example
 
@@ -370,22 +465,33 @@ df2.show()
 
 #+BEGIN_SRC python :results output :tangle yes :tangle /tmp/rdd_save_as_textfile.py
 
-from pyspark import SparkContext, SparkConf
-from pyspark.sql import SQLContext
-import tempfile
-import os
-sc = SparkContext("local", "my app name")
-sqlContext = SQLContext(sc)
+  from pyspark import SparkContext, SparkConf
+  from pyspark.sql import SQLContext
+  import tempfile
+  import os
+  try:
+      sc = SparkContext("local", "my app name")
+      from pyspark.sql import SQLContext
+  except:
+      pass
 
-rdd1 = sc.parallelize(range(10))
 
-filename = '/tmp/saved'
-os.remove(filename)
-rdd1.saveAsTextFile(filename)
+  rdd1 = sc.parallelize(range(10))
+
+  filename = '/tmp/saved'
+  try:
+      os.remove(filename)
+  except:
+      pass
+  rdd1.saveAsTextFile(filename)
 
 #+END_SRC
 
 #+RESULTS:
+: 2019-02-04 19:05:54 WARN  Utils:66 - Your hostname, ubuntu-16 resolves to a loopback address: 127.0.1.1; using 10.0.2.15 instead (on interface enp0s3)
+: 2019-02-04 19:05:54 WARN  Utils:66 - Set SPARK_LOCAL_IP if you need to bind to another address
+: 2019-02-04 19:06:00 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+: 2019-02-04 19:06:03 WARN  Utils:66 - Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
 
 * How to save rdd to amazon s3?
 #+BEGIN_SRC python :results output
@@ -425,12 +531,12 @@ path = os.path.join(directory, *full_path)
 def fileAtS3Path(p, bucket=AwsBucketName):
   return 's3n://{}:{}@{}/{}'.format(AccessKey, SecretKey, bucket, p)
 
-print fileAtS3Path(path, bucket)
+print(fileAtS3Path(path, bucket))
 
 path1 = os.path.join(directory, 'to_save_rdd.txt')
-print path1
+print(path1)
 newpath = fileAtS3Path(path1, bucket)
-print newpath
+print(newpath)
 
 rdd1 = sc.parallelize(range(10))
 rdd1.saveAsTextFile(newpath)
@@ -453,9 +559,9 @@ sqlContext = SQLContext(sc)
 a = [Row(record_index=376549, ot=[u'vasin_S-7406-2016', u'Vasin', u'V', u'Victor', None, None, u'S-7406-2016'], cluster_id=u'vasin_S-7406-2016', profile_ut=u'WOS:000070627200023', name=u'Vasin, VA', pos=u'3', similarity=0.8161098161098161, rank=1)]
 
 xrdd = sc.parallelize(a)
-print xrdd, type(xrdd)
+print(xrdd, type(xrdd))
 xdf = xrdd.toDF()
-print xdf, type(xdf)
+print(xdf, type(xdf))
 #+END_SRC
 
 #+RESULTS:
@@ -1752,16 +1858,16 @@ daisng_cluster_jan2017.show()
       try:
           shutil.rmtree(filename)
       except OSError:
-          print "Failed to delete", filename
+          print("Failed to delete", filename)
 
   def quick_print_directory(directory):
       import glob
       files = glob.glob(directory + "/*")
-      print "printing ", directory
+      print("printing ", directory)
       for file1 in files:
-          print "...printing", file1
+          print("...printing", file1)
           with open(file1) as f:
-              print f.read()
+              print(f.read())
 
   written_directory = '/tmp/save_file_test'
   quick_delete(written_directory)
@@ -3400,7 +3506,7 @@ from pyspark.sql.window import Window
 
 w =  Window.partitionBy(df.k).orderBy(df.v)
 
-print w
+print(w)
 #+END_SRC
 
 #+RESULTS:
@@ -3549,7 +3655,7 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10))
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 
 #+END_SRC
@@ -3567,10 +3673,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10))
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 rdd1 = rDD.map(lambda x: x * 2)
-print rdd1.collect()
+print(rdd1.collect())
 #+END_SRC
 
 #+RESULTS:
@@ -3588,10 +3694,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10))
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 even_rdd = rDD.filter(lambda x: x % 2 == 0)
-print even_rdd.collect()
+print(even_rdd.collect())
 #+END_SRC
 
 #+RESULTS:
@@ -3608,10 +3714,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10) + range(10)) # duplicate the same list twice
 rDD = sc.parallelize(data, 4) # 4 partitions
-print rDD.collect()
+print(rDD.collect())
 
 distinct_rdd = rDD.distinct()
-print distinct_rdd.collect()
+print(distinct_rdd.collect())
 #+END_SRC
 
 #+RESULTS:
@@ -3627,10 +3733,10 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1,10) + range(10)) # duplicate the same list twice
 rDD = sc.parallelize(data)
-print rDD.collect()
+print(rDD.collect())
 
 distinct_rdd = rDD.distinct()
-print distinct_rdd.collect()
+print(distinct_rdd.collect())
 #+END_SRC
 
 #+RESULTS:
@@ -3647,11 +3753,11 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(0, 10, 2))
 odd_rdd = sc.parallelize(data, 4) # 4 partitions
-print odd_rdd.collect()
+print(odd_rdd.collect())
 
 all_numbers_rdd = odd_rdd.map(lambda x: [x, x + 1])
 
-print all_numbers_rdd.collect()
+print(all_numbers_rdd.collect())
 
 #+END_SRC
 
@@ -3670,11 +3776,11 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(0, 10, 2))
 odd_rdd = sc.parallelize(data, 4) # 4 partitions
-print odd_rdd.collect()
+print(odd_rdd.collect())
 
 all_numbers_rdd = odd_rdd.flatMap(lambda x: [x, x + 1])
 
-print all_numbers_rdd.collect()
+print(all_numbers_rdd.collect())
 
 #+END_SRC
 
@@ -3691,12 +3797,12 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1, 10 + 1))
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 sum_of_rdd = rdd.reduce(lambda a, b: a + b)
 
-print sum_of_rdd
-print sum(data)
+print(sum_of_rdd)
+print(sum(data))
 
 #+END_SRC
 
@@ -3714,11 +3820,11 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1, 10 + 1))
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 taken_from_rdd = rdd.take(2)
 
-print taken_from_rdd
+print(taken_from_rdd)
 
 #+END_SRC
 
@@ -3734,7 +3840,7 @@ sc = SparkContext("local", "my app name")
 
 data = list(range(1, 10 + 1))
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 
 #+END_SRC
@@ -3751,12 +3857,12 @@ sc = SparkContext("local", "my app name")
 data = list(range(1, 10 + 1))
 random.shuffle(data)
 rdd = sc.parallelize(data, 4) # 4 partitions
-print rdd.collect()
+print(rdd.collect())
 
 takeordered_from_rdd = rdd.takeOrdered(5, lambda x: x)
-print takeordered_from_rdd
+print(takeordered_from_rdd)
 takeordered_from_rdd = rdd.takeOrdered(5, lambda x: -x)
-print takeordered_from_rdd
+print(takeordered_from_rdd)
 #+END_SRC
 
 #+RESULTS:
@@ -3774,10 +3880,10 @@ sc = SparkContext("local", "my app name")
 data_list = [(1,2), (3,4), (3, 6), (1, 5), (2,4), (2, 3), (2, 3), (1, 3)]
 data_list.sort()
 rdd = sc.parallelize(data_list)
-print rdd.collect()
+print(rdd.collect())
 
 reduced_list = rdd.reduceByKey(lambda x, y: x + y).collect()
-print reduced_list
+print(reduced_list)
 
 
 #+END_SRC
@@ -3795,12 +3901,12 @@ sc = SparkContext("local", "my app name")
 data_list = [(1,2), (3,4), (3, 6), (1, 5), (2,4), (2, 3), (2, 3), (1, 3)]
 random.shuffle(data_list)
 rdd = sc.parallelize(data_list)
-print rdd.collect()
+print(rdd.collect())
 
 sorted_list = rdd.sortByKey().collect()
-print sorted_list
+print(sorted_list)
 
-print (sorted(data_list, cmp=lambda x, y: cmp(x, y), key=lambda x: x[0]))
+print((sorted(data_list, cmp=lambda x, y: cmp(x, y), key=lambda x: x[0])))
 
 #+END_SRC
 
@@ -3818,13 +3924,13 @@ sc = SparkContext("local", "my app name")
 data_list = [(1,2), (3,4), (3, 6), (1, 5), (2,4), (2, 3), (2, 3), (1, 3)]
 random.shuffle(data_list)
 rdd = sc.parallelize(data_list)
-print rdd.collect()
+print(rdd.collect())
 
 grouped_list = rdd.groupByKey().collect()
 
 for x, y in grouped_list:
-    print "{}: ".format(x),
-    print list(y)
+    print("{}: ".format(x),)
+    print(list(y))
 
 #+END_SRC
 
@@ -3841,7 +3947,7 @@ import random
 sc = SparkContext("local", "my app name")
 
 broadcastVar = sc.broadcast([1,2,3])
-print broadcastVar.value
+print(broadcastVar.value)
 
 #+END_SRC
 
@@ -3891,20 +3997,20 @@ filename = "/tmp/wordsworth.txt"
 lines = sc.textFile(filename)
 
 words_list = lines.flatMap(tostrings)
-print words_list.collect()
+print(words_list.collect())
 
 wordcount_pair = words_list.map(towordcountpair)
-print wordcount_pair.collect()
+print(wordcount_pair.collect())
 
 final_word_count = wordcount_pair.reduceByKey(lambda a, b : a + b)
 
-print final_word_count.collect()
+print(final_word_count.collect())
 
 final_word_count = (lines.flatMap(tostrings).
                     map(towordcountpair).
                     reduceByKey(lambda a, b: a + b))
 
-print final_word_count.collect()
+print(final_word_count.collect())
 
 #+END_SRC
 
@@ -3931,7 +4037,7 @@ final_word_count = (sc.textFile(filename).
                     map(lambda x: (x, 1)).
                     reduceByKey(lambda a, b: a + b))
 
-print final_word_count.collect()
+print(final_word_count.collect())
 
 #+END_SRC
 
@@ -4019,7 +4125,7 @@ rdd4 = sc.parallelize(ls4)
 
 #+BEGIN_SRC python :results output :tangle yes :tangle /tmp/spark_cheatsheet.py
 
-print (rdd4.
+print((rdd4.)
 flatMapValues(lambda x: x)
 .collect())
 
@@ -4031,17 +4137,17 @@ flatMapValues(lambda x: x)
 ** Simulating flatmap values with flatmap
 #+BEGIN_SRC python :results output :tangle yes :tangle /tmp/spark_cheatsheet.py
 
-print (rdd4.
+print((rdd4.)
 flatMapValues(lambda x: x)
 .collect())
 
 
-print (rdd4.
+print((rdd4.)
 map(lambda x: [(x[0], i) for i in x[1]])
 .collect())
 
 
-print (rdd4.
+print((rdd4.)
 flatMap(lambda x: [(x[0], i) for i in x[1]])
 .collect())
 
@@ -4053,10 +4159,10 @@ flatMap(lambda x: [(x[0], i) for i in x[1]])
 #+BEGIN_SRC python :results output :tangle yes :tangle /tmp/spark_cheatsheet.py
 
 def g(x):
-    print x
-# print rdd1
+    print(x)
+# print(rdd1)
 rdd1.foreach(g)
-# print help(rdd1)
+# print(help(rdd1))
 def f(x): print(x)
 sc.parallelize([1, 2, 3, 4, 5]).foreach(f)
   
@@ -4100,7 +4206,7 @@ sc = SparkContext("local", "my app name")
 
 from pyspark.sql import SQLContext
 sqlContext = SQLContext(sc)
-print help(sqlContext)
+print(help(sqlContext))
 #+END_SRC
 
 #+RESULTS:
