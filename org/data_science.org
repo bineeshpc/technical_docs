@@ -1363,6 +1363,8 @@ def display_inline(filename):
 
 #+RESULTS:
 
+
+
 *** Histogram and Pie(Uni)
 
 #+BEGIN_SRC sh
@@ -1517,7 +1519,7 @@ binisearch.py -o 'Scatterplot(bi)'
 #+END_SRC
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :session :results output :exports both
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 import numpy as np
@@ -1526,14 +1528,16 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.plot(x, y, 'o', color='black');
-plt.show()
+display_inline('./images/scatterplot1.png')
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: >>> >>> >>> >>> >>> >>> [<matplotlib.lines.Line2D object at 0x7f8ce43976a0>]
+: [[./images/scatterplot1.png]]
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :session :results output :exports both
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 import numpy as np
@@ -1542,16 +1546,18 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.scatter(x, y, marker='o', color='black');
-plt.show()
+display_inline('./images/scatterplot2.png')
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: >>> >>> >>> >>> >>> <matplotlib.collections.PathCollection object at 0x7f8ce4348ba8>
+: [[./images/scatterplot2.png]]
 
 *** Heatmap
 https://python-graph-gallery.com/heatmap/
 
-#+BEGIN_SRC python :tangle yes :tangle /tmp/heatmap.py
+#+BEGIN_SRC python :session :results output :exports both
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -1561,11 +1567,13 @@ df = pd.DataFrame(np.random.random((5,5)), columns=["a","b","c","d","e"])
  
 # Default heatmap: just a visualization of this square matrix
 p1 = sns.heatmap(df)
-
+display_inline('./images/heatmap.png')
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: >>> >>> ... ... >>> ... ... >>> 
+: [[./images/heatmap.png]]
 
 *** Line charts(bi)
 
@@ -1574,7 +1582,7 @@ binisearch.py -o 'Line charts(bi)'
 #+END_SRC
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :session :results output :exports both
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 import numpy as np
@@ -1583,11 +1591,16 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.plot(x, y, color='black');
-plt.show()
+#plt.show()
+display_inline('./images/line_charts.png')
+
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: >>> >>> >>> >>> >>> >>> [<matplotlib.lines.Line2D object at 0x7f520d461ac8>]
+: ... 
+: [[./images/line_charts.png]]
 
 
 *** Spatial charts
@@ -1625,7 +1638,7 @@ binisearch.py -o 'Timeline'
 
 https://matplotlib.org/gallery/lines_bars_and_markers/timeline.html
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :tangle yes :tangle /tmp/timeline.py :exports both
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.dates as mdates
@@ -1668,6 +1681,7 @@ for ii, (iname, idate) in enumerate(zip(names, dates)):
     ax.text(idate, level, iname,
             horizontalalignment='right', verticalalignment=vert, fontsize=14,
             backgroundcolor=(1., 1., 1., .3))
+
 ax.set(title="Matplotlib release dates")
 # Set the xticks formatting
 # format xaxis with 3 month intervals
@@ -1678,18 +1692,26 @@ fig.autofmt_xdate()
 # Remove components for a cleaner look
 plt.setp((ax.get_yticklabels() + ax.get_yticklines() +
           list(ax.spines.values())), visible=False)
-plt.show()
+#plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/timeline.png')
+
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: [[./images/timeline.png]]
 
 *** Barplot
 
 https://python-graph-gallery.com/barplot/
 https://python-graph-gallery.com/1-basic-barplot/
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :session :results output :exports both
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -1705,13 +1727,17 @@ plt.bar(y_pos, height)
 plt.xticks(y_pos, bars)
 
 # Show graphic
-plt.show()
-
+#plt.show()
+display_inline('./images/barplot.png')
 
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: >>> >>> ... >>> >>> >>> >>> ... <BarContainer object of 5 artists>
+: >>> ... ([<matplotlib.axis.XTick object at 0x7f520ce53e80>, <matplotlib.axis.XTick object at 0x7f520ce5b128>, <matplotlib.axis.XTick object at 0x7f520ce5b390>, <matplotlib.axis.XTick object at 0x7f520d3fd400>, <matplotlib.axis.XTick object at 0x7f520d074390>], <a list of 5 Text xticklabel objects>)
+: >>> ... ... 
+: [[./images/barplot.png]]
 
 *** Violinplot
 
@@ -1719,7 +1745,7 @@ https://python-graph-gallery.com/violin-plot/
 https://python-graph-gallery.com/58-show-number-of-observation-on-violinplot/
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 
 # library & dataset
 import matplotlib.pyplot as plt
@@ -1738,28 +1764,44 @@ nobs = ["n: " + i for i in nobs]
 # Add it to the plot
 pos = range(len(nobs))
 for tick,label in zip(pos,ax.get_xticklabels()):
-   ax.text(pos[tick], medians[tick] + 0.03, nobs[tick], horizontalalignment='center', size='x-small', color='w', weight='semibold')
-plt.show()
+    ax.text(pos[tick], medians[tick] + 0.03, nobs[tick], horizontalalignment='center', size='x-small', color='w', weight='semibold')
+#plt.show()
+
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+display_inline('./images/violinplot.png')
 
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: [[./images/violinplot.png]]
 
 *** pairplot
 https://seaborn.pydata.org/generated/seaborn.pairplot.html
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(style="ticks", color_codes=True)
 iris = sns.load_dataset("iris")
 g = sns.pairplot(iris)
-plt.show()
+#plt.show()
+
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/pairplot.png')
+
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: [[./images/pairplot.png]]
 
 *** lmplot
 https://seaborn.pydata.org/generated/seaborn.lmplot.html
@@ -1782,16 +1824,22 @@ print('[[./{}]]'.format(filename))
 *** joinplot
 https://seaborn.pydata.org/generated/seaborn.jointplot.html
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(style="white", color_codes=True)
 tips = sns.load_dataset("tips")
 g = sns.jointplot(x="total_bill", y="tip", data=tips)
-plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/joinplot.png')
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: [[./images/joinplot.png]]
 
 *** Distributions
 https://seaborn.pydata.org/tutorial/distributions.html
@@ -1799,7 +1847,7 @@ https://seaborn.pydata.org/tutorial/distributions.html
 *** Contour
 https://www.python-course.eu/matplotlib_contour_plot.php
 
-#+BEGIN_SRC python :results output
+#+BEGIN_SRC python :results output :exports both
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -1815,7 +1863,13 @@ plt.clabel(cp, inline=True,
 plt.title('Contour Plot')
 plt.xlabel('x (cm)')
 plt.ylabel('y (cm)')
-plt.show()
+#plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/contour.png')
 
 #+END_SRC
 
@@ -1824,6 +1878,8 @@ plt.show()
 :  [-3.  0.  3.]
 :  [-3.  0.  3.]
 :  [-3.  0.  3.]]
+: 
+: [[./images/contour.png]]
 
 **** What is mesh grid?
 #+BEGIN_SRC python :results output
@@ -1865,7 +1921,7 @@ https://python-graph-gallery.com/30-basic-boxplot-with-seaborn/
  If you have only one numerical variable, you can use this code to get a boxplot with only one group (left chart).
 
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 # library & dataset
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -1873,38 +1929,52 @@ df = sns.load_dataset('iris')
 
 # Make boxplot for one group only
 sns.boxplot( y=df["sepal_length"] )
-plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/boxplot1.png')
+
 
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: [[./images/boxplot1.png]]
 
 **** 2 - One numerical variable, and several groups
 
  Let’s say we want to study the distribution of a numerical variable, but for each group separately. Here we study
  the sepal length of 3 species of flower.
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 
 # library & dataset
 import matplotlib.pyplot as plt
 import seaborn as sns
 df = sns.load_dataset('iris')
 
-sns.boxplot( x=df["species"], y=df["sepal_length"] )
-plt.show()
+sns.boxplot(x=df["species"], y=df["sepal_length"])
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/boxplot2.png')
+
 
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: [[./images/boxplot2.png]]
 
 **** 3 - Several numerical variable
 
  Finally we can study the distribution of several numerical variables, let’s say sepal length and width:
 
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 
 # library & dataset
 import matplotlib.pyplot as plt
@@ -1912,12 +1982,19 @@ import seaborn as sns
 df = sns.load_dataset('iris')
 
 sns.boxplot(data=df.ix[:,0:3])
-plt.show()
+#plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/boxplot3.png')
 
 #+END_SRC
 
 #+RESULTS:
-: None
+: 
+: [[./images/boxplot3.png]]
 
 
 *** Decision Tree
@@ -1930,9 +2007,10 @@ binisearch.py -o 'Decision Tree'
 
 https://medium.com/@rnbrown/creating-and-visualizing-decision-trees-with-python-f8e8fa394176
 
-#+BEGIN_SRC python :tangle yes :tangle /tmp/exp.py
+#+BEGIN_SRC python :results output :exports both
 import sklearn.datasets as datasets
 import pandas as pd
+
 iris=datasets.load_iris()
 df=pd.DataFrame(iris.data, columns=iris.feature_names)
 y=iris.target
@@ -1957,7 +2035,6 @@ Image(graph.create_png())
 #+END_SRC
 
 #+RESULTS:
-: None
 
 *** Animation using image magic
 

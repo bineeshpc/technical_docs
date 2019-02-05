@@ -87,6 +87,7 @@ python move_data.py
 #hg commit -m $commit_message
 cd ~/Dropbox/technical_docs
 python make_md.py
+git status
 #git commit -a -m $commit_message
 #+END_SRC
 

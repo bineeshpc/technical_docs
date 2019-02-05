@@ -1356,7 +1356,7 @@ display_inline('./images/dendrogram.png')
 binisearch.py -o 'Scatterplot(bi)'
 ```
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 import numpy as np
@@ -1365,10 +1365,13 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.plot(x, y, 'o', color='black');
-plt.show()
+display_inline('./images/scatterplot1.png')
 ```
 
-``` {.python}
+![alt ./images/scatterplot1.png](./images/scatterplot1.png)
+```
+
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 import numpy as np
@@ -1377,14 +1380,17 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.scatter(x, y, marker='o', color='black');
-plt.show()
+display_inline('./images/scatterplot2.png')
+```
+
+![alt ./images/scatterplot2.png](./images/scatterplot2.png)
 ```
 
 ### Heatmap
 
 <https://python-graph-gallery.com/heatmap/>
 
-``` {.python .rundoc-block rundoc-language="python" rundoc-tangle="yes" rundoc-tangle="/tmp/heatmap.py"}
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -1394,7 +1400,10 @@ df = pd.DataFrame(np.random.random((5,5)), columns=["a","b","c","d","e"])
 
 # Default heatmap: just a visualization of this square matrix
 p1 = sns.heatmap(df)
+display_inline('./images/heatmap.png')
+```
 
+![alt ./images/heatmap.png](./images/heatmap.png)
 ```
 
 ### Line charts(bi)
@@ -1403,7 +1412,7 @@ p1 = sns.heatmap(df)
 binisearch.py -o 'Line charts(bi)'
 ```
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
 import numpy as np
@@ -1412,7 +1421,12 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 
 plt.plot(x, y, color='black');
-plt.show()
+#plt.show()
+display_inline('./images/line_charts.png')
+
+```
+
+![alt ./images/line_charts.png](./images/line_charts.png)
 ```
 
 ### Spatial charts
@@ -1457,7 +1471,7 @@ binisearch.py -o 'Timeline'
 
 <https://matplotlib.org/gallery/lines_bars_and_markers/timeline.html>
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-tangle="yes" rundoc-tangle="/tmp/timeline.py" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.dates as mdates
@@ -1500,6 +1514,7 @@ for ii, (iname, idate) in enumerate(zip(names, dates)):
     ax.text(idate, level, iname,
             horizontalalignment='right', verticalalignment=vert, fontsize=14,
             backgroundcolor=(1., 1., 1., .3))
+
 ax.set(title="Matplotlib release dates")
 # Set the xticks formatting
 # format xaxis with 3 month intervals
@@ -1510,7 +1525,17 @@ fig.autofmt_xdate()
 # Remove components for a cleaner look
 plt.setp((ax.get_yticklabels() + ax.get_yticklines() +
           list(ax.spines.values())), visible=False)
-plt.show()
+#plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/timeline.png')
+
+```
+
+![alt ./images/timeline.png](./images/timeline.png)
 ```
 
 ### Barplot
@@ -1518,7 +1543,7 @@ plt.show()
 <https://python-graph-gallery.com/barplot/>
 <https://python-graph-gallery.com/1-basic-barplot/>
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-session="yes" rundoc-results="output" rundoc-exports="both"}
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -1534,9 +1559,12 @@ plt.bar(y_pos, height)
 plt.xticks(y_pos, bars)
 
 # Show graphic
-plt.show()
+#plt.show()
+display_inline('./images/barplot.png')
 
+```
 
+![alt ./images/barplot.png](./images/barplot.png)
 ```
 
 ### Violinplot
@@ -1544,7 +1572,7 @@ plt.show()
 <https://python-graph-gallery.com/violin-plot/>
 <https://python-graph-gallery.com/58-show-number-of-observation-on-violinplot/>
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 
 # library & dataset
 import matplotlib.pyplot as plt
@@ -1563,21 +1591,41 @@ nobs = ["n: " + i for i in nobs]
 # Add it to the plot
 pos = range(len(nobs))
 for tick,label in zip(pos,ax.get_xticklabels()):
-   ax.text(pos[tick], medians[tick] + 0.03, nobs[tick], horizontalalignment='center', size='x-small', color='w', weight='semibold')
-plt.show()
+    ax.text(pos[tick], medians[tick] + 0.03, nobs[tick], horizontalalignment='center', size='x-small', color='w', weight='semibold')
+#plt.show()
 
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+display_inline('./images/violinplot.png')
+
+```
+
+![alt ./images/violinplot.png](./images/violinplot.png)
 ```
 
 ### pairplot
 
 <https://seaborn.pydata.org/generated/seaborn.pairplot.html>
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(style="ticks", color_codes=True)
 iris = sns.load_dataset("iris")
 g = sns.pairplot(iris)
-plt.show()
+#plt.show()
+
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/pairplot.png')
+
+```
+
+![alt ./images/pairplot.png](./images/pairplot.png)
 ```
 
 ### lmplot
@@ -1603,12 +1651,20 @@ print('[[./{}]]'.format(filename))
 
 <https://seaborn.pydata.org/generated/seaborn.jointplot.html>
 
-``` {.python}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(style="white", color_codes=True)
 tips = sns.load_dataset("tips")
 g = sns.jointplot(x="total_bill", y="tip", data=tips)
-plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
+
+display_inline('./images/joinplot.png')
+```
+
+![alt ./images/joinplot.png](./images/joinplot.png)
 ```
 
 ### Distributions
@@ -1619,7 +1675,7 @@ plt.show()
 
 <https://www.python-course.eu/matplotlib_contour_plot.php>
 
-``` {.python .rundoc-block rundoc-language="python" rundoc-results="output"}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -1635,8 +1691,17 @@ plt.clabel(cp, inline=True,
 plt.title('Contour Plot')
 plt.xlabel('x (cm)')
 plt.ylabel('y (cm)')
-plt.show()
+#plt.show()
+def display_inline(filename):
+    plt.savefig(filename)
+    print()
+    print('[[{}]]'.format(filename))
 
+display_inline('./images/contour.png')
+
+```
+
+![alt ./images/contour.png](./images/contour.png)
 ```
 
 1.  What is mesh grid?
@@ -1663,7 +1728,7 @@ plt.show()
     If you have only one numerical variable, you can use this code to
     get a boxplot with only one group (left chart).
 
-    ``` {.python}
+    ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
     # library & dataset
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -1671,7 +1736,15 @@ plt.show()
 
     # Make boxplot for one group only
     sns.boxplot( y=df["sepal_length"] )
-    plt.show()
+    def display_inline(filename):
+        plt.savefig(filename)
+        print()
+        print('[[{}]]'.format(filename))
+
+    display_inline('./images/boxplot1.png')
+
+
+    ```
 
     ```
 
@@ -1681,15 +1754,23 @@ plt.show()
     but for each group separately. Here we study the sepal length of 3
     species of flower.
 
-    ``` {.python}
+    ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 
     # library & dataset
     import matplotlib.pyplot as plt
     import seaborn as sns
     df = sns.load_dataset('iris')
 
-    sns.boxplot( x=df["species"], y=df["sepal_length"] )
-    plt.show()
+    sns.boxplot(x=df["species"], y=df["sepal_length"])
+    def display_inline(filename):
+        plt.savefig(filename)
+        print()
+        print('[[{}]]'.format(filename))
+
+    display_inline('./images/boxplot2.png')
+
+
+    ```
 
     ```
 
@@ -1698,7 +1779,7 @@ plt.show()
     Finally we can study the distribution of several numerical
     variables, let’s say sepal length and width:
 
-    ``` {.python}
+    ``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 
     # library & dataset
     import matplotlib.pyplot as plt
@@ -1706,7 +1787,15 @@ plt.show()
     df = sns.load_dataset('iris')
 
     sns.boxplot(data=df.ix[:,0:3])
-    plt.show()
+    #plt.show()
+    def display_inline(filename):
+        plt.savefig(filename)
+        print()
+        print('[[{}]]'.format(filename))
+
+    display_inline('./images/boxplot3.png')
+
+    ```
 
     ```
 
@@ -1718,9 +1807,10 @@ binisearch.py -o 'Decision Tree'
 
 <https://medium.com/@rnbrown/creating-and-visualizing-decision-trees-with-python-f8e8fa394176>
 
-``` {.python .rundoc-block rundoc-language="python" rundoc-tangle="yes" rundoc-tangle="/tmp/exp.py"}
+``` {.python .rundoc-block rundoc-language="python" rundoc-results="output" rundoc-exports="both"}
 import sklearn.datasets as datasets
 import pandas as pd
+
 iris=datasets.load_iris()
 df=pd.DataFrame(iris.data, columns=iris.feature_names)
 y=iris.target
