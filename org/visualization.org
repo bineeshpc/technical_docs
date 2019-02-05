@@ -912,7 +912,7 @@ display_inline('./images/area_plot_stacked.png', plt)
 #+end_example
 
 ** D3.Js
-
+Javascript based visualization tool
 #+BEGIN_SRC sh
 binisearch.py -o 'D3.Js'
 #+END_SRC

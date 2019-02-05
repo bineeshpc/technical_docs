@@ -75,10 +75,9 @@ hg status
 #+END_SRC
 
 #+RESULTS:
-| M | data_science.org |
-| M | devops.org       |
-| M | emacs.org        |
-| M | spark.org        |
+| M | data_science.org  |
+| M | spark.org         |
+| A | visualization.org |
 
 
 #+BEGIN_SRC sh
