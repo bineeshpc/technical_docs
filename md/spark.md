@@ -2,7 +2,7 @@ sql join in diagramatic form
 ============================
 
 ``` {.bash}
-xdg-open sqljoin.png
+xdg-open images/sqljoin.png
 firefox https://www.google.co.in/search?q=sql+join+venn+diagram&client=ubuntu&hs=cPe&channel=fs&biw=1535&bih=805&tbm=isch&imgil=SXGHjyoV2uc_DM%253A%253Bwgr8RIHzcKDOHM%253Bhttp%25253A%25252F%25252Fwww.codeproject.com%25252FArticles%25252F33052%25252FVisual-Representation-of-SQL-Joins&source=iu&pf=m&fir=SXGHjyoV2uc_DM%253A%252Cwgr8RIHzcKDOHM%252C_&usg=__MfZs8aa97jg__Y52Io4c6KOhYUc%3D&ved=0ahUKEwiZ3ePolvPPAhWLs48KHakxBGgQyjcINA&ei=JNsNWJm7G4vnvgSp45DABg#imgrc=mogSTbjuV7hmkM%3A
 ```
 
