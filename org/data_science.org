@@ -1423,10 +1423,10 @@ display_inline('./images/treemap2.png')
 
 #+RESULTS:
 : 
-: ... >>> >>> >>> ... <matplotlib.axes._subplots.AxesSubplot object at 0x7f8ce6ef6dd8>
+: ... >>> >>> >>> ... <matplotlib.axes._subplots.AxesSubplot object at 0x7f73c2b3f3c8>
 : (0.0, 100.0, 0.0, 100.0)
 : [[././images/treemap1.png]]
-: ... >>> >>> <matplotlib.axes._subplots.AxesSubplot object at 0x7f8ce6ef6dd8>
+: ... >>> >>> <matplotlib.axes._subplots.AxesSubplot object at 0x7f73c2b3f3c8>
 : (0.0, 100.0, 0.0, 100.0)
 : [[././images/treemap2.png]]
 
